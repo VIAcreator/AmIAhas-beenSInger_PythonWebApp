@@ -8,6 +8,10 @@ data/tags.md
 data/no_ia_tag.csv
 uploads/
 
+# 标注样本（手动挑选，不可复现，纳入版本控制）
+!data/labeled_samples/
+!data/labeled_samples/*.csv
+
 # 模型权重
 models/
 

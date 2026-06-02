@@ -28,12 +28,11 @@ def deduplicate(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
                 "after":   4100,    # 去重后行数
                 "removed":   28     # 被移除的重复行数
               }
-
-    hint:
-        df.drop_duplicates(subset=["bvid", "page"], keep="first")
     """
-    # TODO: 实现去重逻辑并返回 (去重后df, 报告dict)
-    pass
+    dropped_df = df.drop_duplicates(subset=["bvid", "page"], keep='first')
+    before = len(df)
+    after = len(dropped_df)
+    return dropped_df, {"before": before, "after": after, "removed": before - after}
 
 
 # ==========================================================================
