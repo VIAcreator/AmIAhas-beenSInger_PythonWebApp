@@ -1,0 +1,227 @@
+========================================
+开始训练 — 2026-06-03 01:04:59
+========================================
+============================================================
+QLoRA 内容分类器训练
+============================================================
+模型: Qwen/Qwen2.5-1.5B-Instruct
+数据: data/labeled_samples.json
+输出: models/content_classifier_lora
+
+加载 260 条标注样本
+标注分布:
+  game_cover               : 17
+  vocaloid_original        : 84
+  vocaloid_cover           : 44
+  irrelevant               : 60
+  other                    : 55
+
+划分: train=223, test=37
+  game_cover               : train= 15, test= 2
+  vocaloid_original        : train= 72, test=12
+  vocaloid_cover           : train= 38, test= 6
+  irrelevant               : train= 51, test= 9
+  other                    : train= 47, test= 8
+  测试集已保存: 37 条 → data/test_split.json
+
+
+上采样平衡:
+  game_cover               :  72 条
+  vocaloid_original        :  72 条
+  vocaloid_cover           :  72 条
+  irrelevant               :  72 条
+  other                    :  72 条
+
+[1/4] 加载模型...
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 77878.32it/s]
+Unsloth: Loading Qwen/Qwen2.5-1.5B-Instruct via mlx-lm (runtime 4-bit affine quantization)...
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 51150.05it/s]
+INFO:httpx: HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO:httpx: HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen2.5-1.5B-Instruct/989aa7980e4cf806f80c7fef2b1adb7bc71aa306/README.md "HTTP/1.1 200 OK"
+INFO:httpx: HTTP Request: GET https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen2.5-1.5B-Instruct/989aa7980e4cf806f80c7fef2b1adb7bc71aa306/README.md "HTTP/1.1 200 OK"
+Cloning into 'llama.cpp'...
+[INFO] Quantized model with 6.240 bits per weight.
+Unsloth: Quantized text model to 4-bit affine.
+[2/4] 添加 LoRA 适配器...
+Unsloth: LoRA applied — 9,232,384 trainable params (2.06% of 447,469,056 total)
+[3/4] 格式化 + 训练...
+Unsloth: MLX Metal memory guard enabled (memory_limit=10.81 GB, wired_limit=10.81 GB).
+Unsloth: Using gradient checkpointing to reduce memory.
+Unsloth: CCE skipping weight gradient (LM head is frozen).
+Unsloth: Using CCE loss (runtime-cce) for memory-efficient training.
+Unsloth: Training for 540 steps, BS=2, grad_accum=1, seq_len=512
+Unsloth: Features: CCE, GC, compile, LR=linear, opt=adamw
+  Step 5/540 | Loss: 3.8319 | Grad: 1.4297 | LR: 1.67e-04 | Tok/s: 212 | Peak: 2.35 GB
+  Step 10/540 | Loss: 2.9725 | Grad: 4.3301 | LR: 1.99e-04 | Tok/s: 228 | Peak: 2.35 GB
+  Step 15/540 | Loss: 1.7757 | Grad: 4.2828 | LR: 1.97e-04 | Tok/s: 221 | Peak: 2.35 GB
+  Step 20/540 | Loss: 1.0345 | Grad: 1.2588 | LR: 1.95e-04 | Tok/s: 226 | Peak: 2.35 GB
+  Step 25/540 | Loss: 0.8407 | Grad: 0.9959 | LR: 1.93e-04 | Tok/s: 232 | Peak: 2.35 GB
+  Step 30/540 | Loss: 0.8038 | Grad: 0.9007 | LR: 1.91e-04 | Tok/s: 226 | Peak: 2.35 GB
+  Step 35/540 | Loss: 0.9035 | Grad: 0.7889 | LR: 1.89e-04 | Tok/s: 224 | Peak: 2.35 GB
+  Step 40/540 | Loss: 0.8804 | Grad: 1.0238 | LR: 1.87e-04 | Tok/s: 226 | Peak: 2.35 GB
+  Step 45/540 | Loss: 0.7260 | Grad: 0.8855 | LR: 1.85e-04 | Tok/s: 230 | Peak: 2.35 GB
+  Step 50/540 | Loss: 0.8764 | Grad: 0.8482 | LR: 1.84e-04 | Tok/s: 222 | Peak: 2.35 GB
+  Step 55/540 | Loss: 1.0552 | Grad: 2.5244 | LR: 1.82e-04 | Tok/s: 213 | Peak: 2.37 GB
+  Step 60/540 | Loss: 0.7169 | Grad: 0.7580 | LR: 1.80e-04 | Tok/s: 212 | Peak: 2.37 GB
+  Step 65/540 | Loss: 0.7532 | Grad: 0.7297 | LR: 1.78e-04 | Tok/s: 206 | Peak: 2.37 GB
+  Step 70/540 | Loss: 0.8569 | Grad: 0.9147 | LR: 1.76e-04 | Tok/s: 192 | Peak: 2.37 GB
+  Step 75/540 | Loss: 0.8625 | Grad: 0.7233 | LR: 1.74e-04 | Tok/s: 185 | Peak: 2.37 GB
+  Step 80/540 | Loss: 0.6914 | Grad: 0.8360 | LR: 1.72e-04 | Tok/s: 164 | Peak: 2.37 GB
+  Step 85/540 | Loss: 0.8375 | Grad: 0.8579 | LR: 1.70e-04 | Tok/s: 163 | Peak: 2.37 GB
+  Step 90/540 | Loss: 0.7622 | Grad: 1.0024 | LR: 1.69e-04 | Tok/s: 135 | Peak: 2.37 GB
+  Step 95/540 | Loss: 0.7001 | Grad: 0.9608 | LR: 1.67e-04 | Tok/s: 159 | Peak: 2.37 GB
+  Step 100/540 | Loss: 0.7827 | Grad: 1.2315 | LR: 1.65e-04 | Tok/s: 168 | Peak: 2.37 GB
+  Step 105/540 | Loss: 0.7266 | Grad: 0.7392 | LR: 1.63e-04 | Tok/s: 169 | Peak: 2.37 GB
+  Step 110/540 | Loss: 0.6182 | Grad: 0.7591 | LR: 1.61e-04 | Tok/s: 172 | Peak: 2.37 GB
+  Step 115/540 | Loss: 0.5331 | Grad: 0.9203 | LR: 1.59e-04 | Tok/s: 178 | Peak: 2.37 GB
+  Step 120/540 | Loss: 0.6558 | Grad: 0.9853 | LR: 1.57e-04 | Tok/s: 180 | Peak: 2.37 GB
+  Step 125/540 | Loss: 0.8327 | Grad: 0.7078 | LR: 1.56e-04 | Tok/s: 181 | Peak: 2.37 GB
+  Step 130/540 | Loss: 0.6912 | Grad: 1.0781 | LR: 1.54e-04 | Tok/s: 184 | Peak: 2.37 GB
+  Step 135/540 | Loss: 0.7219 | Grad: 0.8353 | LR: 1.52e-04 | Tok/s: 177 | Peak: 2.37 GB
+  Step 140/540 | Loss: 0.5655 | Grad: 0.8560 | LR: 1.50e-04 | Tok/s: 181 | Peak: 2.37 GB
+  Step 145/540 | Loss: 0.5808 | Grad: 0.7189 | LR: 1.48e-04 | Tok/s: 183 | Peak: 2.37 GB
+  Step 150/540 | Loss: 0.6087 | Grad: 1.3846 | LR: 1.46e-04 | Tok/s: 182 | Peak: 2.37 GB
+  Step 155/540 | Loss: 0.6106 | Grad: 0.9477 | LR: 1.44e-04 | Tok/s: 182 | Peak: 2.37 GB
+  Step 160/540 | Loss: 0.5659 | Grad: 0.7716 | LR: 1.42e-04 | Tok/s: 178 | Peak: 2.37 GB
+  Step 165/540 | Loss: 0.5067 | Grad: 0.8861 | LR: 1.41e-04 | Tok/s: 178 | Peak: 2.37 GB
+  Step 170/540 | Loss: 0.5743 | Grad: 0.9515 | LR: 1.39e-04 | Tok/s: 182 | Peak: 2.37 GB
+  Step 175/540 | Loss: 0.5691 | Grad: 0.8502 | LR: 1.37e-04 | Tok/s: 181 | Peak: 2.37 GB
+  Step 180/540 | Loss: 0.5533 | Grad: 0.7321 | LR: 1.35e-04 | Tok/s: 181 | Peak: 2.37 GB
+  Step 185/540 | Loss: 0.7034 | Grad: 0.7739 | LR: 1.33e-04 | Tok/s: 185 | Peak: 2.37 GB
+  Step 190/540 | Loss: 0.5801 | Grad: 0.7698 | LR: 1.31e-04 | Tok/s: 180 | Peak: 2.37 GB
+  Step 195/540 | Loss: 0.5458 | Grad: 0.6620 | LR: 1.29e-04 | Tok/s: 176 | Peak: 2.37 GB
+  Step 200/540 | Loss: 0.4825 | Grad: 0.8138 | LR: 1.27e-04 | Tok/s: 179 | Peak: 2.37 GB
+  Step 205/540 | Loss: 0.5209 | Grad: 0.9346 | LR: 1.26e-04 | Tok/s: 181 | Peak: 2.37 GB
+  Step 210/540 | Loss: 0.5095 | Grad: 0.7247 | LR: 1.24e-04 | Tok/s: 178 | Peak: 2.37 GB
+  Step 215/540 | Loss: 0.5639 | Grad: 1.0686 | LR: 1.22e-04 | Tok/s: 175 | Peak: 2.37 GB
+  Step 220/540 | Loss: 0.5526 | Grad: 1.3851 | LR: 1.20e-04 | Tok/s: 170 | Peak: 2.37 GB
+  Step 225/540 | Loss: 0.4161 | Grad: 1.3813 | LR: 1.18e-04 | Tok/s: 177 | Peak: 2.37 GB
+  Step 230/540 | Loss: 0.5047 | Grad: 1.0268 | LR: 1.16e-04 | Tok/s: 175 | Peak: 2.37 GB
+  Step 235/540 | Loss: 0.7972 | Grad: 1.5189 | LR: 1.14e-04 | Tok/s: 171 | Peak: 2.37 GB
+  Step 240/540 | Loss: 0.4310 | Grad: 0.9201 | LR: 1.13e-04 | Tok/s: 174 | Peak: 2.37 GB
+  Step 245/540 | Loss: 0.4950 | Grad: 0.9319 | LR: 1.11e-04 | Tok/s: 178 | Peak: 2.37 GB
+  Step 250/540 | Loss: 0.5515 | Grad: 1.4989 | LR: 1.09e-04 | Tok/s: 177 | Peak: 2.37 GB
+  Step 255/540 | Loss: 0.5821 | Grad: 1.1604 | LR: 1.07e-04 | Tok/s: 176 | Peak: 2.37 GB
+  Step 260/540 | Loss: 0.4312 | Grad: 1.2423 | LR: 1.05e-04 | Tok/s: 180 | Peak: 2.37 GB
+  Step 265/540 | Loss: 0.5224 | Grad: 1.3205 | LR: 1.03e-04 | Tok/s: 176 | Peak: 2.37 GB
+  Step 270/540 | Loss: 0.4980 | Grad: 1.6180 | LR: 1.01e-04 | Tok/s: 182 | Peak: 2.37 GB
+  Step 275/540 | Loss: 0.4115 | Grad: 1.2577 | LR: 9.94e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 280/540 | Loss: 0.4699 | Grad: 1.5269 | LR: 9.76e-05 | Tok/s: 177 | Peak: 2.37 GB
+  Step 285/540 | Loss: 0.4766 | Grad: 1.3234 | LR: 9.57e-05 | Tok/s: 173 | Peak: 2.37 GB
+  Step 290/540 | Loss: 0.3955 | Grad: 1.0678 | LR: 9.38e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 295/540 | Loss: 0.3598 | Grad: 1.5602 | LR: 9.20e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 300/540 | Loss: 0.3999 | Grad: 1.3845 | LR: 9.01e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 305/540 | Loss: 0.6017 | Grad: 1.1095 | LR: 8.82e-05 | Tok/s: 177 | Peak: 2.37 GB
+  Step 310/540 | Loss: 0.5160 | Grad: 1.6335 | LR: 8.64e-05 | Tok/s: 179 | Peak: 2.37 GB
+  Step 315/540 | Loss: 0.3851 | Grad: 1.0649 | LR: 8.45e-05 | Tok/s: 172 | Peak: 2.37 GB
+  Step 320/540 | Loss: 0.3954 | Grad: 1.2537 | LR: 8.26e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 325/540 | Loss: 0.2884 | Grad: 1.0722 | LR: 8.07e-05 | Tok/s: 179 | Peak: 2.37 GB
+  Step 330/540 | Loss: 0.4226 | Grad: 2.1552 | LR: 7.89e-05 | Tok/s: 177 | Peak: 2.37 GB
+  Step 335/540 | Loss: 0.3989 | Grad: 1.4359 | LR: 7.70e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 340/540 | Loss: 0.3376 | Grad: 1.0876 | LR: 7.51e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 345/540 | Loss: 0.2212 | Grad: 1.5299 | LR: 7.33e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 350/540 | Loss: 0.3159 | Grad: 1.5954 | LR: 7.14e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 355/540 | Loss: 0.3435 | Grad: 1.3125 | LR: 6.95e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 360/540 | Loss: 0.3700 | Grad: 1.0523 | LR: 6.77e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 365/540 | Loss: 0.5054 | Grad: 1.1959 | LR: 6.58e-05 | Tok/s: 182 | Peak: 2.37 GB
+  Step 370/540 | Loss: 0.3744 | Grad: 0.9498 | LR: 6.39e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 375/540 | Loss: 0.4110 | Grad: 0.9839 | LR: 6.21e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 380/540 | Loss: 0.2968 | Grad: 1.2647 | LR: 6.02e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 385/540 | Loss: 0.3387 | Grad: 1.3779 | LR: 5.83e-05 | Tok/s: 182 | Peak: 2.37 GB
+  Step 390/540 | Loss: 0.3265 | Grad: 1.0541 | LR: 5.64e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 395/540 | Loss: 0.3479 | Grad: 1.6384 | LR: 5.46e-05 | Tok/s: 174 | Peak: 2.37 GB
+  Step 400/540 | Loss: 0.3178 | Grad: 2.0409 | LR: 5.27e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 405/540 | Loss: 0.2443 | Grad: 1.7378 | LR: 5.08e-05 | Tok/s: 180 | Peak: 2.37 GB
+  Step 410/540 | Loss: 0.2755 | Grad: 1.5405 | LR: 4.90e-05 | Tok/s: 179 | Peak: 2.37 GB
+  Step 415/540 | Loss: 0.5651 | Grad: 2.5364 | LR: 4.71e-05 | Tok/s: 173 | Peak: 2.37 GB
+  Step 420/540 | Loss: 0.2817 | Grad: 1.1467 | LR: 4.52e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 425/540 | Loss: 0.3010 | Grad: 1.0505 | LR: 4.34e-05 | Tok/s: 179 | Peak: 2.37 GB
+  Step 430/540 | Loss: 0.3127 | Grad: 1.6425 | LR: 4.15e-05 | Tok/s: 177 | Peak: 2.37 GB
+  Step 435/540 | Loss: 0.3615 | Grad: 2.3942 | LR: 3.96e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 440/540 | Loss: 0.2683 | Grad: 1.5411 | LR: 3.78e-05 | Tok/s: 179 | Peak: 2.37 GB
+  Step 445/540 | Loss: 0.3398 | Grad: 1.4904 | LR: 3.59e-05 | Tok/s: 177 | Peak: 2.37 GB
+  Step 450/540 | Loss: 0.3067 | Grad: 1.6759 | LR: 3.40e-05 | Tok/s: 182 | Peak: 2.37 GB
+  Step 455/540 | Loss: 0.2181 | Grad: 0.9264 | LR: 3.21e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 460/540 | Loss: 0.2632 | Grad: 2.3575 | LR: 3.03e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 465/540 | Loss: 0.2883 | Grad: 1.2629 | LR: 2.84e-05 | Tok/s: 173 | Peak: 2.37 GB
+  Step 470/540 | Loss: 0.2267 | Grad: 0.6184 | LR: 2.65e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 475/540 | Loss: 0.2052 | Grad: 1.8214 | LR: 2.47e-05 | Tok/s: 175 | Peak: 2.37 GB
+  Step 480/540 | Loss: 0.2495 | Grad: 1.4683 | LR: 2.28e-05 | Tok/s: 176 | Peak: 2.37 GB
+  Step 485/540 | Loss: 0.3860 | Grad: 1.3352 | LR: 2.09e-05 | Tok/s: 178 | Peak: 2.37 GB
+  Step 490/540 | Loss: 0.3384 | Grad: 2.4194 | LR: 1.91e-05 | Tok/s: 181 | Peak: 2.37 GB
+  Step 495/540 | Loss: 0.2108 | Grad: 0.7106 | LR: 1.72e-05 | Tok/s: 173 | Peak: 2.37 GB
+  Step 500/540 | Loss: 0.2528 | Grad: 1.4316 | LR: 1.53e-05 | Tok/s: 161 | Peak: 2.37 GB
+  Step 505/540 | Loss: 0.1626 | Grad: 1.3250 | LR: 1.35e-05 | Tok/s: 170 | Peak: 2.37 GB
+  Step 510/540 | Loss: 0.2545 | Grad: 2.1885 | LR: 1.16e-05 | Tok/s: 170 | Peak: 2.37 GB
+  Step 515/540 | Loss: 0.2543 | Grad: 1.7762 | LR: 9.72e-06 | Tok/s: 170 | Peak: 2.37 GB
+  Step 520/540 | Loss: 0.1711 | Grad: 1.4814 | LR: 7.85e-06 | Tok/s: 168 | Peak: 2.37 GB
+  Step 525/540 | Loss: 0.1217 | Grad: 0.7809 | LR: 5.98e-06 | Tok/s: 167 | Peak: 2.37 GB
+  Step 530/540 | Loss: 0.1848 | Grad: 1.1232 | LR: 4.11e-06 | Tok/s: 172 | Peak: 2.37 GB
+  Step 535/540 | Loss: 0.2167 | Grad: 1.4289 | LR: 2.24e-06 | Tok/s: 173 | Peak: 2.37 GB
+  Step 540/540 | Loss: 0.2276 | Grad: 1.1852 | LR: 3.74e-07 | Tok/s: 172 | Peak: 2.37 GB
+
+Unsloth: Training complete! Avg loss: 0.5535 | Total time: 1592.7s | Steps: 540 | Tokens: 286659
+
+[4/4] 保存模型...
+Unsloth: Merging LoRA weights and saving to 16-bit...
+Unsloth: Merged model saved to /var/folders/hh/djlxpby115g__9_3txqw30qc0000gn/T/tmpabtkhhf9/merged
+Unsloth: Installing llama.cpp (this only happens once)...
+Unsloth: Cloning llama.cpp...
+Unsloth: Building llama.cpp with cmake...
+Traceback (most recent call last):
+  File "/Users/g89g90/Desktop/大一下python/大作业/venv/lib/python3.14/site-packages/unsloth_zoo/mlx/utils.py", line 3965, in save_pretrained_gguf
+    check_llama_cpp(llama_cpp_folder)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/venv/lib/python3.14/site-packages/unsloth_zoo/llama_cpp.py", line 539, in check_llama_cpp
+    raise RuntimeError(f"llama.cpp folder '{llama_cpp_folder}' does not exist")
+RuntimeError: llama.cpp folder 'llama.cpp' does not exist
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/g89g90/Desktop/大一下python/大作业/train_classifier.py", line 303, in <module>
+    main()
+    ~~~~^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/train_classifier.py", line 297, in main
+    train(train_balanced)
+    ~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/train_classifier.py", line 245, in train
+    model.save_pretrained_gguf(OUTPUT_DIR, tokenizer)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/venv/lib/python3.14/site-packages/unsloth_zoo/mlx/loader.py", line 2420, in _mlx_save_pretrained_gguf
+    save_pretrained_gguf(self, tokenizer, save_directory,
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         quantization_method=quantization_method)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/venv/lib/python3.14/site-packages/unsloth_zoo/mlx/utils.py", line 3968, in save_pretrained_gguf
+    _install_llama_cpp_macos(llama_cpp_folder)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/g89g90/Desktop/大一下python/大作业/venv/lib/python3.14/site-packages/unsloth_zoo/mlx/utils.py", line 3855, in _install_llama_cpp_macos
+    subprocess.run(
+    ~~~~~~~~~~~~~~^
+        ["cmake", llama_cpp_folder, "-B", build_dir,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         "-DBUILD_SHARED_LIBS=OFF", "-DGGML_METAL=ON"],
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        check=True, capture_output=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 555, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1990, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'cmake'
+
+训练失败 (exit code=1)，跳过评测。

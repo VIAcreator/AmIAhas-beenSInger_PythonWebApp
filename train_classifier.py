@@ -21,7 +21,8 @@ from typing import Optional
 # ==========================================================================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
-DATA_PATH = "data/labeled_samples.json"
+DATA_DIR = "data"
+DATA_PATH = os.path.join(DATA_DIR, "labeled_samples.json")
 OUTPUT_DIR = "models/content_classifier_lora"
 TEST_SIZE = 0.15                  # 测试集比例
 SEED = 42
@@ -148,7 +149,7 @@ def format_sample(s: dict) -> str:
 
 
 # ==========================================================================
-# 类别权重计算
+# 上采样平衡
 # ==========================================================================
 
 def balance_by_upsampling(train_samples: list[dict]) -> list[dict]:
@@ -188,16 +189,14 @@ def balance_by_upsampling(train_samples: list[dict]) -> list[dict]:
 # 训练
 # ==========================================================================
 
-def train(train_samples: list[dict], test_samples: list[dict]):
+def train(train_samples: list[dict]):
     """
-    QLoRA 微调主流程。
+    QLoRA 微调 + 保存。评测由 eval_classifier.py 独立完成。
     """
     from unsloth import FastLanguageModel, MLXTrainer, MLXTrainingConfig
-    from sklearn.metrics import accuracy_score, classification_report
-    import mlx_lm
 
     # --- 第1步：加载 4-bit 量化模型 ---
-    print("\n[1/6] 加载模型...")
+    print("\n[1/4] 加载模型...")
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=MODEL_NAME,
         max_seq_length=MAX_SEQ_LENGTH,
@@ -205,7 +204,7 @@ def train(train_samples: list[dict], test_samples: list[dict]):
     )
 
     # --- 第2步：添加 LoRA 适配器 ---
-    print("[2/6] 添加 LoRA 适配器...")
+    print("[2/4] 添加 LoRA 适配器...")
     model = FastLanguageModel.get_peft_model(
         model,
         r=LORA_R,
@@ -215,14 +214,11 @@ def train(train_samples: list[dict], test_samples: list[dict]):
         lora_dropout=0,
     )
 
-    # --- 第3步：格式化数据 ---
-    print("[3/6] 格式化训练数据...")
+    # --- 第3步：格式化 + 训练 ---
+    print("[3/4] 格式化 + 训练...")
     train_texts = [format_sample(s) for s in train_samples]
-    # MLXTrainer 接受 list[dict] 格式，每项需含 text 字段
     train_dataset = [{"text": t} for t in train_texts]
 
-    # --- 第4步：MLX 训练 ---
-    print("[4/6] 开始训练...")
     config = MLXTrainingConfig(
         per_device_train_batch_size=BATCH_SIZE,
         gradient_accumulation_steps=1,
@@ -244,51 +240,12 @@ def train(train_samples: list[dict], test_samples: list[dict]):
     )
     trainer.train()
 
-    # --- 第5步：评估 ---
-    print("\n[5/6] 评估测试集...")
-    predictions = []
-    true_labels = []
+    # --- 第4步：保存 ---
+    print("\n[4/4] 保存模型...")
+    model.save_lora_adapters(OUTPUT_DIR)
+    print(f"  已保存到 {OUTPUT_DIR}")
 
-    for sample in test_samples:
-        input_text = (
-            f"标题：{sample['title']}\n"
-            f"标签：{sample['tags']}\n"
-            f"分区：{sample.get('category', '')}\n"
-            f"版权：{sample.get('copyright', '')}"
-        )
-        prompt = (
-            f"### Instruction:\n{SYSTEM_PROMPT}\n\n"
-            f"### Input:\n{input_text}\n\n### Response:\n"
-        )
-
-        result = mlx_lm.generate(
-            model, tokenizer, prompt=prompt, max_tokens=10, verbose=False
-        )
-
-        # 从生成结果中提取第一个匹配的标签
-        pred = "other"
-        result_lower = result.lower()
-        for label in LABELS:
-            if label in result_lower:
-                pred = label
-                break
-        predictions.append(pred)
-        true_labels.append(sample["content_type"])
-
-    acc = accuracy_score(true_labels, predictions)
-    report = classification_report(true_labels, predictions, labels=LABELS, zero_division=0)
-
-    print(f"  准确率: {acc:.2%}")
-    print(report)
-
-    # --- 第6步：保存适配器 ---
-    print("[6/6] 保存模型...")
-    model.save_pretrained_gguf(OUTPUT_DIR, tokenizer)
-
-    # 保存评测报告
-    with open(os.path.join(OUTPUT_DIR, "eval_report.txt"), "w") as f:
-        f.write(f"Accuracy: {acc:.2%}\n\n")
-        f.write(report)
+    return model, tokenizer
 
 
 # ==========================================================================
@@ -325,15 +282,19 @@ def main():
     for label in LABELS:
         print(f"  {label:25s}: {dist.get(label, 0)}")
 
-    # 2. 划分训练/测试集
+    # 2. 划分训练/测试集（测试集用于独立评测脚本）
     train_samples, test_samples = stratified_split(samples, TEST_SIZE, SEED)
+    # 保存测试集供 eval_classifier.py 使用
+    with open(os.path.join(DATA_DIR, "test_split.json"), "w", encoding="utf-8") as f:
+        json.dump(test_samples, f, ensure_ascii=False, indent=2)
+    print(f"  测试集已保存: {len(test_samples)} 条 → data/test_split.json\n")
 
     # 3. 上采样平衡
     train_balanced = balance_by_upsampling(train_samples)
 
-    # 4. 训练
+    # 4. 训练 + 保存
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    train(train_balanced, test_samples)
+    train(train_balanced)
 
     print(f"\n完成！模型已保存到 {OUTPUT_DIR}")
 
