@@ -151,39 +151,50 @@ def format_sample(s: dict) -> str:
 # 类别权重计算
 # ==========================================================================
 
-def compute_class_weights(train_samples: list[dict]) -> dict[str, float]:
+def balance_by_upsampling(train_samples: list[dict]) -> list[dict]:
     """
-    根据训练集样本数计算反比权重，缓解类别不平衡。
+    上采样少数类，使各类样本数接近最大值，缓解类别不平衡。
 
-    公式: weight = total_samples / (n_classes × class_count)
-
-    输出: {"game_cover": 2.5, "vocaloid_original": 0.6, ...}
+    输入: 原始训练样本列表
+    输出: 上采样后的训练样本列表（顺序随机打乱）
     """
-    counter = Counter(s["content_type"] for s in train_samples)
-    total = len(train_samples)
-    n = len(LABELS)
-    weights = {}
+    by_label = {}
+    for s in train_samples:
+        by_label.setdefault(s["content_type"], []).append(s)
+
+    max_count = max(len(items) for items in by_label.values())
+    balanced = []
+
     for label in LABELS:
-        count = counter.get(label, 1)
-        weights[label] = total / (n * count)
-    print("\n类别权重:")
+        items = by_label.get(label, [])
+        if not items:
+            continue
+        # 复制直到数量接近 max_count
+        repeats = max_count // len(items)
+        remainder = max_count % len(items)
+        expanded = items * repeats + random.sample(items, remainder)
+        balanced.extend(expanded)
+
+    random.shuffle(balanced)
+
+    print("\n上采样平衡:")
     for label in LABELS:
-        print(f"  {label:25s}: {counter.get(label, 0):>3} 条 → 权重 {weights[label]:.2f}")
-    return weights
+        count = sum(1 for s in balanced if s["content_type"] == label)
+        print(f"  {label:25s}: {count:>3} 条")
+    return balanced
 
 
 # ==========================================================================
 # 训练
 # ==========================================================================
 
-def train(train_samples: list[dict], test_samples: list[dict],
-          class_weights: dict[str, float]):
+def train(train_samples: list[dict], test_samples: list[dict]):
     """
     QLoRA 微调主流程。
     """
     from unsloth import FastLanguageModel, MLXTrainer, MLXTrainingConfig
-    import numpy as np
     from sklearn.metrics import accuracy_score, classification_report
+    import mlx_lm
 
     # --- 第1步：加载 4-bit 量化模型 ---
     print("\n[1/6] 加载模型...")
@@ -250,16 +261,17 @@ def train(train_samples: list[dict], test_samples: list[dict],
             f"### Input:\n{input_text}\n\n### Response:\n"
         )
 
-        import mlx_lm
         result = mlx_lm.generate(
             model, tokenizer, prompt=prompt, max_tokens=10, verbose=False
         )
 
-        # 从生成结果中提取标签（最后一个有效标签）
+        # 从生成结果中提取第一个匹配的标签
         pred = "other"
+        result_lower = result.lower()
         for label in LABELS:
-            if label in result.lower():
+            if label in result_lower:
                 pred = label
+                break
         predictions.append(pred)
         true_labels.append(sample["content_type"])
 
@@ -316,12 +328,12 @@ def main():
     # 2. 划分训练/测试集
     train_samples, test_samples = stratified_split(samples, TEST_SIZE, SEED)
 
-    # 3. 计算类别权重
-    class_weights = compute_class_weights(train_samples)
+    # 3. 上采样平衡
+    train_balanced = balance_by_upsampling(train_samples)
 
     # 4. 训练
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    train(train_samples, test_samples, class_weights)
+    train(train_balanced, test_samples)
 
     print(f"\n完成！模型已保存到 {OUTPUT_DIR}")
 
