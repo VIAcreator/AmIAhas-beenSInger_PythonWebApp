@@ -22,28 +22,48 @@ app = create_app()
 # 数据生命周期管理
 # ==========================================================================
 
+# 服务端缓存：{session_id: {"df_raw": DataFrame, "df_clean": DataFrame, "df_songs": DataFrame}}
+# 简单字典实现，生产环境应换 Redis
+_data_store = {}
+
+
+def _get_store():
+    """获取当前 session 对应的数据存储。"""
+    sid = session.get("data_id")
+    if not sid or sid not in _data_store:
+        return None
+    return _data_store[sid]
+
+
 def get_raw_df():
-    """从 g 对象获取当前原始 DataFrame。若无则返回 None。"""
-    return g.get("df_raw")
+    store = _get_store()
+    return store["df_raw"] if store else None
 
 
 def get_clean_df():
-    """从 g 对象获取清洗后的视频粒度 DataFrame。"""
-    return g.get("df_clean")
+    store = _get_store()
+    return store.get("df_clean") if store else None
 
 
 def get_songs_df():
-    """从 g 对象获取歌曲粒度 DataFrame。"""
-    return g.get("df_songs")
+    store = _get_store()
+    return store.get("df_songs") if store else None
 
 
 def set_data(raw_df, clean_df=None, songs_df=None):
-    """在 g 对象中存储 DataFrame。生命周期限于单次请求。"""
-    g.df_raw = raw_df
+    """将 DataFrame 存入服务端缓存。"""
+    import uuid
+    sid = session.get("data_id")
+    if not sid:
+        sid = str(uuid.uuid4())[:8]
+        session["data_id"] = sid
+    if sid not in _data_store:
+        _data_store[sid] = {}
+    _data_store[sid]["df_raw"] = raw_df
     if clean_df is not None:
-        g.df_clean = clean_df
+        _data_store[sid]["df_clean"] = clean_df
     if songs_df is not None:
-        g.df_songs = songs_df
+        _data_store[sid]["df_songs"] = songs_df
 
 
 # ==========================================================================
@@ -52,17 +72,17 @@ def set_data(raw_df, clean_df=None, songs_df=None):
 
 @app.route("/")
 def index():
-    return "<h1>IA Music Analyzer</h1><p>首页 — 待开发</p>"
+    return render_template("index.html", page_title="数据加载")
 
 
 @app.route("/analysis")
 def analysis():
-    return "<h1>数据分析</h1><p>分析页 — 待开发</p>"
+    return render_template("analysis.html", page_title="数据分析")
 
 
 @app.route("/chat")
 def chat():
-    return "<h1>AI 问答</h1><p>问答页 — 待开发</p>"
+    return render_template("chat.html", page_title="AI 问答")
 
 
 # ==========================================================================
@@ -73,14 +93,14 @@ def chat():
 def upload():
     """文件上传 API。"""
     from modules.file_reader import handle_upload
-    return handle_upload(request, get_clean_df, set_data)
+    return handle_upload(request, get_raw_df, set_data)
 
 
 @app.route("/api/preview", methods=["POST"])
 def api_preview():
     """数据预览 API。"""
     from modules.file_reader import handle_preview
-    return handle_preview(request, get_clean_df)
+    return handle_preview(request, get_raw_df)
 
 
 @app.route("/api/clean", methods=["POST"])
@@ -140,4 +160,4 @@ if __name__ == "__main__":
     print("启动 IA Music Analyzer...")
     print(f"内置数据: {BUILTIN_CSV}")
     print(f"DeepSeek:  {'已配置' if __import__('config').DEEPSEEK_API_KEY else '未配置'}")
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5080)

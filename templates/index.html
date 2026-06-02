@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}数据加载 - IA Analyzer{% endblock %}
+{% block page_title %}数据加载{% endblock %}
+
+{% block content %}
+<div class="upload-zone" onclick="document.getElementById('file-input').click()">
+    <i class="bi bi-cloud-upload"></i>
+    <div style="font-size:1.05rem;font-weight:600">点击上传数据文件</div>
+    <div class="hint">支持 CSV / Excel (.xlsx, .xls) / JSON</div>
+    <input type="file" id="file-input" hidden
+           accept=".csv,.xlsx,.xls,.json"
+           onchange="handleUpload(this.files[0])">
+</div>
+
+<div style="text-align:center;margin-top:14px;color:#a0a8b8">
+    或 <a href="#" onclick="loadBuiltin()" style="color:var(--primary)">加载内置数据集</a>
+</div>
+
+<div class="table-preview mt-4" id="preview-area" style="display:none">
+    <div style="padding:14px 20px;border-bottom:1px solid #eef0f4;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-weight:600">数据预览（前20行）</span>
+        <a href="/analysis" class="btn btn-sm btn-primary">前往分析 →</a>
+    </div>
+    <div class="table-wrapper" id="preview-table"></div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+function updateStats(data) {
+    document.getElementById('stat-cards').style.display = 'grid';
+    document.getElementById('stat-rows').innerText = data.row_count.toLocaleString();
+    document.getElementById('stat-cols').innerText = data.col_count;
+    document.getElementById('stat-daterange').innerText = data.date_range || '-';
+    document.getElementById('stat-songs').innerText = data.song_count || '-';
+    document.getElementById('status-dot').className = 'status-dot loaded';
+    document.getElementById('status-text').innerText = '已加载数据';
+    document.getElementById('topbar-stat').innerText =
+        data.row_count.toLocaleString() + ' 条 · ' + data.col_count + ' 列';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}AI 问答 - IA Analyzer{% endblock %}
+{% block page_title %}AI 问答{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="chart-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-bubble assistant">
+                    你好，我是 IA 数据分析助手。你可以问我关于 IA 音乐作品的任何问题，比如：<br><br>
+                    "IA最火的10首歌是什么？"<br>
+                    "Orangestar 还在写IA曲吗？"<br>
+                    "IA的新曲是不是越来越少了？"
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="chat-input"
+                           placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')sendMessage()">
+                    <button class="btn btn-primary" onclick="sendMessage()">
+                        <i class="bi bi-send"></i> 发送
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="chart-container" style="min-height:auto;font-size:0.85rem">
+            <h6 class="mb-3">快速提问</h6>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-secondary btn-sm text-start" onclick="quickAsk('IA最火的10首歌是什么？')">IA最火的10首歌？</button>
+                <button class="btn btn-outline-secondary btn-sm text-start" onclick="quickAsk('IA的新曲越来越少了？')">IA新曲趋势</button>
+                <button class="btn btn-outline-secondary btn-sm text-start" onclick="quickAsk('原创和翻唱哪个更火？')">原创vs翻唱</button>
+                <button class="btn btn-outline-secondary btn-sm text-start" onclick="quickAsk('Orangestar还在写IA曲吗？')">Orangestar活跃度</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const container = document.getElementById('chat-messages');
+    container.innerHTML += `<div class="chat-bubble user">${msg}</div>`;
+    container.innerHTML += `<div class="chat-bubble assistant">AI 模块尚未接入，请等待后续开发。</div>`;
+    container.scrollTop = container.scrollHeight;
+    input.value = '';
+}
+
+function quickAsk(q) {
+    document.getElementById('chat-input').value = q;
+    sendMessage();
+}
+</script>
+{% endblock %}
