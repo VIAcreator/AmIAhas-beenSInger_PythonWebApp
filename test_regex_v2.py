@@ -163,8 +163,15 @@ def classify(title, tags, category):
 
     music_signal = has_vocaloid_tag or has_singer_tag or has_ia_exact
     any_ia = has_ia_loose or has_vocaloid_tag or has_singer_tag
-    # tags 只有 IA 但没有 VOCALOID/歌姬 → IA 可能是 AI 的笔误或产品型号
     only_ia_signal = has_ia_exact and not has_vocaloid_tag and not has_singer_tag
+
+    # 分区信号：ia_music 几乎全部在音乐分区内（100% 标注数据覆盖）
+    MUSIC_CATEGORIES = [
+        "VOCALOID·UTAU", "翻唱", "演奏", "音乐综合",
+        "音游", "MV", "音MAD", "原创音乐", "音乐现场", "音乐教学",
+    ]
+    cat_upper = (category or "").upper()
+    in_music_category = any(mc.upper() in cat_upper for mc in MUSIC_CATEGORIES)
 
     strong_title_music = bool(
         re.search(r'feat\.?\s*IA', title, re.I) or
@@ -328,8 +335,19 @@ def test_labeled_samples():
     suspicious_total = 0
     errors = Counter()
 
+    MUSIC_CATEGORIES = [
+        "VOCALOID·UTAU", "翻唱", "演奏", "音乐综合",
+        "音游", "MV", "音MAD", "原创音乐", "音乐现场", "音乐教学",
+    ]
+
     for s in samples:
         result = classify(s["title"], s["tags"], s["category"])
+        # 后处理：ia_music 但不在音乐分区 → 标记可疑
+        if result["content_type"] == "ia_music" and not result["suspicious"]:
+            cat = (s.get("category") or "").upper()
+            if not any(mc.upper() in cat for mc in MUSIC_CATEGORIES):
+                result["suspicious"] = True
+                result["suspicious_reason"] = f"分类为ia_music但分区'{s.get('category','')}'非音乐分区，需LLM确认"
         if result["content_type"] == s["expected"]:
             correct += 1
         else:
@@ -389,6 +407,27 @@ def test_labeled_samples():
             if subset:
                 pd.DataFrame(subset).to_csv(f"data/{fname}.csv", index=False, encoding="utf-8-sig")
                 print(f"  导出: data/{fname}.csv ({len(subset)} 条)")
+
+    # 导出所有被标记可疑的条目
+    suspicious_all = []
+    for s in samples:
+        result = classify(s["title"], s["tags"], s["category"])
+        if result["content_type"] == "ia_music" and not result["suspicious"]:
+            cat = (s.get("category") or "").upper()
+            if not any(mc.upper() in cat for mc in MUSIC_CATEGORIES):
+                result["suspicious"] = True
+                result["suspicious_reason"] = f"分类为ia_music但分区'{s.get('category','')}'非音乐分区，需LLM确认"
+        if result["suspicious"]:
+            suspicious_all.append({
+                "title": s["title"], "tags": s["tags"], "category": s["category"],
+                "expected": s["expected"], "predicted": result["content_type"],
+                "rule": result["rule"], "is_game": result["is_game"],
+                "is_cover": result["is_cover"],
+                "suspicious_reason": result["suspicious_reason"],
+            })
+    if suspicious_all:
+        pd.DataFrame(suspicious_all).to_csv("data/all_suspicious.csv", index=False, encoding="utf-8-sig")
+        print(f"  导出: data/all_suspicious.csv ({len(suspicious_all)} 条)")
 
 
 # ==========================================================================
