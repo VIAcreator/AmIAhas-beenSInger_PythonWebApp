@@ -232,6 +232,15 @@ def classify(title, tags, category):
 
     # 5. 有音乐信号但标题没有【IA】格式 → 可能是盘点/周边，标记可疑
     if music_signal and no_ia_format:
+        # 5a. ONLY IA tag（IA可能是AI笔误/产品型号）→ 可疑
+        if only_ia_signal:
+            result.update({
+                "content_type": "ia_music", "rule": "music_only_ia",
+                "suspicious": True,
+                "suspicious_reason": f"tags仅有'IA'但无VOCALOID/歌姬标签，IA可能是笔误或非虚拟歌姬(clean='{clean_title[:30]}')，需LLM确认"
+            })
+            return result
+        # 5b. 标题奇怪 → 可疑
         if weird_title:
             result.update({
                 "content_type": "ia_music", "rule": "music_weird_title",
@@ -239,7 +248,7 @@ def classify(title, tags, category):
                 "suspicious_reason": f"tags有IA/VOCALOID但标题格式非标准歌曲(clean='{clean_title[:30]}')，需LLM确认"
             })
             return result
-        # tags有音乐信号，标题正常 → 高置信度
+        # 5c. tags有音乐信号+标题正常 → 高置信度
         result.update({"content_type": "ia_music", "rule": "music_signal"})
         return result
 
