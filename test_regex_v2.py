@@ -317,14 +317,32 @@ def test_labeled_samples():
         if not os.path.exists(path):
             print(f"  跳过: {path} (不存在)")
             continue
-        df = pd.read_csv(path, on_bad_lines='skip', encoding='utf-8')
-        for _, row in df.iterrows():
-            samples.append({
-                "title":    str(row.get("title", "")),
-                "tags":     str(row.get("tags", "")),
-                "category": str(row.get("category", "")),
-                "expected": label,
-            })
+        # 使用 csv.reader 逐行解析，绕过列数不一致的问题
+        import csv
+        with open(path, encoding='utf-8') as fh:
+            reader = csv.reader(fh)
+            header = next(reader)
+            # 找到 title, tags, category 的列索引
+            try:
+                ti = header.index("title")
+                gi = header.index("tags")
+                ci = header.index("category")
+                li = header.index("content_type") if "content_type" in header else -1
+            except ValueError:
+                continue
+            for row in reader:
+                if len(row) <= max(ti, gi, ci):
+                    continue
+                if li >= 0 and li < len(row):
+                    expected = str(row[li]).strip()
+                else:
+                    expected = label
+                samples.append({
+                    "title":    str(row[ti]) if ti < len(row) else "",
+                    "tags":     str(row[gi]) if gi < len(row) else "",
+                    "category": str(row[ci]) if ci < len(row) else "",
+                    "expected": expected,
+                })
 
     if not samples:
         print("  无标注数据，跳过测试")
