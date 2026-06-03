@@ -104,8 +104,13 @@ def handle_clean(raw_df, set_data_fn):
 
     # 步骤2：内容分类
     df = classify_all(df)
-    report["content_type"] = df["content_type"].value_counts().to_dict()
+    report["content_type_regex"] = df["content_type"].value_counts().to_dict()
     report["suspicious_count"] = int(df["suspicious"].sum())
+
+    # 步骤2b：LLM 验证可疑条目（DeepSeek 或 QLoRA，用户可选）
+    from modules.llm_verifier import verify_suspicious
+    df = verify_suspicious(df)
+    report["content_type_final"] = df["content_type"].value_counts().to_dict()
     report["is_game_count"] = int(df["is_game"].sum())
     report["is_cover_count"] = int(df["is_cover"].sum())
 
