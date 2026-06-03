@@ -3,7 +3,6 @@
 步骤: 去重 → 分类 → 标题解析 → 通用清洗 → 衍生特征 → 过滤 → 歌曲聚合
 """
 
-import re
 import pandas as pd
 from datetime import datetime
 from flask import jsonify
@@ -36,116 +35,10 @@ def deduplicate(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
 
 
 # ==========================================================================
-# 步骤2：内容分类（正则 + LLM 兜底）
+# 步骤2：内容分类（正则，QLoRA 后期替换）
 # ==========================================================================
 
-# 共享分类定义（正则和 LLM 使用同一份，见 CLASSIFICATION_CONFIG）
-CONTENT_TYPES = ["game_cover", "vocaloid_original", "vocaloid_cover", "irrelevant", "other"]
-
-CLASSIFICATION_CONFIG = {
-    "game_cover": (
-        "音游曲翻唱/相关。标题或tags中出现音游名称（PJSK/プロセカ/BangDream/バンドリ/"
-        "Phigros/Arcaea/CHUNITHM/maimai/osu!/D4DJ/太鼓达人/Muse Dash等）"
-    ),
-    "vocaloid_original": (
-        "VOCALOID/CeVIO 引擎合成的 IA 原创歌曲。标题含'オリジナル''原创曲''Original'"
-        "等原创标记，或标题含【IA】+歌名格式且无翻唱标记"
-    ),
-    "vocaloid_cover": (
-        "IA（作为 VOCALOID 歌姬）翻唱别人的歌曲。标题或tags含'Cover''カバー'"
-        "'翻唱''歌ってみた'等翻唱标记"
-    ),
-    "irrelevant": (
-        "与虚拟歌姬 IA 完全无关。游戏实况、军事/飞机型号(IA58)、AI生成非IA歌曲、"
-        "管弦乐演奏(无IA)、标题含IA但实为其他含义"
-    ),
-    "other": (
-        "与虚拟歌姬 IA 相关但非歌曲投稿。语调教、演唱会录像、科普教学/P主人物志、"
-        "猜歌比赛、MMD舞蹈、榜单盘点、声库评测、VOICEROID剧场、纪录片"
-    ),
-}
-
-# ---- 正则关键词 ----
-
-GAME_KEYWORDS = [
-    "PJSK", "プロセカ", "Project Sekai", "世界计划",
-    "BangDream", "バンドリ", "BanG Dream", "少女乐团派对",
-    "Phigros", "Arcaea", "Deemo", "Cytus", "Cytus II",
-    "CHUNITHM", "チュウニズム", "中二节奏",
-    "maimai", "舞萌", "osu!",
-    "D4DJ", "ラブライブ", "LoveLive", "偶像大师", "アイマス",
-    "太鼓の達人", "太鼓达人", "Muse Dash", "VOEZ",
-    "プロジェクトセカイ",
-]
-
-# 高频音乐 signal tags（出现这些 tag 说明确实是 IA 音乐相关，加强原创判断置信度）
-MUSIC_SIGNAL_TAGS = [
-    "VOCALOID", "VOCALOID殿堂入り", "VOCALOID3", "vocaloid",
-    "CeVIO", "CeVIO AI", "UTAU", "ボカロ", "ボーカロイド",
-    "初音ミク", "GUMI", "鏡音リン", "鏡音レン", "巡音ルカ",
-    "結月ゆかり", "MEIKO", "KAITO", "MAYU", "IA ROCKS",
-    "IAオリジナル曲", "オリジナル曲", "VOCAROCK", "V家",
-    "術力口", "术力口", "虚拟歌姬", "虚拟歌手",
-]
-
-
-def classify_with_regex(title: str, tags: str, is_reupload: bool) -> str | None:
-    """
-    正则规则分类。能确定的直接返回，不确定的返回 None 交给 LLM。
-
-    输入:
-        title:         str  — 视频/分P标题
-        tags:          str  — 逗号分隔的标签
-        is_reupload:   bool — 标题解析后的是否搬运标记（仅作参考，不单独成类）
-
-    输出:
-        str | None  — CONTENT_TYPES 之一，或 None（正则不确定，需 LLM 分类）
-
-    优先级: game_cover > vocaloid_cover > vocaloid_original > None
-    """
-    title_upper = title.upper()
-    tags_upper = tags.upper()
-
-    # 1. 音游检测（title 或 tags 命中）
-    for kw in GAME_KEYWORDS:
-        if kw.upper() in title_upper or kw.upper() in tags_upper:
-            return "game_cover"
-
-    # 2. 翻唱检测（title 或 tags 命中 —— 改进2：同时检查 tags）
-    cover_pattern = r"カバー|Cover|翻唱|歌って[み見]た"
-    if re.search(cover_pattern, title) or re.search(cover_pattern, tags):
-        return "vocaloid_cover"
-
-    # 3. 原创检测（title 明确标注）
-    if re.search(r"オリジナル|原创曲|原创[曲PV]|Original", title):
-        return "vocaloid_original"
-
-    # 4. 反向验证（改进3）: title 没明确标注，但 tags 中有音乐信号 → 很可能是原创
-    for sig in MUSIC_SIGNAL_TAGS:
-        if sig.upper() in tags_upper:
-            return "vocaloid_original"
-
-    # 5. 正则无法确定 → 交给 LLM
-    return None
-
-
-def classify_all(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    对 DataFrame 逐行分类：先用正则，正则不确定的标记为 pending。
-    调用方（handle_clean）后续用 LLM 批量处理 pending 行。
-    """
-    df = df.copy()
-    df["content_type"] = df.apply(
-        lambda row: classify_with_regex(
-            row["title"], row["tags"], row.get("is_reupload", False)
-        ),
-        axis=1,
-    )
-    # 正则不确定的标记为 pending
-    df["content_type"] = df["content_type"].fillna("pending")
-    regex_done = (df["content_type"] != "pending").sum()
-    print(f"  正则分类: {regex_done}/{len(df)} 条 ({regex_done/len(df)*100:.0f}%)")
-    return df
+from modules.content_classifier import classify_all, CONTENT_TYPES, CLASSIFICATION_CONFIG
 
 
 # ==========================================================================
@@ -212,6 +105,9 @@ def handle_clean(raw_df, set_data_fn):
     # 步骤2：内容分类
     df = classify_all(df)
     report["content_type"] = df["content_type"].value_counts().to_dict()
+    report["suspicious_count"] = int(df["suspicious"].sum())
+    report["is_game_count"] = int(df["is_game"].sum())
+    report["is_cover_count"] = int(df["is_cover"].sum())
 
     # 步骤3：标题解析
     df = parse_titles(df)
