@@ -1,0 +1,111 @@
+bvid,page,title,author,tags,category,play_count,regex_content_type,regex_is_game,regex_is_cover,regex_rule,suspicious,suspicious_reason
+BV1ph4y1U73V,1,【语调教｜跨语种】一百块还是饺子,孙鸣阳-青岛超银,"VOCALOID,初音未来,冰山清辉,镜音铃,镜音连,IA,虚拟歌手,歌爱雪,vflower,术力口",VOCALOID·UTAU,279885,ia_related,False,False,nonsong_mixed:语调教,True,标题含'语调教'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1uk4y1P74c,1,【V家/术曲】全球音乐人气排行榜TOP100-51,小小佐仓千代,"镜音,VOCALOID,初音未来,巡音,GUMI,洛天依,IA,V flower,术曲,虚拟歌手分享官,虚拟之声创作计划·2023第三期",VOCALOID·UTAU,260239,ia_related,False,False,nonsong_mixed:排行,True,标题含'排行'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Qs41127Pp,1,NicoNico超Party 2015~VOCALOID/UTAU~部分,VOCALOID,"VOCALOID,GUMI,神威がくぽ,初音ミク,巡音ルカ,NICONICO超PARTY,重音テト,鏡音リン・レン,ニコニコ超会议,IA",VOCALOID·UTAU,227183,ia_related,False,False,nonsong_mixed:超Party,True,标题含'超Party'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1d44y1F74e,1,【语调教｜跨语种】歌   姬   超    甜   自   我   介   绍,孙鸣阳-青岛超银,"VOCALOID,初音未来,镜音铃,虚拟歌姬,镜音连,IA,歌爱雪,语调教,糖果超甜,术力口",VOCALOID·UTAU,210679,ia_related,False,False,nonsong_mixed:语调教,True,标题含'语调教'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Fx411T7wa,1, NicoNico超Party3~VOCALOID/UTAU~部分,VOCALOID,"VOCALOID,GUMI,神威がくぽ,镜音レン,镜音LEN,巡音LUKA,ニコニコ超会议,重音TETO,初音MIKU,镜音RIN,IA",VOCALOID·UTAU,150895,ia_related,False,False,nonsong_mixed:超Party,True,标题含'超Party'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV11v421i7HU,1,【V家原创动画】为什么要唱《春日影》？！复刻经典！【2024虚拟歌手贺岁纪单品】,久远丶酱,"VOCALOID,镜音铃,巡音流歌,IA,虚拟歌手,可不,小春六花,春日影,2024虚拟歌手贺岁纪,春日影翻唱",VOCALOID·UTAU,141461,ia_related,False,True,nonsong_mixed:贺岁,True,标题含'贺岁'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Vs411D71Z,1,【2015.4.5为止的】目前超过100万再生传说VOCALOID曲【217曲】,KitanoNani,"镜音レン,结月缘,VOCALOID,初音MIKU,IA,MEIKO,GUMI,KAITO,VY1,神威がくぽ,VY2,镜音RIN",VOCALOID·UTAU,129317,ia_related,False,False,nonsong_mixed:超过,True,标题含'超过'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1LV411T7vQ,1,【VOCALOID 8人/语调教】八种声音说不爱我了是吧6,司机信号不好,"初音ミク,VOCALOID,初音未来,GUMI,巡音流歌,IA,歌爱雪,语调教,v_flower,2023虚拟歌手创作赛",VOCALOID·UTAU,109686,ia_related,False,False,nonsong_mixed:语调教,True,标题含'语调教'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1PP41117tW,1,【V家小课堂】|没听过IA的阳炎曲，都不是合格的术术人！,X11潮玩集合,"V家,VOCALOID,虚拟偶像,虚拟歌姬,阳炎,IA,自然之敌P,阳炎project",VOCALOID·UTAU,107551,ia_related,False,False,nonsong_mixed:小课堂,True,标题含'小课堂'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Jb411w7Rq,1,NicoNico超Party 2018~VOCALOID/UTAU~部分,VOCALOID,"NicoNico超Party 2018,IA,初音ミク,GUMI,巡音ルカ,鏡音リン,MEIKO,镜音レン,VOCALOID,KAITO",VOCALOID·UTAU,102915,ia_related,False,False,nonsong_mixed:超Party,True,标题含'超Party'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1E1ULYMEhs,1,【术力口】但是只听几个音猜术曲！,A卡识TT,"VOCALOID,初音未来,镜音双子,IA,Gumi,重音teto,匹诺曹p,VFlower,猜术曲,术力口（ボカロ）",VOCALOID·UTAU,90361,ia_related,False,False,nonsong_mixed:猜术曲,True,标题含'猜术曲'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1bh4y1c77T,1,【P主人物志】你所不知道的kemu/堀江晶太（上）,剑鱼818,"GUMI,P主人物志,VOCALOID,IA,六兆年と一夜物語,堀江晶太,kemu,初音ミク",VOCALOID·UTAU,73124,ia_related,False,False,nonsong_mixed:人物志,True,标题含'人物志'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1kS11B1EzY,1,盘点V家歌姬们的第一首周刊冠军曲,冰水L,"GUMI,镜音铃,V家,IA,虚拟歌姬,术力口,KAITO,初音未来,VOCALOID,镜音连",VOCALOID·UTAU,72965,ia_related,False,False,nonsong_mixed:盘点,True,标题含'盘点'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Hb411k7xt,1,niconico超party2017,洛奇亚X,"弱音,ia,镜音双子,niconico,VOCALOIDCHINA,MIKU,耳朵怀孕,现场,巡音",VOCALOID·UTAU,61205,ia_related,False,False,nonsong_mixed:超Party,True,标题含'超Party'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV13s411B7Ye,1,【MIKU EXPO】 IA演唱会,账号已注销,"V家,IA,VOCALOID",VOCALOID·UTAU,60613,ia_related,False,False,nonsong_mixed:演唱会,True,标题含'演唱会'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1hx411F7oA,1,【手描PV】「Ib」,FNGO,"泪腺崩坏,手描きPV,GARRY,IA,VOCALOID,AGAIN,IB恐怖美术馆,三人结局,调教好评,遗忘肖像,催泪注意,IB",VOCALOID·UTAU,59754,ia_related,False,False,nonsong_mixed:手描,True,标题含'手描'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1y2CYBGEhJ,1,来和绁星灯一起跳新宝岛罢~,源Kelvin,"东北切蒲英,俊达萌,弦卷真纪,ONE,MMD,IA,绁星灯,琴叶姐妹,结月缘,四国玫碳",VOCALOID·UTAU,59534,ia_related,False,False,nonsong_mixed:新宝岛,True,标题含'新宝岛'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1EC4y167aS,1,【P主人物志】你所不知道的じん与阳炎Project（上）,剑鱼818,"じん,阳炎,阳炎眩乱,IA,P主人物志,初音ミク,VOCALOID,阳炎project,自然之敌P",VOCALOID·UTAU,51838,ia_related,False,False,nonsong_mixed:人物志,True,标题含'人物志'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1YwYkeEEiR,1,术 力 口 猜 歌 （像素版）——第二期,捏捏怪電波Zzz,"IA,像素,亚北音留,2024虚拟歌手创作赛,术力口猜歌,Synthesizer V,重音teto,wowaka,初音ミク,虚拟歌手分享官,VOCALOID",VOCALOID·UTAU,49650,ia_related,False,False,nonsong_mixed:第二期,True,标题含'第二期'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1qYWDedEDd,1,术 力 口 猜 歌 （像素版）——第三期,捏捏怪電波Zzz,"术力口猜歌,IA,deco,重音teto,2024虚拟歌手创作赛,虚拟歌手分享官,术力口,初音ミク,匹诺曹,wowaka,VOCALOID",VOCALOID·UTAU,47813,ia_related,False,False,nonsong_mixed:第三期,True,标题含'第三期'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1RmsSenE4Y,1,【术力口P主推荐—— samfree 篇】,爰翕,"VOCALOID,章鱼luka,samfree,lily,镜音铃,IA,音乐,初音未来,巡音流歌,gumi",VOCALOID·UTAU,41225,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV15u4y1Q76M,1,【语调教｜初音未来831】祝你生日快乐,孙鸣阳-青岛超银,"gumi,虚拟歌手,镜音铃,初音未来,2023虚拟歌手创作赛,IA,术力口,歌爱雪,初音未来16周年,镜音连,vflower",VOCALOID·UTAU,38101,ia_related,False,False,nonsong_mixed:语调教,True,标题含'语调教'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1JRHSzLEuJ,1,「阳炎Project」发生了什么？Vocaloid最大多媒体企划的历史【AI中字】,苍旻白轮,"カゲロウデイズの日,阳炎project,VOCALOID,kagerouproject,IA,初音ミク",VOCALOID·UTAU,33805,ia_related,False,False,nonsong_mixed:发生了什么,True,标题含'发生了什么'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1JLvxepEkY,1,【术力口P主推荐—— r-906 篇】,爰翕,"VOCALOID,可不,POPY,初音未来,r-906,ROSE,IA",VOCALOID·UTAU,32322,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1UY41187CF,1,VOCALOID+α与中之人的歌声比较【全13人】,bili_51865469452,"镜音rin,VOCALOID,GUMI,重音teto,IA,巡音luka,可不,UTAU,镜音len,初音MIKU",VOCALOID·UTAU,31628,ia_related,False,False,nonsong_mixed:比较,True,标题含'比较'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV15x411r7jj,1,【速览·科普】五分钟带你盘点已出道的世界V家全体歌手（2004~2016）,家藏万卷book,"洛天依,VOCALOID,世界V家,镜音,初音,kaito,GUMI,IA,巡音LUKA,MEIKO",VOCALOID·UTAU,30255,ia_related,False,False,nonsong_mixed:科普,True,标题含'科普'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1fKewejE99,1,【术力口P主推荐——  梅とら 篇】,爰翕,"IA,VOCALOID,GUMI,巡音流歌,梅とら,初音ミク,镜音铃",VOCALOID·UTAU,29939,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1QmYYeRE9j,1,【术力口P主推荐—— OrangeStar（蜜柑星） 篇】,爰翕,"初音ミク,VOCALOID,IA,orangestar,初音未来",VOCALOID·UTAU,28831,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1DEepeZE7o,1,【P主人物志】在每一个8月15日的午后，他在阳炎散去的天空下眺望繁星【じん与阳炎Project（下）】,剑鱼818,"阳炎Project,目隐都市的演绎者,阳炎眩乱,じん,目隐重载,IA,初音未来,阳炎计划,阳炎",VOCALOID·UTAU,24143,ia_related,False,False,nonsong_mixed:人物志,True,标题含'人物志'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1E8vaeKEj7,1,【术力口P主推荐—— *Luna 篇】,爰翕,"Luna,IA,flower,Rana,vocaloid,音街鳗,猫村いろは,初音未来",VOCALOID·UTAU,23899,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Jv4y187Bs,1,【V家手书】《孤独摇滚》ED「Distortion!!」,奶油味儿的蘑菇w,"ED,初音ミク,动画,孤独摇滚,手书,GUMI,鏡音リン,初音未来39感谢日,VOCALOID,虚拟之声创作计划·2023第一期,IA",VOCALOID·UTAU,23743,ia_related,False,False,nonsong_mixed:手书,True,标题含'手书'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1CseteFEAt,1,【术力口P主推荐—— じん（自然の敵P） 篇】,爰翕,"IA,VOCALOID,2024虚拟歌手创作赛,自然の敵P,阳炎project,自然之敌,じん,虚拟歌手分享官,初音ミク",VOCALOID·UTAU,23537,ia_related,False,False,nonsong_mixed:推荐,True,标题含'推荐'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1hx411z7S1,1,【世界VOCALOID】VOCALOID全明星人设、声音汇总盘点（2004-2017年4月）,家藏万卷book,"镜音,GUMI,MEIKO,乐正龙牙,乐正绫,VOCALOID,言和,初音,KAITO,星尘,IA,VY1",VOCALOID·UTAU,22734,ia_related,False,False,nonsong_mixed:盘点,True,标题含'盘点'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1zw5E6RELS,1,拜空奏列车的来了,孽虚烟呀,"空奏列车,IA,中国兔子,四国玫碳,直播切片,东北伊达子",单机游戏,81,ia_related,False,False,nonsong_mixed:来了,True,标题含'来了'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1W5dPBREET,1,HIPPI - 黄金海岸【绘画过程】,松江CC,"虚拟歌手,虚拟歌姬,绘画过程,板绘,HIPPI,IA小天使OFFICIAL",绘画,352,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV19PRPBBEdz,1,[maimai|Fanmade] POLꓘAMAИIA AP,山支Mayotta,"POLꓘAMAИIA,自制谱,MAIMAI,かめりあ,ななひら,音乐游戏,AP",音游,530,ia_related,True,False,fallback,True,无任何明确信号，默认归为ia_related
+BV1UaRGBHEpp,1,珍奇生物小OИE模拟兽发现！——MII新闻,孽虚烟呀,"朋友收集,IA,ONE,可爱,OИE,琴叶茜,沙雕",单机游戏,2139,ia_related,False,False,nonsong_mixed:新闻,True,标题含'新闻'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Ei9aB4EBQ,1,【绘画过程】【ia】“泣かないで、まだ行かないで。”🏖🕊,Yoshino香草折耳根,"画师热点情报站,明日方舟,绘画过程,同人,术力口,绘画,可爱,VOCALOID,ia,orangestar",绘画,995,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Tj9rBwECw,1,家里蹲小缘的忧愁【VOICEROID剧场】*もりもり,猫猫抱玩偶,"もりもり,voiceroid,结月缘,IA",配音,983,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1wQo6BFECi,1,【WOTA艺】未完成タイムリミッター,一把小刀w,"Orangestar,IA,闲打,未完成タイムリミッター,WOTA艺,WOTA,宅舞,练习",宅舞,365,ia_related,False,False,nonsong_mixed:WOTA艺,True,标题含'WOTA艺'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV146oSBtEHM,1,IA、温暖魔法——【绘画过程】,松江CC,"IA小天使OFFICIAL,IA,画师热点情报站,术力口,虚拟歌姬,绘画过程,板绘,VOCALOID",绘画,127,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1MnoDBwEFf,1,【高松灯cos】雨声残响-世界企鹅日快乐-“因为我也不过是人啊 我也想要去与之抗衡”,硫酸拌面捏,"IA,雨声,用宅舞记录这个春天,宅舞,高松灯,Cosplay,cos,雨声残响,舞蹈翻跳",宅舞,443,ia_related,False,False,nonsong_mixed:COS,True,标题含'COS'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1HDoLBXEN3,1,日常观测『陆桥』【熟肉】【VOICEROID剧场】,VOICEROID吧,"绁星灯,VOICEROID剧场,OИE,结月缘,IA,熟肉,日语",同人·手书,1058,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1GDoDB6EFV,1,N站术力口神话曲抢麦,梧麒麒,"术力口,vflower,神话曲,IA,巡音流歌,镜音铃,GUMI,日本,初音未来,音乐",音游,1249,ia_related,False,False,nonsong_mixed:神话曲,True,标题含'神话曲'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1vadmBwE2e,1,谁能取得第一？N站术力口神话曲月榜第一期,一发导弹-SFS_导弹P,"必剪创作,术力口,IA,神话,DECO*27,VOCALOID,初音ミク",日常,2777,ia_related,False,False,nonsong_mixed:神话曲,True,标题含'神话曲'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1hmdJB7Evt,1,结月缘摄影会【VOICEROID剧场】*猫龍,猫猫抱玩偶,"猫龍,绁星灯,voiceroid,弦卷真纪,结月缘,IA",配音,1117,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1W4dYBuEM1,1,【PV练习】Silly Terror,Eyday_,"シリーテラー (feat. IA),日语,自制,二阶堂希罗,PV,又看一集动画创作大赛,魔裁,音乐",MAD·AMV,1933,ia_related,False,False,fallback,True,无任何明确信号，默认归为ia_related
+BV1ciDsBYEdP,1,群靑 | HIPPI - 超次元绘画魔法——,松江CC,"画师热点情报站,IA小天使OFFICIAL,HIPPI,虚拟歌手,虚拟歌姬,绘画过程,OC",绘画,234,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV149DEBdEg2,1,【WOTA艺】ノウナイディスコ——r-906/IA,猫猫可爱滴捏,"r-906,IA,WOTA艺,宅舞",宅舞,806,ia_related,False,False,nonsong_mixed:WOTA艺,True,标题含'WOTA艺'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1txDBB2EFP,1,"【WOTA艺】アスノヨゾラ哨戒班-Orangestar,IA -",逢田梨香子_Official,"用宅舞记录这个春天,Orangestar,ヲタ芸,IA,WOTA艺,宅舞",宅舞,1300,ia_related,False,False,nonsong_mixed:WOTA艺,True,标题含'WOTA艺'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1Q8DYBBExc,1,日常观测『四色』【熟肉】【VOICEROID剧场】,VOICEROID吧,"微量达克赛德,绁星灯,VOICEROID剧场,结月缘,IA,OИE,熟肉",同人·手书,999,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1M6SQBDEbM,1,【绘画过程】脑内disco,72451012285_bili,"画画的日常,r-906,IA,绘画过程,绘画",绘画,1479,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1rMXeB8Etd,1,IA x 结月缘 | 月与绘画魔法——,松江CC,"画师热点情报站,IA小天使OFFICIAL,結月ゆかり,结月缘,术力口,兔羽,IA,虚拟歌姬,绘画过程,VOCALOID",绘画,311,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1TZQBBSEbo,1,IA - 造星者  【绘画过程】,松江CC,"IA,画师热点情报站,IA小天使OFFICIAL,伊爱,术力口,虚拟歌姬,绘画过程,VOCALOID",绘画,532,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1HXRjBWEaJ,1,追随逃跑的公交站的三人——MII新闻,孽虚烟呀,"IA,直播切片,琴叶葵,琴叶茜",单机游戏,223,ia_related,False,False,nonsong_mixed:新闻,True,标题含'新闻'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1dGoFBYEjH,1,日常观测『误解』【熟肉】【VOICEROID剧场】,VOICEROID吧,"绁星灯,VOICEROID剧场,OИE,结月缘,IA,剧场,熟肉",同人·手书,717,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1P6QxBkEtU,1,结月由香里，亲吻伊爱身姿似七彩花般。【绘画过程】,松江CC,"画师热点情报站,结月缘,IA,虚拟歌姬,绘画过程,VOCALOID,IA小天使OFFICIAL,术力口,兔羽",绘画,187,ia_related,False,False,nonsong_mixed:绘画,True,标题含'绘画'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV11PXsB3EvL,1,日常观测『浑一』【熟肉】【VOICEROID剧场】,VOICEROID吧,"VOICEROID剧场,结月缘,IA,日语,剧场,熟肉",同人·手书,769,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1byQRBaEbx,1,【CeVIO剧场】半价活动,Il--lI,"CeVIO,VOICEROID,结月缘,IA",同人·手书,1229,ia_related,False,False,nonsong_mixed:剧场,True,标题含'剧场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1q4411F7sk,1,【IA小天使 OFFICIAL】重新启动！IA的哔哩哔哩官方频道,IA小天使OFFICIAL,"V家,IA,イア,伊愛,Cevio,Vocaloid,IA小天使",VOCALOID·UTAU,94402,ia_music,False,False,music_signal
+BV1qurPYmEcX,1,最强虚拟歌姬争霸赛3,乃亚斯露露,"v flower,IA,C社六子,可不,gumi,亚北音留,中术,歌爱雪,重音teto,虚拟歌手",VOCALOID·UTAU,57610,ia_music,False,False,music_signal
+BV1WR4y177hp,1,关于CeVIO的一切（All About CeVIO）,天雨清明,"CeVIO,IA,CeVIO AI,KAFU,可不,东北切蒲英",VOCALOID·UTAU,29846,ia_music,False,False,music_signal
+BV1jv4y1M74P,1,伊爱！小天使永远滴神！！,糸屋Miwwww,"VOCALOID,2022虚拟歌手创作赛,让虚拟歌手为你唱,IA",VOCALOID·UTAU,29011,ia_music,False,False,music_signal
+BV1WR5Q6tExY,1,IA~IA~你的脖子为什么那么长,孽虚烟呀,"直播切片,IA",单机游戏,62,ia_music,False,False,music_signal
+BV1hX556PEHv,1,大孝女IA,孽虚烟呀,"IA,ONE,OИE",单机游戏,199,ia_music,False,False,music_signal
+BV1iC556gEsV,1,怪盗俊达萌袭击电视台！,孽虚烟呀,"IA,俊达萌,直播切片",单机游戏,116,ia_music,False,False,music_signal
+BV19R5T6UE5d,1,IA依旧用外星科技欺负人~~,孽虚烟呀,"IA,直播切片,弦卷真纪",单机游戏,117,ia_music,False,False,music_signal
+BV1kU5s62EYx,1,ARIA星人回归宇宙——这样算是通关了吗,孽虚烟呀,"直播切片,aria,结月缘,IA,ONE",单机游戏,129,ia_music,False,False,music_signal
+BV1Ux5E6MEYR,1,[MMD]璀璨星河 与你共舞《INTERGALACTIA》,Y以你为愿Y,"IA,MMD,INTERGALACTIA,IA GLOWB,碧蓝玩家团激励计划,碧蓝航线,碧蓝,信浓",MMD·3D,749,ia_music,False,False,music_signal
+BV1PCRZBrESx,1,「既然如此，就随风漂流吧」   [水彩] 風時計-Qeiru,kryptold,"Qeiru,IA,水彩,手绘,VOCALOID,風時計,术力口",日常,478,ia_music,False,False,music_signal
+BV1D4RZBHEfz,1,鳗，What can I say,孽虚烟呀,"直播切片,东北切蒲英,音街鳗,IA",单机游戏,139,ia_music,False,False,music_signal
+BV1YURSBNEV6,1,情商很低的四国玫碳,孽虚烟呀,"IA,四国玫碳,直播切片",单机游戏,95,ia_music,False,False,music_signal
+BV18dRSB8Eyv,1,结月缘和IA生孩子啦！,孽虚烟呀,"直播切片,结月缘,IA",单机游戏,333,ia_music,False,False,music_signal
+BV1vCRSBBEDA,1,【深空之眼】当正宫穿着婚纱来KTV包厢找你😨 Conqueror—薇儿丹蒂,哆啦熊宝,"IA,深空之眼MMD,深空之眼,薇儿丹蒂,MMD,薇儿,conqueror",MMD·3D,1023,ia_music,False,False,music_signal
+BV1QvdwBaEPq,1,坐上王座的IA居然……,孽虚烟呀,"IA,直播切片",单机游戏,88,ia_music,False,False,music_signal
+BV1DadFBdE5X,1,结月缘背摔善良外星人,孽虚烟呀,"直播切片,结月缘,IA",单机游戏,181,ia_music,False,False,music_signal
+BV1QbdFBZEeY,1,ARIA星人的神秘料理,孽虚烟呀,"结月缘,IA,朋友收集,直播切片",单机游戏,151,ia_music,False,False,music_signal
+BV1j7RxBuEdD,1,LLP教主，畏惧了……,孽虚烟呀,"直播切片,绁星灯,音街鳗,结月缘,IA,ONE",单机游戏,96,ia_music,False,False,music_signal
+BV1yzRWBLECo,1,神秘的外星人剑术,孽虚烟呀,"IA,朋友收集,直播切片,东北伊达子",单机游戏,94,ia_music,False,False,music_signal
+BV16URWBuEsW,1,IA家的神秘会议,孽虚烟呀,"直播切片,绁星灯,东北切蒲英,琴叶葵,ONE",单机游戏,225,ia_music,False,False,music_signal
+BV1EbRpBPEyN,1,IA的神秘走秀,孽虚烟呀,"朋友收集,直播切片,IA",单机游戏,569,ia_music,False,False,music_signal
+BV1QoRkB1Eyy,1,对缘弹琴,孽虚烟呀,"直播切片,结月缘,IA",单机游戏,84,ia_music,False,False,music_signal
+BV1zyRkBRELv,1,夫妻相这一块,孽虚烟呀,"朋友收集,直播切片,结月缘,IA",单机游戏,215,ia_music,False,False,music_signal
+BV1wERCBaEkY,1,缘，能和你住在一起好幸福,孽虚烟呀,"直播切片,东北切蒲英,结月缘,IA,ONE",单机游戏,215,ia_music,False,False,music_signal
+BV1489fBLEd5,1,术人狂喜！给新术人打破术圈固有观念！这些老歌听过没？,LUCKYDAY--__,"IA,镜音铃,镜音双子,初音未来,VOCALOID,クエン酸,Hitorie,sasakure.U.K,Mayu,Nem",日常,7353,ia_music,False,False,music_signal
+BV1hwRFBWEde,1,兔羽终于修成正果啦！,孽虚烟呀,"结月缘,IA,朋友收集,直播切片,兔羽",单机游戏,370,ia_music,False,False,music_signal
+BV1E7RjB7Eju,1,IA不像演的,孽虚烟呀,"直播切片,OИE,IA,天然,ONE",单机游戏,739,ia_music,False,False,music_signal
+BV1TsRMB6Eaz,1,要和小熊一起去兜风吗&gt;ω&lt;《Conqueror》,珂赛特Cosette,"Milfy,VRChat,Conqueror,Cyber,IA,3D,MMD",翻唱,1333,ia_music,False,False,music_signal
+BV1zQ9BB6Ejh,1,IA,幽烛灯,"画画画画画,指绘,摸鱼,IA,绘画过程,同人,绘画,原创",绘画,142,ia_music,False,False,music_signal
+BV1Q2oZBxEyW,1,四月是5k的谎言,目撃-ミク31世_,"图寻,冯柯南,geo,生活记录,IA,音乐",原创音乐,397,ia_music,False,False,music_signal
+BV19wZFBPEEA,1,【MMD】 INTERGALACTIA / KIRA feat. IA GLOWB【YYB式初音ミク】【4K30fps】,Lise莉丝,"日本音乐,电音,MV,3D,MMD,舞蹈,动画,VOCALOID,初音ミク",MMD·3D,2499,ia_music,False,False,music_signal
+BV1L3oFBNEHA,1,"【MMD】愛♡スクリ～ム！ - AiScReam ／ TDA Maid Models IA,Haku &amp; luka【搬运】",Love-YUI,"舞蹈,VOCALOID,TDA,MMD",MMD·3D,375,ia_music,False,False,music_signal
+BV1qtdSBkEdt,1,「IA正片合集」响彻大地的歌声,koyori-小羽,"cosplay,虚拟歌姬,把兴趣玩出名堂,cos,术力口,lia,ia,vocaloid,メテオ",仿妆cos,273,ia_music,False,False,music_signal
+BV198d1BREnb,1,IA x 结月缘 | 月穹之舞——,松江CC,"IA小天使OFFICIAL,术力口,兔羽,结月缘,IA,虚拟歌姬,绘画过程,板绘,VOCALOID",绘画,144,ia_music,False,False,music_signal
+BV1jJdnBxEvU,1,ia,爱开车女司机,"传说之下,音乐现场,IA,电子音乐,电音,高能音乐挑战赛",MV,786,ia_music,False,False,music_signal
+BV1QXdYBHEHx,1,IA x 结月缘 | 与你月夜起誓——,松江CC,"结月缘,IA,虚拟歌姬,绘画过程,IA小天使OFFICIAL,术力口,兔羽,绘画,VOCALOID",绘画,238,ia_music,False,False,music_signal
+BV1gVQbBZEt5,1,恰樱饼（求大家助力IA娃成团）,我爱睡觉zzz茜,"伊爱,cos,IA",舞蹈综合,404,ia_music,False,False,music_signal
+BV1j4QFBxEJ2,1,OИE/ONE带你逛恐怖美术馆 【音声软件实况】【OИE/IA/结月缘】,孽虚烟呀,"AI VOICE,恐怖美术馆,结月缘,cevio ai,voiceroid,OИE,IA,游戏实况,ONE,实况解说",单机游戏,1345,ia_music,False,False,music_signal
+BV1ttDBBLEb5,1,听说发视频有流量,小玩璐WAnlu,"虚拟歌手,IA,绘画过程,美少女",日常,5375,ia_music,False,False,music_signal
+BV168DaBSETB,1,【IA】【群宣】IA的照片分享awa,苏州地铁爱好者,"必剪创作,IA,虚拟歌姬,VOCALOID,V家,术力口,群宣,六兆年",日常,179,ia_music,False,False,music_signal
+BV1HoD5BMEfV,1,「橙星」ORANGESTAR是谁？？？,STAWOLF13,"夏背,春夏秋冬代行者,Orangestar,EDM,めありー,音乐推荐,IA,初音未来,4月新番,VOCALOID",MAD·AMV,3534,ia_music,False,False,music_signal
+BV1NA9JBhEyx,1,【MMD/2D向渲染】HIGHER—街头文化，绝妙舞步【YYB式改変初音ミク】,kamami_o,"miku,街头文化,IA,嘻哈,街舞,MMD,初音未来,舞蹈,VOCALOID,初音ミク",MMD·3D,3691,ia_music,False,False,music_signal
+BV1V69jBBEHQ,1,你还不知道IA要有棉花娃娃了吗？,孽虚烟呀,"棉花娃娃,CEVIO,IA,娃娃,VOCALOID",动画综合,614,ia_music,False,False,music_signal
+BV1p1QUBqExB,1,ia的emoji,我爱睡觉zzz茜,"Cosplay,IA,日常",舞蹈综合,362,ia_music,False,False,music_signal
+BV1ugQSBnEVy,1,什么！？你还没有在用IA动态表情包吗！？,孽虚烟呀,"EmoteLab,表情包,CEVIO,IA,VOCALOID",动画综合,3058,ia_music,False,False,music_signal
+BV1qhQfBoEir,1,我只想看到你的笑颜。,飘散零落与残缺,IA,绘画,412,ia_music,False,False,music_signal
+BV1f2QZBoEqA,1,［整活/r-906］r-906的歌逐渐变得不好听了,空符Void_sign,"IA,初音未来,支持r-906谢谢喵,os大牙哥好帅,r-906,术力口",绘画,4418,ia_music,False,False,music_signal
+BV1qhDtBYEgo,1,【V家MMD】来看IA酱跳《桃源恋歌》吧~ヽ(￣▽￣)ﾉ,Cillyka,"MMD,舞蹈,TDA",MMD·3D,579,irrelevant,False,False,no_signal,False,
+BV1fYSUBZE7X,1,【ぶっきー_きょう】如月アテンション (IA)_じん 踊ってみた【オリジナル振り付け】,回收站里的咩,"ぶっきー,如月アテンション,宅舞,踊ってみた,きょう",宅舞,361,irrelevant,False,False,no_signal,False,
+看来人类文明凶多鸡少了,"进来吃国宴,足立零,ooc致歉,重音teto,IA,抽象,杂音未来,初音未来",绘画,irrelevant,ia_music,music_signal,False,False,False
