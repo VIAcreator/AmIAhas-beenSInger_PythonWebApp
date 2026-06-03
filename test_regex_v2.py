@@ -58,13 +58,14 @@ SINGER_TAGS = [
 ]
 
 # "other"信号词（标题含这些 → 可能是 ia_related 而非 ia_music）
+# 但若标题同时有"音乐强信号"（【IA】歌名格式、feat.IA等），则优先判为 ia_music
 NON_SONG_KEYWORDS = [
     "人物志", "科普", "编年史", "发生了什么", "小课堂",
     "盘点", "周刊", "RANKING", "ランキング", "推荐",
     "纪录片", "官方频", "官方OFFICIAL", "OFFICIAL",
-    "在家动手", "猜歌", "介绍", "小剧场", "同居",
+    "在家动手", "猜歌", "猜曲", "猜术曲", "介绍", "小剧场", "同居",
     "实验", "靶场", "样本试听", "声音样本",
-    "手书", "手描", "描改", "绘画", "MMD",
+    "手书", "手描", "描改", "绘画", "编舞", "跳舞",
     "演唱会", "巡演", "现场", "超Party", "超PARTY",
     "来了", "新宝岛",
     "画师", "COS", "Cosplay",
@@ -72,16 +73,24 @@ NON_SONG_KEYWORDS = [
     "语调教", "跨语种",
     "声库", "设计", "简介", "这到底是什么",
     "娇喘", "信念感",
-    "组曲", "猜曲", "听力", "请问",
+    "组曲", "听力", "请问",
     "教程", "教学", "入门",
     "PK", "对决", "哪个", "比较",
-    "P主推荐", "P主人物",
+    "P主推荐", "P主人物", "P主音乐电台", "电台",
     "授权汉化",
     "宣布", "发表",
     "不幸", "自杀", "去世",
     "新闻", "速报",
-    "报告", "统计", "评论", "WOTA艺"
+    "报告", "统计", "评论", "WOTA艺",
+    # 排行榜/精选/纪录片类
+    "排行", "TOP100", "TOP50", "BEST", "传送", "精选",
+    "超过", "为止",
+    "贺岁", "拜年", "单品", "原创动画", "人气",
+    "传说曲", "殿堂", "神话曲", "名曲",
+    "调查", "问卷", "投票", "第一期", "第二期", "第三期",
+    "试着跳", "试着做了", "试着演奏", "试着画",
 ]
+
 
 # 无关信号词（title含这些且tags无虚拟歌姬 → irrelevant）
 IRRELEVANT_SIGNALS = [
@@ -151,26 +160,34 @@ def classify(title, tags, category):
     music_signal = has_vocaloid_tag or has_singer_tag or has_ia_exact
     any_ia = has_ia_loose or has_vocaloid_tag or has_singer_tag
 
-    # 2. irrelevant 强信号：tags 中完全没有任何虚拟歌姬标记
-    if not any_ia:
-        # 补充检查 category
+    # 标题级音乐强信号：标题含 feat.IA / 【IA】歌名 / 歌ってみた 等 → 底层是歌
+    strong_title_music = bool(
+        re.search(r'feat\.?\s*IA', title, re.I) or
+        re.search(r'【IA[^】]*】', title) or
+        re.search(r'[/／][^/／]+feat', title, re.I)
+    )
+
+    # 2. irrelevant 强信号：tags 中完全没有任何虚拟歌姬标记，且标题无 feat.IA
+    if not any_ia and not strong_title_music:
         cat_upper = (category or "").upper()
         music_cats = ["VOCALOID", "UTAU", "音MAD", "翻唱", "演奏", "音乐"]
         if not any(mc in cat_upper for mc in music_cats):
             return {"content_type": "irrelevant", "is_game": is_game, "is_cover": is_cover, "rule": "no_signal"}
 
-    # 3. 标题含无关强信号 → irrelevant
-    for kw in IRRELEVANT_SIGNALS:
-        if kw.upper() in t_upper:
-            return {"content_type": "irrelevant", "is_game": is_game, "is_cover": is_cover, "rule": f"irrelevant_kw:{kw}"}
+    # 3. 标题含无关强信号 → irrelevant（但有 feat.IA 时豁免）
+    if not strong_title_music:
+        for kw in IRRELEVANT_SIGNALS:
+            if kw.upper() in t_upper:
+                return {"content_type": "irrelevant", "is_game": is_game, "is_cover": is_cover, "rule": f"irrelevant_kw:{kw}"}
 
-    # 4. 标题含 non-song 关键词 → ia_related
-    for kw in NON_SONG_KEYWORDS:
-        if kw.upper() in t_upper:
-            return {"content_type": "ia_related", "is_game": is_game, "is_cover": is_cover, "rule": f"nonsong:{kw}"}
+    # 4. 标题含 non-song 关键词 → ia_related（但有音乐强信号时豁免）
+    if not strong_title_music:
+        for kw in NON_SONG_KEYWORDS:
+            if kw.upper() in t_upper:
+                return {"content_type": "ia_related", "is_game": is_game, "is_cover": is_cover, "rule": f"nonsong:{kw}"}
 
     # 5. 有音乐信号 → ia_music
-    if music_signal:
+    if music_signal or strong_title_music:
         return {"content_type": "ia_music", "is_game": is_game, "is_cover": is_cover, "rule": "music_signal"}
 
     # 6. 没有任何信号 → 根据 category 兜底
