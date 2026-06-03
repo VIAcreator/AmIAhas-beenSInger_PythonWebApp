@@ -49,9 +49,9 @@ LABELS = [
 LABEL_DEFINITIONS = {
     "game_cover":           "音游曲翻唱/相关，如 PJSK/BangDream/Phigros/Arcaea/CHUNITHM/maimai/osu!/D4DJ 等",
     "vocaloid_original":    "VOCALOID/CeVIO 引擎合成的 IA 原创歌曲",
-    "vocaloid_cover":       "IA（作为 VOCALOID 歌姬）翻唱别人的歌曲",
+    "vocaloid_cover":       "IA（作为 VOCALOID 歌姬）翻唱原唱不是IA的歌曲",
     "irrelevant":           "与虚拟歌姬 IA 完全无关的内容（游戏、军事、AI生成等）",
-    "other":                "与虚拟歌姬 IA 相关但非歌曲投稿（语调教、演唱会、科普教学、猜歌比赛、MMD舞蹈、榜单盘点等）",
+    "other":                "与虚拟歌姬 IA 相关但非歌曲投稿（语调教、演唱会、科普教学、猜歌比赛、MMD舞蹈、榜单盘点、P主介绍等）",
 }
 
 
