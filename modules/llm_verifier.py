@@ -182,12 +182,22 @@ class QwenVerifier:
         )
 
         # 解析分类标签
-        content_type = "ia_music"
+        qwen_label = "ia_music"
         result_lower = result.lower().strip()
         for label in self.labels:
             if label in result_lower:
-                content_type = label
+                qwen_label = label
                 break
+
+        # 保守策略：正则和 Qwen 在 music/related 间有分歧 → 归入 related
+        # 保证 ia_music 绝对纯净（过气分析零污染）
+        regex_label = row.get("content_type", "ia_music")
+        if {regex_label, qwen_label} == {"ia_music", "ia_related"}:
+            content_type = "ia_related"
+        elif qwen_label == "ia_music" and regex_label != "ia_music":
+            content_type = "ia_related"  # 正则没说是音乐，不相信Qwen的music判断
+        else:
+            content_type = qwen_label
 
         return {
             "content_type": content_type,
