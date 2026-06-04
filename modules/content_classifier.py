@@ -347,13 +347,13 @@ def classify_all(df: pd.DataFrame) -> pd.DataFrame:
     df["suspicious_reason"]  = [r["suspicious_reason"] for r in results]
 
     # 后处理：ia_music 但不在音乐分区 → 标记可疑
-    for i in range(len(results)):
-        r = results[i]
+    for pos, idx in enumerate(df.index):
+        r = results[pos]
         if r["content_type"] == "ia_music" and not r["suspicious"]:
-            cat = str(df.iloc[i].get("category", ""))
+            cat = str(df.loc[idx, "category"])
             if not any(mc.upper() in cat.upper() for mc in MUSIC_CATEGORIES):
-                df.at[i, "suspicious"] = True
-                df.at[i, "suspicious_reason"] = (
+                df.at[idx, "suspicious"] = True
+                df.at[idx, "suspicious_reason"] = (
                     f"分类为ia_music但分区'{cat}'非音乐分区，需LLM确认"
                 )
 

@@ -107,7 +107,7 @@ def api_preview():
 def api_clean():
     """数据清洗 API。"""
     from modules.preprocessor import handle_clean
-    return handle_clean(get_clean_df, set_data)
+    return handle_clean(get_raw_df(), set_data)
 
 
 @app.route("/api/describe", methods=["POST"])
