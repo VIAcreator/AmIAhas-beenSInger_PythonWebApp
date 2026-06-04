@@ -152,29 +152,49 @@ class DeepSeekVerifier:
 # ==========================================================================
 
 class QwenVerifier:
+    """Qwen2.5-1.5B QLoRA 本地推理，使用与训练一致的 Alpaca 格式。"""
+
     def __init__(self, adapter_path: str = "models/content_classifier_lora"):
         import mlx_lm
         self.model, self.tokenizer = mlx_lm.load(
             "Qwen/Qwen2.5-1.5B-Instruct",
             adapter_path=adapter_path,
         )
+        self.labels = ["ia_music", "ia_related", "irrelevant"]
 
     def verify_one(self, row: dict) -> dict:
-        prompt = _build_prompt(row)
-        result = self._generate(prompt)
-        fallback = {
-            "content_type": row.get("content_type", "ia_music"),
+        """分类单条，返回 content_type。is_game/is_cover 保持正则值。"""
+        import mlx_lm
+        # 与训练格式完全一致的 Alpaca prompt
+        input_text = (
+            f"标题：{row.get('title', '')}\n"
+            f"标签：{row.get('tags', '')}\n"
+            f"分区：{row.get('category', '')}"
+        )
+        prompt = (
+            f"### Instruction:\n{SYSTEM_PROMPT}\n\n"
+            f"### Input:\n{input_text}\n\n### Response:\n"
+        )
+
+        result = mlx_lm.generate(
+            self.model, self.tokenizer,
+            prompt=prompt, max_tokens=5, verbose=False,
+        )
+
+        # 解析分类标签
+        content_type = "ia_music"
+        result_lower = result.lower().strip()
+        for label in self.labels:
+            if label in result_lower:
+                content_type = label
+                break
+
+        return {
+            "content_type": content_type,
             "is_game": row.get("is_game", False),
             "is_cover": row.get("is_cover", False),
         }
-        return _parse_result(result, fallback)
 
-    def _generate(self, prompt: str, max_tokens: int = 80) -> str:
-        import mlx_lm
-        return mlx_lm.generate(
-            self.model, self.tokenizer,
-            prompt=prompt, max_tokens=max_tokens, verbose=False,
-        )
 
 
 # ==========================================================================
