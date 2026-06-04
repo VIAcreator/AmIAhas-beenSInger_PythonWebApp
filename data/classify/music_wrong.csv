@@ -1,0 +1,10 @@
+﻿title,tags,category,expected,predicted,rule,is_game,is_cover,suspicious
+【B站限定】延命治疗 ～PARTY A GO-GO演唱会ver.～ ｜IA (song by Neru),"IA小天使,伊爱,V家,IA,Neru,延命治療,イア,IA小天使OFFICIAL,延命治疗,Vocaloid",VOCALOID·UTAU,ia_music,ia_related,nonsong_mixed:演唱会,False,False,True
+【ONE/IA歌曲推荐】CITRUS,"IA,虚拟歌姬,ONE,歌曲,citrus,Orangestar,歌曲推荐",音乐综合,ia_music,ia_related,nonsong_mixed:推荐,False,False,True
+真夏と少年の天ノ川戦争-Orangestar/IA，热心市民C先生演奏,"COVER,翻弹,Orangestar/IA,吉他,真夏と少年の天ノ川戦争,电吉他教学,电吉他",演奏,ia_music,ia_related,fallback,False,True,True
+这大概是当下神话曲《明日夜空哨戒班》最疯狂的钢琴改编演奏了#钢琴演奏orangestar明日夜空硝戒班钢琴改编,"明日夜空哨戒班,Orangestar,IA,改编,钢琴,钢琴演奏",演奏,ia_music,ia_related,nonsong_mixed:神话曲,False,True,True
+气短拧巴女也要唱「アスノヨゾラ哨戒班」（已去世版）,"めありー,翻唱总动员,orangestar,IA,高中生,翻唱,VOCALOID,cover,アスノヨゾラ哨戒班",翻唱,ia_music,ia_related,nonsong_mixed:去世,False,True,True
+【音频可视化/IA/Orangestar/音乐推荐】Orangestar (蜜柑星P) - Ifの世界設定,"全能音乐挑战赛,术力口,Orangestar,音频可视化,音频,音乐推荐,IA",音乐综合,ia_music,ia_related,nonsong_mixed:推荐,False,False,True
+アスノヨゾラ哨戒班-Afteglow、IA （原作者Orangestar）串连（燃起来吧！邦邦人！）,"音乐游戏,二次元,音乐,BanGDream!",日常,ia_music,irrelevant,no_signal,True,False,False
+【现场版】  IA  界外科学  【Vmoe字幕组】,"VOCALOID,IA,原创曲",VOCALOID·UTAU,ia_music,ia_related,nonsong_mixed:现场,False,False,True
+【Galaco＋IA】Cosmic Cruise,"ギャラ子オリジナル曲,ギャラ子,IA_-ARIA_ON_THE_PLANETES-,IAオリジナル曲,VOCALOID",VOCALOID·UTAU,ia_music,ia_related,nonsong_mixed:COS,False,False,True

@@ -1,41 +1,41 @@
 ========================================
-开始训练 — 2026-06-03 03:34:32
+QLoRA 训练开始
+时间: 2026-06-03 22:48:36
+模型: Qwen2.5-1.5B-Instruct
+数据: labeled_samples/*.csv (1989条)
+分类: ia_music | ia_related | irrelevant
 ========================================
+
+[1/2] 训练...
 ============================================================
 QLoRA 内容分类器训练
 ============================================================
 模型: Qwen/Qwen2.5-1.5B-Instruct
-数据: data/labeled_samples.json
+数据: data/labeled_samples/*.csv
 输出: models/content_classifier_lora
 
-加载 260 条标注样本
+加载 1989 条标注样本
 标注分布:
-  game_cover               : 17
-  vocaloid_original        : 84
-  vocaloid_cover           : 44
-  irrelevant               : 60
-  other                    : 55
+  ia_music                 : 1480
+  ia_related               : 166
+  irrelevant               : 343
 
-划分: train=223, test=37
-  game_cover               : train= 15, test= 2
-  vocaloid_original        : train= 72, test=12
-  vocaloid_cover           : train= 38, test= 6
-  irrelevant               : train= 51, test= 9
-  other                    : train= 47, test= 8
-  测试集已保存: 37 条 → data/test_split.json
+划分: train=1692, test=297
+  ia_music                 : train=1258, test=222
+  ia_related               : train=142, test=24
+  irrelevant               : train=292, test=51
+  测试集已保存: 297 条 → data/test_split.json
 
 
 上采样平衡:
-  game_cover               :  72 条
-  vocaloid_original        :  72 条
-  vocaloid_cover           :  72 条
-  irrelevant               :  72 条
-  other                    :  72 条
+  ia_music                 : 1258 条
+  ia_related               : 1258 条
+  irrelevant               : 1258 条
 
 [1/4] 加载模型...
-Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 65977.82it/s]
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 127100.12it/s]
 Unsloth: Loading Qwen/Qwen2.5-1.5B-Instruct via mlx-lm (runtime 4-bit affine quantization)...
-Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 104484.44it/s]
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 55924.05it/s]
 [INFO] Quantized model with 6.240 bits per weight.
 Unsloth: Quantized text model to 4-bit affine.
 [2/4] 添加 LoRA 适配器...
@@ -45,177 +45,1210 @@ Unsloth: MLX Metal memory guard enabled (memory_limit=10.81 GB, wired_limit=10.8
 Unsloth: Using gradient checkpointing to reduce memory.
 Unsloth: CCE skipping weight gradient (LM head is frozen).
 Unsloth: Using CCE loss (runtime-cce) for memory-efficient training.
-Unsloth: Training for 540 steps, BS=2, grad_accum=1, seq_len=512
+Unsloth: Training for 5661 steps, BS=2, grad_accum=1, seq_len=512
 Unsloth: Features: CCE, GC, compile, LR=linear, opt=adamw
-  Step 5/540 | Loss: 3.8319 | Grad: 1.4297 | LR: 1.67e-04 | Tok/s: 220 | Peak: 2.35 GB
-  Step 10/540 | Loss: 2.9725 | Grad: 4.3301 | LR: 1.99e-04 | Tok/s: 228 | Peak: 2.35 GB
-  Step 15/540 | Loss: 1.7757 | Grad: 4.2828 | LR: 1.97e-04 | Tok/s: 222 | Peak: 2.35 GB
-  Step 20/540 | Loss: 1.0345 | Grad: 1.2588 | LR: 1.95e-04 | Tok/s: 224 | Peak: 2.35 GB
-  Step 25/540 | Loss: 0.8407 | Grad: 0.9959 | LR: 1.93e-04 | Tok/s: 235 | Peak: 2.35 GB
-  Step 30/540 | Loss: 0.8038 | Grad: 0.9007 | LR: 1.91e-04 | Tok/s: 227 | Peak: 2.35 GB
-  Step 35/540 | Loss: 0.9035 | Grad: 0.7889 | LR: 1.89e-04 | Tok/s: 225 | Peak: 2.35 GB
-  Step 40/540 | Loss: 0.8804 | Grad: 1.0238 | LR: 1.87e-04 | Tok/s: 227 | Peak: 2.35 GB
-  Step 45/540 | Loss: 0.7260 | Grad: 0.8855 | LR: 1.85e-04 | Tok/s: 234 | Peak: 2.35 GB
-  Step 50/540 | Loss: 0.8764 | Grad: 0.8482 | LR: 1.84e-04 | Tok/s: 229 | Peak: 2.35 GB
-  Step 55/540 | Loss: 1.0552 | Grad: 2.5244 | LR: 1.82e-04 | Tok/s: 220 | Peak: 2.37 GB
-  Step 60/540 | Loss: 0.7169 | Grad: 0.7580 | LR: 1.80e-04 | Tok/s: 224 | Peak: 2.37 GB
-  Step 65/540 | Loss: 0.7532 | Grad: 0.7297 | LR: 1.78e-04 | Tok/s: 226 | Peak: 2.37 GB
-  Step 70/540 | Loss: 0.8569 | Grad: 0.9147 | LR: 1.76e-04 | Tok/s: 222 | Peak: 2.37 GB
-  Step 75/540 | Loss: 0.8625 | Grad: 0.7233 | LR: 1.74e-04 | Tok/s: 220 | Peak: 2.37 GB
-  Step 80/540 | Loss: 0.6914 | Grad: 0.8360 | LR: 1.72e-04 | Tok/s: 222 | Peak: 2.37 GB
-  Step 85/540 | Loss: 0.8375 | Grad: 0.8579 | LR: 1.70e-04 | Tok/s: 218 | Peak: 2.37 GB
-  Step 90/540 | Loss: 0.7622 | Grad: 1.0024 | LR: 1.69e-04 | Tok/s: 221 | Peak: 2.37 GB
-  Step 95/540 | Loss: 0.7001 | Grad: 0.9608 | LR: 1.67e-04 | Tok/s: 214 | Peak: 2.37 GB
-  Step 100/540 | Loss: 0.7827 | Grad: 1.2315 | LR: 1.65e-04 | Tok/s: 216 | Peak: 2.37 GB
-  Step 105/540 | Loss: 0.7266 | Grad: 0.7392 | LR: 1.63e-04 | Tok/s: 211 | Peak: 2.37 GB
-  Step 110/540 | Loss: 0.6182 | Grad: 0.7591 | LR: 1.61e-04 | Tok/s: 208 | Peak: 2.37 GB
-  Step 115/540 | Loss: 0.5331 | Grad: 0.9203 | LR: 1.59e-04 | Tok/s: 205 | Peak: 2.37 GB
-  Step 120/540 | Loss: 0.6558 | Grad: 0.9853 | LR: 1.57e-04 | Tok/s: 204 | Peak: 2.37 GB
-  Step 125/540 | Loss: 0.8327 | Grad: 0.7078 | LR: 1.56e-04 | Tok/s: 202 | Peak: 2.37 GB
-  Step 130/540 | Loss: 0.6912 | Grad: 1.0781 | LR: 1.54e-04 | Tok/s: 203 | Peak: 2.37 GB
-  Step 135/540 | Loss: 0.7219 | Grad: 0.8353 | LR: 1.52e-04 | Tok/s: 192 | Peak: 2.37 GB
-  Step 140/540 | Loss: 0.5655 | Grad: 0.8560 | LR: 1.50e-04 | Tok/s: 197 | Peak: 2.37 GB
-  Step 145/540 | Loss: 0.5808 | Grad: 0.7189 | LR: 1.48e-04 | Tok/s: 198 | Peak: 2.37 GB
-  Step 150/540 | Loss: 0.6087 | Grad: 1.3846 | LR: 1.46e-04 | Tok/s: 195 | Peak: 2.37 GB
-  Step 155/540 | Loss: 0.6106 | Grad: 0.9477 | LR: 1.44e-04 | Tok/s: 198 | Peak: 2.37 GB
-  Step 160/540 | Loss: 0.5659 | Grad: 0.7716 | LR: 1.42e-04 | Tok/s: 196 | Peak: 2.37 GB
-  Step 165/540 | Loss: 0.5067 | Grad: 0.8861 | LR: 1.41e-04 | Tok/s: 193 | Peak: 2.37 GB
-  Step 170/540 | Loss: 0.5743 | Grad: 0.9515 | LR: 1.39e-04 | Tok/s: 199 | Peak: 2.37 GB
-  Step 175/540 | Loss: 0.5691 | Grad: 0.8502 | LR: 1.37e-04 | Tok/s: 200 | Peak: 2.37 GB
-  Step 180/540 | Loss: 0.5533 | Grad: 0.7321 | LR: 1.35e-04 | Tok/s: 198 | Peak: 2.37 GB
-  Step 185/540 | Loss: 0.7034 | Grad: 0.7739 | LR: 1.33e-04 | Tok/s: 204 | Peak: 2.37 GB
-  Step 190/540 | Loss: 0.5801 | Grad: 0.7698 | LR: 1.31e-04 | Tok/s: 198 | Peak: 2.37 GB
-  Step 195/540 | Loss: 0.5458 | Grad: 0.6620 | LR: 1.29e-04 | Tok/s: 193 | Peak: 2.37 GB
-  Step 200/540 | Loss: 0.4825 | Grad: 0.8138 | LR: 1.27e-04 | Tok/s: 195 | Peak: 2.37 GB
-  Step 205/540 | Loss: 0.5209 | Grad: 0.9346 | LR: 1.26e-04 | Tok/s: 200 | Peak: 2.37 GB
-  Step 210/540 | Loss: 0.5095 | Grad: 0.7247 | LR: 1.24e-04 | Tok/s: 192 | Peak: 2.37 GB
-  Step 215/540 | Loss: 0.5639 | Grad: 1.0686 | LR: 1.22e-04 | Tok/s: 190 | Peak: 2.37 GB
-  Step 220/540 | Loss: 0.5526 | Grad: 1.3851 | LR: 1.20e-04 | Tok/s: 194 | Peak: 2.37 GB
-  Step 225/540 | Loss: 0.4161 | Grad: 1.3813 | LR: 1.18e-04 | Tok/s: 198 | Peak: 2.37 GB
-  Step 230/540 | Loss: 0.5047 | Grad: 1.0268 | LR: 1.16e-04 | Tok/s: 195 | Peak: 2.37 GB
-  Step 235/540 | Loss: 0.7972 | Grad: 1.5189 | LR: 1.14e-04 | Tok/s: 189 | Peak: 2.37 GB
-  Step 240/540 | Loss: 0.4310 | Grad: 0.9201 | LR: 1.13e-04 | Tok/s: 191 | Peak: 2.37 GB
-  Step 245/540 | Loss: 0.4950 | Grad: 0.9319 | LR: 1.11e-04 | Tok/s: 193 | Peak: 2.37 GB
-  Step 250/540 | Loss: 0.5515 | Grad: 1.4989 | LR: 1.09e-04 | Tok/s: 193 | Peak: 2.37 GB
-  Step 255/540 | Loss: 0.5821 | Grad: 1.1604 | LR: 1.07e-04 | Tok/s: 192 | Peak: 2.37 GB
-  Step 260/540 | Loss: 0.4312 | Grad: 1.2423 | LR: 1.05e-04 | Tok/s: 195 | Peak: 2.37 GB
-  Step 265/540 | Loss: 0.5224 | Grad: 1.3205 | LR: 1.03e-04 | Tok/s: 190 | Peak: 2.37 GB
-  Step 270/540 | Loss: 0.4980 | Grad: 1.6180 | LR: 1.01e-04 | Tok/s: 197 | Peak: 2.37 GB
-  Step 275/540 | Loss: 0.4115 | Grad: 1.2577 | LR: 9.94e-05 | Tok/s: 190 | Peak: 2.37 GB
-  Step 280/540 | Loss: 0.4699 | Grad: 1.5269 | LR: 9.76e-05 | Tok/s: 192 | Peak: 2.37 GB
-  Step 285/540 | Loss: 0.4766 | Grad: 1.3234 | LR: 9.57e-05 | Tok/s: 187 | Peak: 2.37 GB
-  Step 290/540 | Loss: 0.3955 | Grad: 1.0678 | LR: 9.38e-05 | Tok/s: 184 | Peak: 2.37 GB
-  Step 295/540 | Loss: 0.3598 | Grad: 1.5602 | LR: 9.20e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 300/540 | Loss: 0.3999 | Grad: 1.3845 | LR: 9.01e-05 | Tok/s: 189 | Peak: 2.37 GB
-  Step 305/540 | Loss: 0.6017 | Grad: 1.1095 | LR: 8.82e-05 | Tok/s: 189 | Peak: 2.37 GB
-  Step 310/540 | Loss: 0.5160 | Grad: 1.6335 | LR: 8.64e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 315/540 | Loss: 0.3851 | Grad: 1.0649 | LR: 8.45e-05 | Tok/s: 184 | Peak: 2.37 GB
-  Step 320/540 | Loss: 0.3954 | Grad: 1.2537 | LR: 8.26e-05 | Tok/s: 187 | Peak: 2.37 GB
-  Step 325/540 | Loss: 0.2884 | Grad: 1.0722 | LR: 8.07e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 330/540 | Loss: 0.4226 | Grad: 2.1552 | LR: 7.89e-05 | Tok/s: 189 | Peak: 2.37 GB
-  Step 335/540 | Loss: 0.3989 | Grad: 1.4359 | LR: 7.70e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 340/540 | Loss: 0.3376 | Grad: 1.0876 | LR: 7.51e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 345/540 | Loss: 0.2212 | Grad: 1.5299 | LR: 7.33e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 350/540 | Loss: 0.3159 | Grad: 1.5954 | LR: 7.14e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 355/540 | Loss: 0.3435 | Grad: 1.3125 | LR: 6.95e-05 | Tok/s: 190 | Peak: 2.37 GB
-  Step 360/540 | Loss: 0.3700 | Grad: 1.0523 | LR: 6.77e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 365/540 | Loss: 0.5054 | Grad: 1.1959 | LR: 6.58e-05 | Tok/s: 195 | Peak: 2.37 GB
-  Step 370/540 | Loss: 0.3744 | Grad: 0.9498 | LR: 6.39e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 375/540 | Loss: 0.4110 | Grad: 0.9839 | LR: 6.21e-05 | Tok/s: 186 | Peak: 2.37 GB
-  Step 380/540 | Loss: 0.2968 | Grad: 1.2647 | LR: 6.02e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 385/540 | Loss: 0.3387 | Grad: 1.3779 | LR: 5.83e-05 | Tok/s: 194 | Peak: 2.37 GB
-  Step 390/540 | Loss: 0.3265 | Grad: 1.0541 | LR: 5.64e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 395/540 | Loss: 0.3479 | Grad: 1.6384 | LR: 5.46e-05 | Tok/s: 184 | Peak: 2.37 GB
-  Step 400/540 | Loss: 0.3178 | Grad: 2.0409 | LR: 5.27e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 405/540 | Loss: 0.2443 | Grad: 1.7378 | LR: 5.08e-05 | Tok/s: 192 | Peak: 2.37 GB
-  Step 410/540 | Loss: 0.2755 | Grad: 1.5405 | LR: 4.90e-05 | Tok/s: 190 | Peak: 2.37 GB
-  Step 415/540 | Loss: 0.5651 | Grad: 2.5364 | LR: 4.71e-05 | Tok/s: 183 | Peak: 2.37 GB
-  Step 420/540 | Loss: 0.2817 | Grad: 1.1467 | LR: 4.52e-05 | Tok/s: 186 | Peak: 2.37 GB
-  Step 425/540 | Loss: 0.3010 | Grad: 1.0505 | LR: 4.34e-05 | Tok/s: 190 | Peak: 2.37 GB
-  Step 430/540 | Loss: 0.3127 | Grad: 1.6425 | LR: 4.15e-05 | Tok/s: 188 | Peak: 2.37 GB
-  Step 435/540 | Loss: 0.3615 | Grad: 2.3942 | LR: 3.96e-05 | Tok/s: 187 | Peak: 2.37 GB
-  Step 440/540 | Loss: 0.2683 | Grad: 1.5411 | LR: 3.78e-05 | Tok/s: 191 | Peak: 2.37 GB
-  Step 445/540 | Loss: 0.3398 | Grad: 1.4904 | LR: 3.59e-05 | Tok/s: 187 | Peak: 2.37 GB
-  Step 450/540 | Loss: 0.3067 | Grad: 1.6759 | LR: 3.40e-05 | Tok/s: 192 | Peak: 2.37 GB
-  Step 455/540 | Loss: 0.2181 | Grad: 0.9264 | LR: 3.21e-05 | Tok/s: 185 | Peak: 2.37 GB
-  Step 460/540 | Loss: 0.2632 | Grad: 2.3575 | LR: 3.03e-05 | Tok/s: 189 | Peak: 2.37 GB
-  Step 465/540 | Loss: 0.2883 | Grad: 1.2629 | LR: 2.84e-05 | Tok/s: 184 | Peak: 2.37 GB
-  Step 470/540 | Loss: 0.2267 | Grad: 0.6184 | LR: 2.65e-05 | Tok/s: 168 | Peak: 2.37 GB
-  Step 475/540 | Loss: 0.2052 | Grad: 1.8214 | LR: 2.47e-05 | Tok/s: 168 | Peak: 2.37 GB
-  Step 480/540 | Loss: 0.2495 | Grad: 1.4683 | LR: 2.28e-05 | Tok/s: 174 | Peak: 2.37 GB
-  Step 485/540 | Loss: 0.3860 | Grad: 1.3352 | LR: 2.09e-05 | Tok/s: 177 | Peak: 2.37 GB
-  Step 490/540 | Loss: 0.3384 | Grad: 2.4194 | LR: 1.91e-05 | Tok/s: 180 | Peak: 2.37 GB
-  Step 495/540 | Loss: 0.2108 | Grad: 0.7106 | LR: 1.72e-05 | Tok/s: 172 | Peak: 2.37 GB
-  Step 500/540 | Loss: 0.2528 | Grad: 1.4316 | LR: 1.53e-05 | Tok/s: 175 | Peak: 2.37 GB
-  Step 505/540 | Loss: 0.1626 | Grad: 1.3250 | LR: 1.35e-05 | Tok/s: 181 | Peak: 2.37 GB
-  Step 510/540 | Loss: 0.2545 | Grad: 2.1885 | LR: 1.16e-05 | Tok/s: 178 | Peak: 2.37 GB
-  Step 515/540 | Loss: 0.2543 | Grad: 1.7762 | LR: 9.72e-06 | Tok/s: 179 | Peak: 2.37 GB
-  Step 520/540 | Loss: 0.1711 | Grad: 1.4814 | LR: 7.85e-06 | Tok/s: 176 | Peak: 2.37 GB
-  Step 525/540 | Loss: 0.1217 | Grad: 0.7809 | LR: 5.98e-06 | Tok/s: 178 | Peak: 2.37 GB
-  Step 530/540 | Loss: 0.1848 | Grad: 1.1232 | LR: 4.11e-06 | Tok/s: 180 | Peak: 2.37 GB
-  Step 535/540 | Loss: 0.2167 | Grad: 1.4289 | LR: 2.24e-06 | Tok/s: 180 | Peak: 2.37 GB
-  Step 540/540 | Loss: 0.2276 | Grad: 1.1852 | LR: 3.74e-07 | Tok/s: 181 | Peak: 2.37 GB
+  Step 5/5661 | Loss: 4.0148 | Grad: 2.3843 | LR: 1.67e-04 | Tok/s: 196 | Peak: 2.35 GB
+  Step 10/5661 | Loss: 3.1513 | Grad: 1.7424 | LR: 2.00e-04 | Tok/s: 224 | Peak: 2.35 GB
+  Step 15/5661 | Loss: 1.8997 | Grad: 3.8293 | LR: 2.00e-04 | Tok/s: 212 | Peak: 2.35 GB
+  Step 20/5661 | Loss: 0.9053 | Grad: 1.7576 | LR: 2.00e-04 | Tok/s: 232 | Peak: 2.35 GB
+  Step 25/5661 | Loss: 0.7768 | Grad: 1.1312 | LR: 1.99e-04 | Tok/s: 224 | Peak: 2.35 GB
+  Step 30/5661 | Loss: 0.8824 | Grad: 0.8524 | LR: 1.99e-04 | Tok/s: 230 | Peak: 2.35 GB
+  Step 35/5661 | Loss: 0.8665 | Grad: 0.7722 | LR: 1.99e-04 | Tok/s: 216 | Peak: 2.35 GB
+  Step 40/5661 | Loss: 0.8282 | Grad: 0.7340 | LR: 1.99e-04 | Tok/s: 226 | Peak: 2.35 GB
+  Step 45/5661 | Loss: 0.6987 | Grad: 0.8580 | LR: 1.99e-04 | Tok/s: 222 | Peak: 2.35 GB
+  Step 50/5661 | Loss: 0.6623 | Grad: 0.5656 | LR: 1.98e-04 | Tok/s: 216 | Peak: 2.35 GB
+  Step 55/5661 | Loss: 0.7753 | Grad: 1.2280 | LR: 1.98e-04 | Tok/s: 227 | Peak: 2.35 GB
+  Step 60/5661 | Loss: 0.7320 | Grad: 0.8554 | LR: 1.98e-04 | Tok/s: 220 | Peak: 2.35 GB
+  Step 65/5661 | Loss: 0.6720 | Grad: 0.9502 | LR: 1.98e-04 | Tok/s: 212 | Peak: 2.35 GB
+  Step 70/5661 | Loss: 0.7090 | Grad: 0.9872 | LR: 1.98e-04 | Tok/s: 217 | Peak: 2.35 GB
+  Step 75/5661 | Loss: 0.6920 | Grad: 0.9545 | LR: 1.98e-04 | Tok/s: 211 | Peak: 2.35 GB
+  Step 80/5661 | Loss: 0.7581 | Grad: 0.8836 | LR: 1.97e-04 | Tok/s: 223 | Peak: 2.35 GB
+  Step 85/5661 | Loss: 0.7255 | Grad: 0.6707 | LR: 1.97e-04 | Tok/s: 212 | Peak: 2.35 GB
+  Step 90/5661 | Loss: 0.8061 | Grad: 0.8823 | LR: 1.97e-04 | Tok/s: 216 | Peak: 2.35 GB
+  Step 95/5661 | Loss: 0.6520 | Grad: 1.0741 | LR: 1.97e-04 | Tok/s: 213 | Peak: 2.35 GB
+  Step 100/5661 | Loss: 0.7085 | Grad: 0.8368 | LR: 1.97e-04 | Tok/s: 203 | Peak: 2.35 GB
+  Step 105/5661 | Loss: 0.7484 | Grad: 0.8010 | LR: 1.96e-04 | Tok/s: 192 | Peak: 2.35 GB
+  Step 110/5661 | Loss: 0.6600 | Grad: 0.8266 | LR: 1.96e-04 | Tok/s: 201 | Peak: 2.35 GB
+  Step 115/5661 | Loss: 0.5802 | Grad: 0.9400 | LR: 1.96e-04 | Tok/s: 186 | Peak: 2.35 GB
+  Step 120/5661 | Loss: 0.6523 | Grad: 0.9667 | LR: 1.96e-04 | Tok/s: 183 | Peak: 2.35 GB
+  Step 125/5661 | Loss: 0.6862 | Grad: 0.7206 | LR: 1.96e-04 | Tok/s: 196 | Peak: 2.35 GB
+  Step 130/5661 | Loss: 0.4725 | Grad: 0.8225 | LR: 1.96e-04 | Tok/s: 191 | Peak: 2.35 GB
+  Step 135/5661 | Loss: 0.5595 | Grad: 0.8204 | LR: 1.95e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 140/5661 | Loss: 0.6625 | Grad: 0.7951 | LR: 1.95e-04 | Tok/s: 196 | Peak: 2.35 GB
+  Step 145/5661 | Loss: 0.6095 | Grad: 0.9055 | LR: 1.95e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 150/5661 | Loss: 0.5325 | Grad: 0.9224 | LR: 1.95e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 155/5661 | Loss: 0.6671 | Grad: 0.8870 | LR: 1.95e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 160/5661 | Loss: 0.5189 | Grad: 1.3305 | LR: 1.95e-04 | Tok/s: 184 | Peak: 2.35 GB
+  Step 165/5661 | Loss: 0.6733 | Grad: 0.8911 | LR: 1.94e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 170/5661 | Loss: 0.6318 | Grad: 0.8688 | LR: 1.94e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 175/5661 | Loss: 0.5654 | Grad: 0.9843 | LR: 1.94e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 180/5661 | Loss: 0.5493 | Grad: 0.9512 | LR: 1.94e-04 | Tok/s: 184 | Peak: 2.35 GB
+  Step 185/5661 | Loss: 0.4825 | Grad: 0.7768 | LR: 1.94e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 190/5661 | Loss: 0.6703 | Grad: 0.7756 | LR: 1.93e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 195/5661 | Loss: 0.5546 | Grad: 0.9152 | LR: 1.93e-04 | Tok/s: 185 | Peak: 2.35 GB
+  Step 200/5661 | Loss: 0.4855 | Grad: 1.0126 | LR: 1.93e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 205/5661 | Loss: 0.5996 | Grad: 1.1625 | LR: 1.93e-04 | Tok/s: 184 | Peak: 2.35 GB
+  Step 210/5661 | Loss: 0.5840 | Grad: 1.2858 | LR: 1.93e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 215/5661 | Loss: 0.6792 | Grad: 0.9332 | LR: 1.93e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 220/5661 | Loss: 0.4921 | Grad: 1.0559 | LR: 1.92e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 225/5661 | Loss: 0.6979 | Grad: 0.9652 | LR: 1.92e-04 | Tok/s: 184 | Peak: 2.35 GB
+  Step 230/5661 | Loss: 0.5687 | Grad: 1.0857 | LR: 1.92e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 235/5661 | Loss: 0.7378 | Grad: 1.2948 | LR: 1.92e-04 | Tok/s: 191 | Peak: 2.35 GB
+  Step 240/5661 | Loss: 0.5788 | Grad: 0.8014 | LR: 1.92e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 245/5661 | Loss: 0.6046 | Grad: 0.6764 | LR: 1.92e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 250/5661 | Loss: 0.5380 | Grad: 0.8230 | LR: 1.91e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 255/5661 | Loss: 0.5099 | Grad: 0.7406 | LR: 1.91e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 260/5661 | Loss: 0.6230 | Grad: 0.9619 | LR: 1.91e-04 | Tok/s: 186 | Peak: 2.35 GB
+  Step 265/5661 | Loss: 0.4850 | Grad: 0.8765 | LR: 1.91e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 270/5661 | Loss: 0.5352 | Grad: 1.0596 | LR: 1.91e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 275/5661 | Loss: 0.5324 | Grad: 0.8626 | LR: 1.90e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 280/5661 | Loss: 0.5868 | Grad: 1.0954 | LR: 1.90e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 285/5661 | Loss: 0.6188 | Grad: 0.9118 | LR: 1.90e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 290/5661 | Loss: 0.4512 | Grad: 1.2094 | LR: 1.90e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 295/5661 | Loss: 0.6248 | Grad: 0.9765 | LR: 1.90e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 300/5661 | Loss: 0.5548 | Grad: 1.0389 | LR: 1.90e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 305/5661 | Loss: 0.5081 | Grad: 0.8938 | LR: 1.89e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 310/5661 | Loss: 0.3747 | Grad: 0.9383 | LR: 1.89e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 315/5661 | Loss: 0.4888 | Grad: 0.5828 | LR: 1.89e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 320/5661 | Loss: 0.4830 | Grad: 1.2821 | LR: 1.89e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 325/5661 | Loss: 0.7337 | Grad: 0.9895 | LR: 1.89e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 330/5661 | Loss: 0.4524 | Grad: 1.0775 | LR: 1.89e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 335/5661 | Loss: 0.6043 | Grad: 1.1754 | LR: 1.88e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 340/5661 | Loss: 0.4803 | Grad: 0.9696 | LR: 1.88e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 345/5661 | Loss: 0.4104 | Grad: 0.6064 | LR: 1.88e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 350/5661 | Loss: 0.6574 | Grad: 1.6516 | LR: 1.88e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 355/5661 | Loss: 0.4809 | Grad: 0.8060 | LR: 1.88e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 360/5661 | Loss: 0.5629 | Grad: 1.2665 | LR: 1.87e-04 | Tok/s: 185 | Peak: 2.35 GB
+  Step 365/5661 | Loss: 0.6459 | Grad: 1.0100 | LR: 1.87e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 370/5661 | Loss: 0.6004 | Grad: 0.9849 | LR: 1.87e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 375/5661 | Loss: 0.4762 | Grad: 1.3940 | LR: 1.87e-04 | Tok/s: 183 | Peak: 2.35 GB
+  Step 380/5661 | Loss: 0.2890 | Grad: 0.8811 | LR: 1.87e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 385/5661 | Loss: 0.4943 | Grad: 1.0818 | LR: 1.87e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 390/5661 | Loss: 0.4744 | Grad: 0.6457 | LR: 1.86e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 395/5661 | Loss: 0.4365 | Grad: 0.7549 | LR: 1.86e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 400/5661 | Loss: 0.3726 | Grad: 1.0192 | LR: 1.86e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 405/5661 | Loss: 0.4625 | Grad: 0.9167 | LR: 1.86e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 410/5661 | Loss: 0.3969 | Grad: 0.7800 | LR: 1.86e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 415/5661 | Loss: 0.4795 | Grad: 1.0136 | LR: 1.86e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 420/5661 | Loss: 0.5082 | Grad: 0.8768 | LR: 1.85e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 425/5661 | Loss: 0.5243 | Grad: 0.7096 | LR: 1.85e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 430/5661 | Loss: 0.4838 | Grad: 0.9745 | LR: 1.85e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 435/5661 | Loss: 0.4347 | Grad: 0.9276 | LR: 1.85e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 440/5661 | Loss: 0.4767 | Grad: 0.8765 | LR: 1.85e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 445/5661 | Loss: 0.6203 | Grad: 1.3582 | LR: 1.84e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 450/5661 | Loss: 0.7559 | Grad: 0.9885 | LR: 1.84e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 455/5661 | Loss: 0.4538 | Grad: 0.8567 | LR: 1.84e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 460/5661 | Loss: 0.4789 | Grad: 0.8089 | LR: 1.84e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 465/5661 | Loss: 0.3277 | Grad: 1.0523 | LR: 1.84e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 470/5661 | Loss: 0.4989 | Grad: 0.9927 | LR: 1.84e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 475/5661 | Loss: 0.5380 | Grad: 1.6534 | LR: 1.83e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 480/5661 | Loss: 0.4995 | Grad: 1.1020 | LR: 1.83e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 485/5661 | Loss: 0.4027 | Grad: 0.9228 | LR: 1.83e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 490/5661 | Loss: 0.2851 | Grad: 1.0256 | LR: 1.83e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 495/5661 | Loss: 0.5069 | Grad: 1.0353 | LR: 1.83e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 500/5661 | Loss: 0.4371 | Grad: 1.0716 | LR: 1.83e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 505/5661 | Loss: 0.4482 | Grad: 0.6173 | LR: 1.82e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 510/5661 | Loss: 0.6696 | Grad: 1.3540 | LR: 1.82e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 515/5661 | Loss: 0.5115 | Grad: 1.1420 | LR: 1.82e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 520/5661 | Loss: 0.4122 | Grad: 1.2643 | LR: 1.82e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 525/5661 | Loss: 0.4835 | Grad: 1.0158 | LR: 1.82e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 530/5661 | Loss: 0.5370 | Grad: 1.2972 | LR: 1.81e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 535/5661 | Loss: 0.3860 | Grad: 1.0758 | LR: 1.81e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 540/5661 | Loss: 0.4442 | Grad: 1.1854 | LR: 1.81e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 545/5661 | Loss: 0.5722 | Grad: 1.6074 | LR: 1.81e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 550/5661 | Loss: 0.4203 | Grad: 1.0261 | LR: 1.81e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 555/5661 | Loss: 0.3935 | Grad: 1.1231 | LR: 1.81e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 560/5661 | Loss: 0.5167 | Grad: 1.1839 | LR: 1.80e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 565/5661 | Loss: 0.3899 | Grad: 0.8944 | LR: 1.80e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 570/5661 | Loss: 0.3627 | Grad: 0.7417 | LR: 1.80e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 575/5661 | Loss: 0.5140 | Grad: 1.6034 | LR: 1.80e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 580/5661 | Loss: 0.4095 | Grad: 0.7391 | LR: 1.80e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 585/5661 | Loss: 0.5318 | Grad: 1.1451 | LR: 1.80e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 590/5661 | Loss: 0.4804 | Grad: 1.8385 | LR: 1.79e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 595/5661 | Loss: 0.4154 | Grad: 1.1230 | LR: 1.79e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 600/5661 | Loss: 0.3702 | Grad: 1.3492 | LR: 1.79e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 605/5661 | Loss: 0.3458 | Grad: 1.2073 | LR: 1.79e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 610/5661 | Loss: 0.3836 | Grad: 0.7296 | LR: 1.79e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 615/5661 | Loss: 0.3703 | Grad: 1.0028 | LR: 1.78e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 620/5661 | Loss: 0.4722 | Grad: 1.2545 | LR: 1.78e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 625/5661 | Loss: 0.3453 | Grad: 0.7680 | LR: 1.78e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 630/5661 | Loss: 0.3817 | Grad: 1.1613 | LR: 1.78e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 635/5661 | Loss: 0.4753 | Grad: 0.6677 | LR: 1.78e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 640/5661 | Loss: 0.6497 | Grad: 0.9516 | LR: 1.78e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 645/5661 | Loss: 0.3684 | Grad: 0.7712 | LR: 1.77e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 650/5661 | Loss: 0.3955 | Grad: 0.5362 | LR: 1.77e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 655/5661 | Loss: 0.3873 | Grad: 0.9067 | LR: 1.77e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 660/5661 | Loss: 0.5099 | Grad: 0.8684 | LR: 1.77e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 665/5661 | Loss: 0.3371 | Grad: 0.8902 | LR: 1.77e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 670/5661 | Loss: 0.4717 | Grad: 1.3321 | LR: 1.77e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 675/5661 | Loss: 0.4531 | Grad: 1.5066 | LR: 1.76e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 680/5661 | Loss: 0.4234 | Grad: 1.5499 | LR: 1.76e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 685/5661 | Loss: 0.4494 | Grad: 1.2150 | LR: 1.76e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 690/5661 | Loss: 0.4360 | Grad: 1.8918 | LR: 1.76e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 695/5661 | Loss: 0.3266 | Grad: 0.8302 | LR: 1.76e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 700/5661 | Loss: 0.3628 | Grad: 1.1133 | LR: 1.75e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 705/5661 | Loss: 0.3870 | Grad: 1.2752 | LR: 1.75e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 710/5661 | Loss: 0.4751 | Grad: 1.1809 | LR: 1.75e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 715/5661 | Loss: 0.4508 | Grad: 0.9213 | LR: 1.75e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 720/5661 | Loss: 0.4974 | Grad: 1.6532 | LR: 1.75e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 725/5661 | Loss: 0.4804 | Grad: 0.8820 | LR: 1.75e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 730/5661 | Loss: 0.4094 | Grad: 0.8378 | LR: 1.74e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 735/5661 | Loss: 0.3881 | Grad: 1.0666 | LR: 1.74e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 740/5661 | Loss: 0.4084 | Grad: 0.7721 | LR: 1.74e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 745/5661 | Loss: 0.3570 | Grad: 1.2241 | LR: 1.74e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 750/5661 | Loss: 0.3979 | Grad: 0.9545 | LR: 1.74e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 755/5661 | Loss: 0.4286 | Grad: 1.0913 | LR: 1.74e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 760/5661 | Loss: 0.4823 | Grad: 1.2124 | LR: 1.73e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 765/5661 | Loss: 0.3239 | Grad: 0.6530 | LR: 1.73e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 770/5661 | Loss: 0.4349 | Grad: 0.8949 | LR: 1.73e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 775/5661 | Loss: 0.3839 | Grad: 0.9595 | LR: 1.73e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 780/5661 | Loss: 0.4281 | Grad: 1.0005 | LR: 1.73e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 785/5661 | Loss: 0.3750 | Grad: 0.7384 | LR: 1.72e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 790/5661 | Loss: 0.3636 | Grad: 0.7724 | LR: 1.72e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 795/5661 | Loss: 0.5184 | Grad: 0.8904 | LR: 1.72e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 800/5661 | Loss: 0.3955 | Grad: 0.7183 | LR: 1.72e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 805/5661 | Loss: 0.3596 | Grad: 1.0803 | LR: 1.72e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 810/5661 | Loss: 0.5407 | Grad: 1.0385 | LR: 1.72e-04 | Tok/s: 183 | Peak: 2.35 GB
+  Step 815/5661 | Loss: 0.3778 | Grad: 1.1810 | LR: 1.71e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 820/5661 | Loss: 0.4083 | Grad: 0.9038 | LR: 1.71e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 825/5661 | Loss: 0.4073 | Grad: 1.0952 | LR: 1.71e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 830/5661 | Loss: 0.3267 | Grad: 0.7550 | LR: 1.71e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 835/5661 | Loss: 0.3537 | Grad: 1.4357 | LR: 1.71e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 840/5661 | Loss: 0.3497 | Grad: 1.3196 | LR: 1.71e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 845/5661 | Loss: 0.4256 | Grad: 0.5649 | LR: 1.70e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 850/5661 | Loss: 0.3620 | Grad: 1.3680 | LR: 1.70e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 855/5661 | Loss: 0.3297 | Grad: 0.4793 | LR: 1.70e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 860/5661 | Loss: 0.5598 | Grad: 1.0375 | LR: 1.70e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 865/5661 | Loss: 0.3779 | Grad: 1.0738 | LR: 1.70e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 870/5661 | Loss: 0.3075 | Grad: 1.1055 | LR: 1.69e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 875/5661 | Loss: 0.2703 | Grad: 0.8204 | LR: 1.69e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 880/5661 | Loss: 0.2677 | Grad: 1.3014 | LR: 1.69e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 885/5661 | Loss: 0.3612 | Grad: 1.2067 | LR: 1.69e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 890/5661 | Loss: 0.3569 | Grad: 1.0756 | LR: 1.69e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 895/5661 | Loss: 0.2402 | Grad: 0.8499 | LR: 1.69e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 900/5661 | Loss: 0.4073 | Grad: 1.1896 | LR: 1.68e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 905/5661 | Loss: 0.3235 | Grad: 1.1820 | LR: 1.68e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 910/5661 | Loss: 0.4534 | Grad: 0.9041 | LR: 1.68e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 915/5661 | Loss: 0.2617 | Grad: 0.6860 | LR: 1.68e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 920/5661 | Loss: 0.3029 | Grad: 0.8983 | LR: 1.68e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 925/5661 | Loss: 0.4190 | Grad: 1.7155 | LR: 1.68e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 930/5661 | Loss: 0.3511 | Grad: 1.0018 | LR: 1.67e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 935/5661 | Loss: 0.4601 | Grad: 1.2926 | LR: 1.67e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 940/5661 | Loss: 0.2789 | Grad: 0.7112 | LR: 1.67e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 945/5661 | Loss: 0.4414 | Grad: 1.6838 | LR: 1.67e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 950/5661 | Loss: 0.3003 | Grad: 0.8976 | LR: 1.67e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 955/5661 | Loss: 0.3630 | Grad: 1.4806 | LR: 1.66e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 960/5661 | Loss: 0.3833 | Grad: 1.5773 | LR: 1.66e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 965/5661 | Loss: 0.3043 | Grad: 1.3794 | LR: 1.66e-04 | Tok/s: 182 | Peak: 2.35 GB
+  Step 970/5661 | Loss: 0.4684 | Grad: 1.3198 | LR: 1.66e-04 | Tok/s: 156 | Peak: 2.35 GB
+  Step 975/5661 | Loss: 0.3529 | Grad: 0.5874 | LR: 1.66e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 980/5661 | Loss: 0.3063 | Grad: 1.0882 | LR: 1.66e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 985/5661 | Loss: 0.3609 | Grad: 0.9190 | LR: 1.65e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 990/5661 | Loss: 0.3207 | Grad: 0.9645 | LR: 1.65e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 995/5661 | Loss: 0.2351 | Grad: 0.8597 | LR: 1.65e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1000/5661 | Loss: 0.3061 | Grad: 0.6592 | LR: 1.65e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1005/5661 | Loss: 0.4439 | Grad: 1.2882 | LR: 1.65e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1010/5661 | Loss: 0.3101 | Grad: 1.3412 | LR: 1.64e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1015/5661 | Loss: 0.2942 | Grad: 0.5865 | LR: 1.64e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1020/5661 | Loss: 0.2544 | Grad: 0.8507 | LR: 1.64e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1025/5661 | Loss: 0.3895 | Grad: 0.8636 | LR: 1.64e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1030/5661 | Loss: 0.3572 | Grad: 1.2554 | LR: 1.64e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1035/5661 | Loss: 0.3462 | Grad: 1.0556 | LR: 1.64e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1040/5661 | Loss: 0.3357 | Grad: 1.3992 | LR: 1.63e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1045/5661 | Loss: 0.4039 | Grad: 0.9997 | LR: 1.63e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1050/5661 | Loss: 0.3303 | Grad: 0.9191 | LR: 1.63e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1055/5661 | Loss: 0.2726 | Grad: 1.0257 | LR: 1.63e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1060/5661 | Loss: 0.4543 | Grad: 0.8189 | LR: 1.63e-04 | Tok/s: 155 | Peak: 2.35 GB
+  Step 1065/5661 | Loss: 0.2085 | Grad: 1.3368 | LR: 1.63e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1070/5661 | Loss: 0.2830 | Grad: 0.9247 | LR: 1.62e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 1075/5661 | Loss: 0.2508 | Grad: 1.0221 | LR: 1.62e-04 | Tok/s: 155 | Peak: 2.35 GB
+  Step 1080/5661 | Loss: 0.4199 | Grad: 1.4373 | LR: 1.62e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1085/5661 | Loss: 0.2352 | Grad: 1.3651 | LR: 1.62e-04 | Tok/s: 156 | Peak: 2.35 GB
+  Step 1090/5661 | Loss: 0.4382 | Grad: 1.3117 | LR: 1.62e-04 | Tok/s: 156 | Peak: 2.35 GB
+  Step 1095/5661 | Loss: 0.2481 | Grad: 1.1498 | LR: 1.61e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1100/5661 | Loss: 0.2606 | Grad: 1.0081 | LR: 1.61e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1105/5661 | Loss: 0.3170 | Grad: 1.0748 | LR: 1.61e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1110/5661 | Loss: 0.3311 | Grad: 1.0239 | LR: 1.61e-04 | Tok/s: 155 | Peak: 2.35 GB
+  Step 1115/5661 | Loss: 0.4582 | Grad: 1.1195 | LR: 1.61e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1120/5661 | Loss: 0.3221 | Grad: 1.1867 | LR: 1.61e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1125/5661 | Loss: 0.3127 | Grad: 0.5406 | LR: 1.60e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1130/5661 | Loss: 0.2275 | Grad: 1.6702 | LR: 1.60e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1135/5661 | Loss: 0.2940 | Grad: 0.7521 | LR: 1.60e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1140/5661 | Loss: 0.4197 | Grad: 0.5692 | LR: 1.60e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 1145/5661 | Loss: 0.3586 | Grad: 0.5588 | LR: 1.60e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 1150/5661 | Loss: 0.2863 | Grad: 0.6563 | LR: 1.60e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1155/5661 | Loss: 0.2600 | Grad: 0.8116 | LR: 1.59e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1160/5661 | Loss: 0.3177 | Grad: 1.0206 | LR: 1.59e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1165/5661 | Loss: 0.4157 | Grad: 1.3438 | LR: 1.59e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1170/5661 | Loss: 0.3452 | Grad: 1.2152 | LR: 1.59e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1175/5661 | Loss: 0.3880 | Grad: 0.9376 | LR: 1.59e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1180/5661 | Loss: 0.3369 | Grad: 0.9738 | LR: 1.58e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1185/5661 | Loss: 0.3624 | Grad: 0.9257 | LR: 1.58e-04 | Tok/s: 156 | Peak: 2.35 GB
+  Step 1190/5661 | Loss: 0.3436 | Grad: 0.8453 | LR: 1.58e-04 | Tok/s: 136 | Peak: 2.35 GB
+  Step 1195/5661 | Loss: 0.3224 | Grad: 1.2989 | LR: 1.58e-04 | Tok/s: 154 | Peak: 2.35 GB
+  Step 1200/5661 | Loss: 0.3854 | Grad: 1.0973 | LR: 1.58e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1205/5661 | Loss: 0.3165 | Grad: 1.0445 | LR: 1.58e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1210/5661 | Loss: 0.3773 | Grad: 0.7976 | LR: 1.57e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1215/5661 | Loss: 0.2824 | Grad: 0.7023 | LR: 1.57e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1220/5661 | Loss: 0.4135 | Grad: 0.6918 | LR: 1.57e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1225/5661 | Loss: 0.3689 | Grad: 1.6647 | LR: 1.57e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1230/5661 | Loss: 0.5665 | Grad: 1.0588 | LR: 1.57e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1235/5661 | Loss: 0.2444 | Grad: 0.5346 | LR: 1.57e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1240/5661 | Loss: 0.4052 | Grad: 0.7725 | LR: 1.56e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1245/5661 | Loss: 0.3068 | Grad: 1.4732 | LR: 1.56e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1250/5661 | Loss: 0.2789 | Grad: 1.0531 | LR: 1.56e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1255/5661 | Loss: 0.2522 | Grad: 1.1008 | LR: 1.56e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1260/5661 | Loss: 0.4455 | Grad: 2.4371 | LR: 1.56e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1265/5661 | Loss: 0.1920 | Grad: 0.6278 | LR: 1.55e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1270/5661 | Loss: 0.5405 | Grad: 1.1352 | LR: 1.55e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1275/5661 | Loss: 0.3440 | Grad: 1.2333 | LR: 1.55e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1280/5661 | Loss: 0.4164 | Grad: 1.4710 | LR: 1.55e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1285/5661 | Loss: 0.3430 | Grad: 1.1897 | LR: 1.55e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1290/5661 | Loss: 0.4250 | Grad: 1.4841 | LR: 1.55e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1295/5661 | Loss: 0.3230 | Grad: 0.9437 | LR: 1.54e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1300/5661 | Loss: 0.2175 | Grad: 1.5949 | LR: 1.54e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1305/5661 | Loss: 0.3571 | Grad: 2.3213 | LR: 1.54e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1310/5661 | Loss: 0.2850 | Grad: 0.9023 | LR: 1.54e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1315/5661 | Loss: 0.2150 | Grad: 1.2795 | LR: 1.54e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1320/5661 | Loss: 0.2421 | Grad: 1.3371 | LR: 1.54e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1325/5661 | Loss: 0.2220 | Grad: 0.6360 | LR: 1.53e-04 | Tok/s: 154 | Peak: 2.35 GB
+  Step 1330/5661 | Loss: 0.3523 | Grad: 0.8332 | LR: 1.53e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1335/5661 | Loss: 0.3283 | Grad: 0.9409 | LR: 1.53e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1340/5661 | Loss: 0.2458 | Grad: 0.7073 | LR: 1.53e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1345/5661 | Loss: 0.4430 | Grad: 1.1711 | LR: 1.53e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1350/5661 | Loss: 0.2410 | Grad: 1.0549 | LR: 1.52e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1355/5661 | Loss: 0.3061 | Grad: 1.0700 | LR: 1.52e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1360/5661 | Loss: 0.2983 | Grad: 0.9803 | LR: 1.52e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 1365/5661 | Loss: 0.2359 | Grad: 1.1021 | LR: 1.52e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1370/5661 | Loss: 0.2027 | Grad: 0.8586 | LR: 1.52e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1375/5661 | Loss: 0.2899 | Grad: 1.1169 | LR: 1.52e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1380/5661 | Loss: 0.3127 | Grad: 0.9634 | LR: 1.51e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1385/5661 | Loss: 0.2664 | Grad: 0.9825 | LR: 1.51e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1390/5661 | Loss: 0.2790 | Grad: 0.5868 | LR: 1.51e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1395/5661 | Loss: 0.3487 | Grad: 1.5486 | LR: 1.51e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 1400/5661 | Loss: 0.2952 | Grad: 1.3046 | LR: 1.51e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1405/5661 | Loss: 0.2449 | Grad: 0.4458 | LR: 1.51e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1410/5661 | Loss: 0.2287 | Grad: 1.2757 | LR: 1.50e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1415/5661 | Loss: 0.2956 | Grad: 0.4711 | LR: 1.50e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1420/5661 | Loss: 0.2113 | Grad: 0.9575 | LR: 1.50e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1425/5661 | Loss: 0.2809 | Grad: 1.2126 | LR: 1.50e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1430/5661 | Loss: 0.2796 | Grad: 0.8326 | LR: 1.50e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1435/5661 | Loss: 0.2468 | Grad: 1.1595 | LR: 1.49e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1440/5661 | Loss: 0.3256 | Grad: 1.2524 | LR: 1.49e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 1445/5661 | Loss: 0.2303 | Grad: 0.5680 | LR: 1.49e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1450/5661 | Loss: 0.2907 | Grad: 0.9163 | LR: 1.49e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1455/5661 | Loss: 0.3288 | Grad: 1.5715 | LR: 1.49e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 1460/5661 | Loss: 0.2059 | Grad: 1.3361 | LR: 1.49e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1465/5661 | Loss: 0.3332 | Grad: 1.2569 | LR: 1.48e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 1470/5661 | Loss: 0.3400 | Grad: 0.8020 | LR: 1.48e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 1475/5661 | Loss: 0.2378 | Grad: 1.3272 | LR: 1.48e-04 | Tok/s: 149 | Peak: 2.35 GB
+  Step 1480/5661 | Loss: 0.2912 | Grad: 1.0700 | LR: 1.48e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1485/5661 | Loss: 0.2237 | Grad: 1.0352 | LR: 1.48e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1490/5661 | Loss: 0.1879 | Grad: 0.7531 | LR: 1.48e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 1495/5661 | Loss: 0.2683 | Grad: 0.9901 | LR: 1.47e-04 | Tok/s: 152 | Peak: 2.35 GB
+  Step 1500/5661 | Loss: 0.1757 | Grad: 0.5816 | LR: 1.47e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1505/5661 | Loss: 0.2350 | Grad: 0.9342 | LR: 1.47e-04 | Tok/s: 131 | Peak: 2.35 GB
+  Step 1510/5661 | Loss: 0.3119 | Grad: 0.9850 | LR: 1.47e-04 | Tok/s: 115 | Peak: 2.35 GB
+  Step 1515/5661 | Loss: 0.2555 | Grad: 1.4526 | LR: 1.47e-04 | Tok/s: 151 | Peak: 2.35 GB
+  Step 1520/5661 | Loss: 0.3489 | Grad: 1.4111 | LR: 1.46e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1525/5661 | Loss: 0.3640 | Grad: 1.1790 | LR: 1.46e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1530/5661 | Loss: 0.2121 | Grad: 0.9202 | LR: 1.46e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1535/5661 | Loss: 0.3143 | Grad: 1.6442 | LR: 1.46e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1540/5661 | Loss: 0.3740 | Grad: 1.8378 | LR: 1.46e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1545/5661 | Loss: 0.3895 | Grad: 0.8635 | LR: 1.46e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1550/5661 | Loss: 0.5081 | Grad: 1.7164 | LR: 1.45e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1555/5661 | Loss: 0.1954 | Grad: 0.9802 | LR: 1.45e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1560/5661 | Loss: 0.2479 | Grad: 1.4416 | LR: 1.45e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1565/5661 | Loss: 0.2439 | Grad: 0.6896 | LR: 1.45e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1570/5661 | Loss: 0.2437 | Grad: 0.7701 | LR: 1.45e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1575/5661 | Loss: 0.3470 | Grad: 0.9728 | LR: 1.45e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1580/5661 | Loss: 0.2290 | Grad: 0.8776 | LR: 1.44e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1585/5661 | Loss: 0.2406 | Grad: 1.5683 | LR: 1.44e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 1590/5661 | Loss: 0.1997 | Grad: 1.2933 | LR: 1.44e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1595/5661 | Loss: 0.3772 | Grad: 0.8539 | LR: 1.44e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 1600/5661 | Loss: 0.3451 | Grad: 0.8637 | LR: 1.44e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1605/5661 | Loss: 0.3104 | Grad: 0.6857 | LR: 1.43e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1610/5661 | Loss: 0.4249 | Grad: 0.8467 | LR: 1.43e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1615/5661 | Loss: 0.2801 | Grad: 0.5210 | LR: 1.43e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1620/5661 | Loss: 0.1315 | Grad: 0.7130 | LR: 1.43e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1625/5661 | Loss: 0.4291 | Grad: 1.9457 | LR: 1.43e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 1630/5661 | Loss: 0.2481 | Grad: 1.1989 | LR: 1.43e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1635/5661 | Loss: 0.2127 | Grad: 0.8666 | LR: 1.42e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1640/5661 | Loss: 0.3267 | Grad: 1.2517 | LR: 1.42e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1645/5661 | Loss: 0.4279 | Grad: 1.8358 | LR: 1.42e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1650/5661 | Loss: 0.2092 | Grad: 0.6697 | LR: 1.42e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1655/5661 | Loss: 0.3132 | Grad: 1.2782 | LR: 1.42e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1660/5661 | Loss: 0.2374 | Grad: 0.7896 | LR: 1.42e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1665/5661 | Loss: 0.2980 | Grad: 1.1484 | LR: 1.41e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1670/5661 | Loss: 0.3755 | Grad: 0.6757 | LR: 1.41e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 1675/5661 | Loss: 0.2566 | Grad: 0.8555 | LR: 1.41e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1680/5661 | Loss: 0.1878 | Grad: 0.7583 | LR: 1.41e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1685/5661 | Loss: 0.2473 | Grad: 1.4230 | LR: 1.41e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1690/5661 | Loss: 0.2267 | Grad: 1.4765 | LR: 1.40e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1695/5661 | Loss: 0.2108 | Grad: 0.6084 | LR: 1.40e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1700/5661 | Loss: 0.2476 | Grad: 0.6431 | LR: 1.40e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1705/5661 | Loss: 0.2006 | Grad: 1.0135 | LR: 1.40e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1710/5661 | Loss: 0.2560 | Grad: 1.1606 | LR: 1.40e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1715/5661 | Loss: 0.3630 | Grad: 2.1687 | LR: 1.40e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1720/5661 | Loss: 0.2267 | Grad: 0.7596 | LR: 1.39e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 1725/5661 | Loss: 0.3208 | Grad: 0.9630 | LR: 1.39e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1730/5661 | Loss: 0.1546 | Grad: 1.1101 | LR: 1.39e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1735/5661 | Loss: 0.2582 | Grad: 1.0474 | LR: 1.39e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1740/5661 | Loss: 0.2502 | Grad: 0.7308 | LR: 1.39e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 1745/5661 | Loss: 0.2760 | Grad: 0.6832 | LR: 1.39e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1750/5661 | Loss: 0.4049 | Grad: 1.2870 | LR: 1.38e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1755/5661 | Loss: 0.2017 | Grad: 0.9571 | LR: 1.38e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1760/5661 | Loss: 0.2205 | Grad: 1.2117 | LR: 1.38e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1765/5661 | Loss: 0.3822 | Grad: 0.8120 | LR: 1.38e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 1770/5661 | Loss: 0.3303 | Grad: 0.9301 | LR: 1.38e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1775/5661 | Loss: 0.2076 | Grad: 0.4240 | LR: 1.37e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 1780/5661 | Loss: 0.1367 | Grad: 0.7651 | LR: 1.37e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1785/5661 | Loss: 0.3299 | Grad: 0.7110 | LR: 1.37e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1790/5661 | Loss: 0.2609 | Grad: 0.9625 | LR: 1.37e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1795/5661 | Loss: 0.3986 | Grad: 0.9007 | LR: 1.37e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1800/5661 | Loss: 0.2131 | Grad: 0.8093 | LR: 1.37e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1805/5661 | Loss: 0.1990 | Grad: 1.0430 | LR: 1.36e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1810/5661 | Loss: 0.1851 | Grad: 0.4744 | LR: 1.36e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1815/5661 | Loss: 0.2078 | Grad: 0.6747 | LR: 1.36e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 1820/5661 | Loss: 0.2950 | Grad: 1.7441 | LR: 1.36e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1825/5661 | Loss: 0.1444 | Grad: 1.2489 | LR: 1.36e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 1830/5661 | Loss: 0.2220 | Grad: 0.4209 | LR: 1.36e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1835/5661 | Loss: 0.2920 | Grad: 1.1673 | LR: 1.35e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 1840/5661 | Loss: 0.1800 | Grad: 0.9279 | LR: 1.35e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 1845/5661 | Loss: 0.1457 | Grad: 1.1675 | LR: 1.35e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1850/5661 | Loss: 0.3294 | Grad: 1.1859 | LR: 1.35e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1855/5661 | Loss: 0.2898 | Grad: 1.1088 | LR: 1.35e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1860/5661 | Loss: 0.2296 | Grad: 0.4862 | LR: 1.34e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1865/5661 | Loss: 0.1187 | Grad: 0.6784 | LR: 1.34e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1870/5661 | Loss: 0.1792 | Grad: 1.0090 | LR: 1.34e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1875/5661 | Loss: 0.1943 | Grad: 0.9933 | LR: 1.34e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1880/5661 | Loss: 0.2547 | Grad: 0.5523 | LR: 1.34e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1885/5661 | Loss: 0.2335 | Grad: 0.8559 | LR: 1.34e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1890/5661 | Loss: 0.1731 | Grad: 0.9711 | LR: 1.33e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 1895/5661 | Loss: 0.0941 | Grad: 0.7371 | LR: 1.33e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1900/5661 | Loss: 0.2271 | Grad: 1.1841 | LR: 1.33e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1905/5661 | Loss: 0.2105 | Grad: 0.7864 | LR: 1.33e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1910/5661 | Loss: 0.2600 | Grad: 0.8353 | LR: 1.33e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 1915/5661 | Loss: 0.2389 | Grad: 0.8727 | LR: 1.32e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 1920/5661 | Loss: 0.2116 | Grad: 1.3659 | LR: 1.32e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 1925/5661 | Loss: 0.3377 | Grad: 0.3964 | LR: 1.32e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1930/5661 | Loss: 0.1914 | Grad: 1.3574 | LR: 1.32e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1935/5661 | Loss: 0.3036 | Grad: 0.8060 | LR: 1.32e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 1940/5661 | Loss: 0.2162 | Grad: 1.3735 | LR: 1.32e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1945/5661 | Loss: 0.2063 | Grad: 0.8541 | LR: 1.31e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 1950/5661 | Loss: 0.2527 | Grad: 0.5180 | LR: 1.31e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 1955/5661 | Loss: 0.1525 | Grad: 0.5191 | LR: 1.31e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 1960/5661 | Loss: 0.1501 | Grad: 0.6277 | LR: 1.31e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1965/5661 | Loss: 0.2809 | Grad: 0.6878 | LR: 1.31e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1970/5661 | Loss: 0.2892 | Grad: 0.3835 | LR: 1.31e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1975/5661 | Loss: 0.2127 | Grad: 1.2875 | LR: 1.30e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 1980/5661 | Loss: 0.1954 | Grad: 0.7506 | LR: 1.30e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 1985/5661 | Loss: 0.1450 | Grad: 0.6901 | LR: 1.30e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 1990/5661 | Loss: 0.3256 | Grad: 1.1679 | LR: 1.30e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 1995/5661 | Loss: 0.2142 | Grad: 0.9712 | LR: 1.30e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2000/5661 | Loss: 0.2353 | Grad: 0.8003 | LR: 1.29e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2005/5661 | Loss: 0.2832 | Grad: 0.8898 | LR: 1.29e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2010/5661 | Loss: 0.2850 | Grad: 0.6498 | LR: 1.29e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2015/5661 | Loss: 0.2445 | Grad: 0.4053 | LR: 1.29e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2020/5661 | Loss: 0.2524 | Grad: 0.7241 | LR: 1.29e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2025/5661 | Loss: 0.2464 | Grad: 1.2583 | LR: 1.29e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2030/5661 | Loss: 0.2684 | Grad: 1.0612 | LR: 1.28e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2035/5661 | Loss: 0.2203 | Grad: 0.6318 | LR: 1.28e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2040/5661 | Loss: 0.2425 | Grad: 1.8432 | LR: 1.28e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2045/5661 | Loss: 0.2146 | Grad: 0.4503 | LR: 1.28e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2050/5661 | Loss: 0.2608 | Grad: 1.2761 | LR: 1.28e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2055/5661 | Loss: 0.1632 | Grad: 1.1626 | LR: 1.28e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 2060/5661 | Loss: 0.2335 | Grad: 0.6822 | LR: 1.27e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2065/5661 | Loss: 0.1581 | Grad: 0.4267 | LR: 1.27e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2070/5661 | Loss: 0.1678 | Grad: 0.6724 | LR: 1.27e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2075/5661 | Loss: 0.2207 | Grad: 1.2940 | LR: 1.27e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2080/5661 | Loss: 0.2081 | Grad: 0.6112 | LR: 1.27e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2085/5661 | Loss: 0.1801 | Grad: 1.0524 | LR: 1.26e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2090/5661 | Loss: 0.2344 | Grad: 0.9639 | LR: 1.26e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2095/5661 | Loss: 0.2229 | Grad: 0.5796 | LR: 1.26e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2100/5661 | Loss: 0.1277 | Grad: 1.2285 | LR: 1.26e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2105/5661 | Loss: 0.1826 | Grad: 0.7622 | LR: 1.26e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 2110/5661 | Loss: 0.1823 | Grad: 1.3374 | LR: 1.26e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2115/5661 | Loss: 0.2829 | Grad: 1.0751 | LR: 1.25e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2120/5661 | Loss: 0.3120 | Grad: 1.9587 | LR: 1.25e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2125/5661 | Loss: 0.2662 | Grad: 0.9839 | LR: 1.25e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 2130/5661 | Loss: 0.1954 | Grad: 1.1270 | LR: 1.25e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2135/5661 | Loss: 0.1717 | Grad: 0.6137 | LR: 1.25e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2140/5661 | Loss: 0.1805 | Grad: 1.0538 | LR: 1.25e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2145/5661 | Loss: 0.3062 | Grad: 1.6853 | LR: 1.24e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2150/5661 | Loss: 0.2599 | Grad: 0.6936 | LR: 1.24e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2155/5661 | Loss: 0.1109 | Grad: 0.8472 | LR: 1.24e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2160/5661 | Loss: 0.1735 | Grad: 0.6858 | LR: 1.24e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2165/5661 | Loss: 0.2053 | Grad: 1.6434 | LR: 1.24e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2170/5661 | Loss: 0.2848 | Grad: 0.8139 | LR: 1.23e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2175/5661 | Loss: 0.2500 | Grad: 0.4153 | LR: 1.23e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2180/5661 | Loss: 0.1479 | Grad: 0.6755 | LR: 1.23e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2185/5661 | Loss: 0.1833 | Grad: 0.9799 | LR: 1.23e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 2190/5661 | Loss: 0.1813 | Grad: 0.9842 | LR: 1.23e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2195/5661 | Loss: 0.1926 | Grad: 0.4972 | LR: 1.23e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2200/5661 | Loss: 0.2377 | Grad: 1.1170 | LR: 1.22e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2205/5661 | Loss: 0.0813 | Grad: 0.9171 | LR: 1.22e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2210/5661 | Loss: 0.2706 | Grad: 0.7478 | LR: 1.22e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2215/5661 | Loss: 0.1555 | Grad: 0.7161 | LR: 1.22e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2220/5661 | Loss: 0.1625 | Grad: 1.4718 | LR: 1.22e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2225/5661 | Loss: 0.1323 | Grad: 0.7738 | LR: 1.22e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2230/5661 | Loss: 0.1763 | Grad: 0.8521 | LR: 1.21e-04 | Tok/s: 183 | Peak: 2.35 GB
+  Step 2235/5661 | Loss: 0.1615 | Grad: 0.5584 | LR: 1.21e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2240/5661 | Loss: 0.4143 | Grad: 0.6761 | LR: 1.21e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2245/5661 | Loss: 0.2337 | Grad: 0.8880 | LR: 1.21e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 2250/5661 | Loss: 0.2177 | Grad: 0.6287 | LR: 1.21e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2255/5661 | Loss: 0.1450 | Grad: 1.0695 | LR: 1.20e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 2260/5661 | Loss: 0.2176 | Grad: 1.1300 | LR: 1.20e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2265/5661 | Loss: 0.1526 | Grad: 0.9608 | LR: 1.20e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2270/5661 | Loss: 0.1872 | Grad: 1.6408 | LR: 1.20e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2275/5661 | Loss: 0.2994 | Grad: 0.9140 | LR: 1.20e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2280/5661 | Loss: 0.1785 | Grad: 0.4944 | LR: 1.20e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2285/5661 | Loss: 0.1303 | Grad: 0.8286 | LR: 1.19e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2290/5661 | Loss: 0.2297 | Grad: 0.8097 | LR: 1.19e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2295/5661 | Loss: 0.2067 | Grad: 0.7500 | LR: 1.19e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2300/5661 | Loss: 0.2378 | Grad: 1.1667 | LR: 1.19e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2305/5661 | Loss: 0.1516 | Grad: 1.0119 | LR: 1.19e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2310/5661 | Loss: 0.3194 | Grad: 1.1015 | LR: 1.19e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2315/5661 | Loss: 0.2167 | Grad: 0.8530 | LR: 1.18e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2320/5661 | Loss: 0.3164 | Grad: 0.5875 | LR: 1.18e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2325/5661 | Loss: 0.1231 | Grad: 0.4858 | LR: 1.18e-04 | Tok/s: 145 | Peak: 2.35 GB
+  Step 2330/5661 | Loss: 0.1638 | Grad: 0.9266 | LR: 1.18e-04 | Tok/s: 136 | Peak: 2.35 GB
+  Step 2335/5661 | Loss: 0.3351 | Grad: 1.0805 | LR: 1.18e-04 | Tok/s: 153 | Peak: 2.35 GB
+  Step 2340/5661 | Loss: 0.1673 | Grad: 0.6360 | LR: 1.17e-04 | Tok/s: 154 | Peak: 2.35 GB
+  Step 2345/5661 | Loss: 0.3453 | Grad: 0.8275 | LR: 1.17e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 2350/5661 | Loss: 0.1246 | Grad: 0.3277 | LR: 1.17e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 2355/5661 | Loss: 0.2272 | Grad: 0.3444 | LR: 1.17e-04 | Tok/s: 154 | Peak: 2.35 GB
+  Step 2360/5661 | Loss: 0.1767 | Grad: 0.8803 | LR: 1.17e-04 | Tok/s: 155 | Peak: 2.35 GB
+  Step 2365/5661 | Loss: 0.1851 | Grad: 0.8570 | LR: 1.17e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 2370/5661 | Loss: 0.0684 | Grad: 0.8410 | LR: 1.16e-04 | Tok/s: 152 | Peak: 2.35 GB
+  Step 2375/5661 | Loss: 0.1212 | Grad: 2.3712 | LR: 1.16e-04 | Tok/s: 159 | Peak: 2.35 GB
+  Step 2380/5661 | Loss: 0.1753 | Grad: 1.3217 | LR: 1.16e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 2385/5661 | Loss: 0.1412 | Grad: 1.3245 | LR: 1.16e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2390/5661 | Loss: 0.2400 | Grad: 1.7854 | LR: 1.16e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2395/5661 | Loss: 0.2308 | Grad: 1.2519 | LR: 1.16e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2400/5661 | Loss: 0.2329 | Grad: 1.0635 | LR: 1.15e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2405/5661 | Loss: 0.1240 | Grad: 0.6955 | LR: 1.15e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2410/5661 | Loss: 0.2641 | Grad: 1.1416 | LR: 1.15e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2415/5661 | Loss: 0.2051 | Grad: 0.3337 | LR: 1.15e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2420/5661 | Loss: 0.1984 | Grad: 0.7158 | LR: 1.15e-04 | Tok/s: 156 | Peak: 2.35 GB
+  Step 2425/5661 | Loss: 0.1269 | Grad: 0.5995 | LR: 1.14e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2430/5661 | Loss: 0.1021 | Grad: 0.3211 | LR: 1.14e-04 | Tok/s: 145 | Peak: 2.35 GB
+  Step 2435/5661 | Loss: 0.2158 | Grad: 0.7683 | LR: 1.14e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2440/5661 | Loss: 0.0911 | Grad: 0.6027 | LR: 1.14e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2445/5661 | Loss: 0.2423 | Grad: 0.7961 | LR: 1.14e-04 | Tok/s: 158 | Peak: 2.35 GB
+  Step 2450/5661 | Loss: 0.2087 | Grad: 0.5084 | LR: 1.14e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 2455/5661 | Loss: 0.1388 | Grad: 1.1889 | LR: 1.13e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2460/5661 | Loss: 0.1993 | Grad: 0.8627 | LR: 1.13e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 2465/5661 | Loss: 0.1991 | Grad: 1.4010 | LR: 1.13e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2470/5661 | Loss: 0.2092 | Grad: 1.0581 | LR: 1.13e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2475/5661 | Loss: 0.1916 | Grad: 1.5081 | LR: 1.13e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2480/5661 | Loss: 0.1938 | Grad: 0.8718 | LR: 1.13e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2485/5661 | Loss: 0.1137 | Grad: 0.6265 | LR: 1.12e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2490/5661 | Loss: 0.2268 | Grad: 0.6792 | LR: 1.12e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2495/5661 | Loss: 0.1728 | Grad: 0.7793 | LR: 1.12e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 2500/5661 | Loss: 0.1100 | Grad: 1.1570 | LR: 1.12e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2505/5661 | Loss: 0.1412 | Grad: 0.7532 | LR: 1.12e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 2510/5661 | Loss: 0.1958 | Grad: 0.8109 | LR: 1.11e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2515/5661 | Loss: 0.2464 | Grad: 0.6010 | LR: 1.11e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 2520/5661 | Loss: 0.3270 | Grad: 1.2274 | LR: 1.11e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 2525/5661 | Loss: 0.2127 | Grad: 0.7286 | LR: 1.11e-04 | Tok/s: 163 | Peak: 2.35 GB
+  Step 2530/5661 | Loss: 0.1445 | Grad: 0.3938 | LR: 1.11e-04 | Tok/s: 144 | Peak: 2.35 GB
+  Step 2535/5661 | Loss: 0.2469 | Grad: 0.5536 | LR: 1.11e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 2540/5661 | Loss: 0.1060 | Grad: 1.0728 | LR: 1.10e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2545/5661 | Loss: 0.1000 | Grad: 0.8490 | LR: 1.10e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2550/5661 | Loss: 0.2304 | Grad: 0.7138 | LR: 1.10e-04 | Tok/s: 157 | Peak: 2.35 GB
+  Step 2555/5661 | Loss: 0.0889 | Grad: 0.4339 | LR: 1.10e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2560/5661 | Loss: 0.1756 | Grad: 1.2011 | LR: 1.10e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2565/5661 | Loss: 0.1782 | Grad: 0.7694 | LR: 1.10e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2570/5661 | Loss: 0.2226 | Grad: 1.2221 | LR: 1.09e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2575/5661 | Loss: 0.2582 | Grad: 1.0297 | LR: 1.09e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2580/5661 | Loss: 0.0687 | Grad: 0.4847 | LR: 1.09e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2585/5661 | Loss: 0.2488 | Grad: 0.4806 | LR: 1.09e-04 | Tok/s: 160 | Peak: 2.35 GB
+  Step 2590/5661 | Loss: 0.2033 | Grad: 1.1777 | LR: 1.09e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2595/5661 | Loss: 0.1866 | Grad: 0.9270 | LR: 1.08e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2600/5661 | Loss: 0.1563 | Grad: 0.7227 | LR: 1.08e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2605/5661 | Loss: 0.1723 | Grad: 1.5872 | LR: 1.08e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2610/5661 | Loss: 0.2400 | Grad: 1.6593 | LR: 1.08e-04 | Tok/s: 161 | Peak: 2.35 GB
+  Step 2615/5661 | Loss: 0.2190 | Grad: 1.1668 | LR: 1.08e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2620/5661 | Loss: 0.1183 | Grad: 0.3817 | LR: 1.08e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2625/5661 | Loss: 0.1892 | Grad: 0.4923 | LR: 1.07e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2630/5661 | Loss: 0.1541 | Grad: 0.5573 | LR: 1.07e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2635/5661 | Loss: 0.2209 | Grad: 1.7164 | LR: 1.07e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2640/5661 | Loss: 0.2236 | Grad: 0.9305 | LR: 1.07e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2645/5661 | Loss: 0.1446 | Grad: 0.6179 | LR: 1.07e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2650/5661 | Loss: 0.1490 | Grad: 0.5670 | LR: 1.07e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2655/5661 | Loss: 0.1866 | Grad: 1.5558 | LR: 1.06e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2660/5661 | Loss: 0.2218 | Grad: 0.6381 | LR: 1.06e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2665/5661 | Loss: 0.0852 | Grad: 0.4185 | LR: 1.06e-04 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2670/5661 | Loss: 0.2318 | Grad: 0.5275 | LR: 1.06e-04 | Tok/s: 162 | Peak: 2.35 GB
+  Step 2675/5661 | Loss: 0.1520 | Grad: 1.6982 | LR: 1.06e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2680/5661 | Loss: 0.2366 | Grad: 0.9859 | LR: 1.05e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2685/5661 | Loss: 0.2289 | Grad: 1.0502 | LR: 1.05e-04 | Tok/s: 164 | Peak: 2.35 GB
+  Step 2690/5661 | Loss: 0.1729 | Grad: 0.7457 | LR: 1.05e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2695/5661 | Loss: 0.1676 | Grad: 0.5920 | LR: 1.05e-04 | Tok/s: 178 | Peak: 2.35 GB
+  Step 2700/5661 | Loss: 0.1450 | Grad: 0.5733 | LR: 1.05e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2705/5661 | Loss: 0.2266 | Grad: 1.1213 | LR: 1.05e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2710/5661 | Loss: 0.1955 | Grad: 1.3859 | LR: 1.04e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2715/5661 | Loss: 0.1295 | Grad: 0.5143 | LR: 1.04e-04 | Tok/s: 166 | Peak: 2.35 GB
+  Step 2720/5661 | Loss: 0.1099 | Grad: 0.8811 | LR: 1.04e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2725/5661 | Loss: 0.1613 | Grad: 0.7543 | LR: 1.04e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2730/5661 | Loss: 0.1873 | Grad: 1.4441 | LR: 1.04e-04 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2735/5661 | Loss: 0.2095 | Grad: 0.7080 | LR: 1.04e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2740/5661 | Loss: 0.1971 | Grad: 0.9341 | LR: 1.03e-04 | Tok/s: 180 | Peak: 2.35 GB
+  Step 2745/5661 | Loss: 0.2897 | Grad: 1.8406 | LR: 1.03e-04 | Tok/s: 179 | Peak: 2.35 GB
+  Step 2750/5661 | Loss: 0.1570 | Grad: 1.2662 | LR: 1.03e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2755/5661 | Loss: 0.1063 | Grad: 0.4416 | LR: 1.03e-04 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2760/5661 | Loss: 0.1668 | Grad: 0.5342 | LR: 1.03e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2765/5661 | Loss: 0.1249 | Grad: 0.6492 | LR: 1.02e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2770/5661 | Loss: 0.1057 | Grad: 0.2591 | LR: 1.02e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2775/5661 | Loss: 0.1911 | Grad: 0.4086 | LR: 1.02e-04 | Tok/s: 181 | Peak: 2.35 GB
+  Step 2780/5661 | Loss: 0.1826 | Grad: 1.1914 | LR: 1.02e-04 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2785/5661 | Loss: 0.0874 | Grad: 0.6923 | LR: 1.02e-04 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2790/5661 | Loss: 0.1490 | Grad: 0.5690 | LR: 1.02e-04 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2795/5661 | Loss: 0.1505 | Grad: 0.7535 | LR: 1.01e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2800/5661 | Loss: 0.2141 | Grad: 1.2583 | LR: 1.01e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2805/5661 | Loss: 0.1509 | Grad: 0.8020 | LR: 1.01e-04 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2810/5661 | Loss: 0.1149 | Grad: 1.1734 | LR: 1.01e-04 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2815/5661 | Loss: 0.1997 | Grad: 0.6771 | LR: 1.01e-04 | Tok/s: 177 | Peak: 2.35 GB
+  Step 2820/5661 | Loss: 0.1048 | Grad: 0.4844 | LR: 1.00e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2825/5661 | Loss: 0.2039 | Grad: 0.6010 | LR: 1.00e-04 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2830/5661 | Loss: 0.1274 | Grad: 0.6631 | LR: 1.00e-04 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2835/5661 | Loss: 0.1809 | Grad: 0.8806 | LR: 1.00e-04 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2840/5661 | Loss: 0.1942 | Grad: 0.2681 | LR: 9.98e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2845/5661 | Loss: 0.2238 | Grad: 0.8649 | LR: 9.96e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2850/5661 | Loss: 0.1719 | Grad: 1.0985 | LR: 9.94e-05 | Tok/s: 178 | Peak: 2.35 GB
+  Step 2855/5661 | Loss: 0.1686 | Grad: 0.4401 | LR: 9.93e-05 | Tok/s: 183 | Peak: 2.35 GB
+  Step 2860/5661 | Loss: 0.1724 | Grad: 0.8876 | LR: 9.91e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2865/5661 | Loss: 0.1642 | Grad: 0.4876 | LR: 9.89e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 2870/5661 | Loss: 0.1943 | Grad: 0.5478 | LR: 9.87e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2875/5661 | Loss: 0.2213 | Grad: 0.6914 | LR: 9.86e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2880/5661 | Loss: 0.1429 | Grad: 0.6927 | LR: 9.84e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2885/5661 | Loss: 0.1210 | Grad: 0.6805 | LR: 9.82e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2890/5661 | Loss: 0.0803 | Grad: 0.4256 | LR: 9.80e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2895/5661 | Loss: 0.2465 | Grad: 1.1617 | LR: 9.78e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 2900/5661 | Loss: 0.1364 | Grad: 0.7408 | LR: 9.77e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2905/5661 | Loss: 0.1377 | Grad: 1.0293 | LR: 9.75e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 2910/5661 | Loss: 0.1824 | Grad: 0.7955 | LR: 9.73e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2915/5661 | Loss: 0.1018 | Grad: 0.3771 | LR: 9.71e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2920/5661 | Loss: 0.1861 | Grad: 0.8846 | LR: 9.70e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2925/5661 | Loss: 0.1440 | Grad: 0.3620 | LR: 9.68e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2930/5661 | Loss: 0.2312 | Grad: 1.8719 | LR: 9.66e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2935/5661 | Loss: 0.1722 | Grad: 1.0550 | LR: 9.64e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2940/5661 | Loss: 0.1475 | Grad: 0.4305 | LR: 9.63e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2945/5661 | Loss: 0.2462 | Grad: 1.5309 | LR: 9.61e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 2950/5661 | Loss: 0.0818 | Grad: 0.3578 | LR: 9.59e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 2955/5661 | Loss: 0.0479 | Grad: 1.4791 | LR: 9.57e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 2960/5661 | Loss: 0.0761 | Grad: 0.5430 | LR: 9.55e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 2965/5661 | Loss: 0.2010 | Grad: 1.0364 | LR: 9.54e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 2970/5661 | Loss: 0.1613 | Grad: 0.4098 | LR: 9.52e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 2975/5661 | Loss: 0.2052 | Grad: 1.3282 | LR: 9.50e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 2980/5661 | Loss: 0.2318 | Grad: 0.8501 | LR: 9.48e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 2985/5661 | Loss: 0.0930 | Grad: 0.4473 | LR: 9.47e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 2990/5661 | Loss: 0.1603 | Grad: 0.6808 | LR: 9.45e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 2995/5661 | Loss: 0.1343 | Grad: 0.3513 | LR: 9.43e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3000/5661 | Loss: 0.1083 | Grad: 0.8306 | LR: 9.41e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3005/5661 | Loss: 0.2777 | Grad: 1.0811 | LR: 9.40e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3010/5661 | Loss: 0.1978 | Grad: 0.7805 | LR: 9.38e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3015/5661 | Loss: 0.1053 | Grad: 0.3849 | LR: 9.36e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3020/5661 | Loss: 0.1193 | Grad: 0.4779 | LR: 9.34e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3025/5661 | Loss: 0.2118 | Grad: 0.6491 | LR: 9.32e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3030/5661 | Loss: 0.2823 | Grad: 0.9079 | LR: 9.31e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 3035/5661 | Loss: 0.1899 | Grad: 0.9835 | LR: 9.29e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3040/5661 | Loss: 0.0823 | Grad: 0.1921 | LR: 9.27e-05 | Tok/s: 178 | Peak: 2.35 GB
+  Step 3045/5661 | Loss: 0.1393 | Grad: 0.6096 | LR: 9.25e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3050/5661 | Loss: 0.2369 | Grad: 1.1615 | LR: 9.24e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3055/5661 | Loss: 0.1603 | Grad: 0.6135 | LR: 9.22e-05 | Tok/s: 178 | Peak: 2.35 GB
+  Step 3060/5661 | Loss: 0.3214 | Grad: 1.0131 | LR: 9.20e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3065/5661 | Loss: 0.1182 | Grad: 0.3978 | LR: 9.18e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3070/5661 | Loss: 0.2226 | Grad: 0.2398 | LR: 9.17e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3075/5661 | Loss: 0.1820 | Grad: 1.1959 | LR: 9.15e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3080/5661 | Loss: 0.0988 | Grad: 0.7167 | LR: 9.13e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3085/5661 | Loss: 0.1460 | Grad: 0.5606 | LR: 9.11e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3090/5661 | Loss: 0.2466 | Grad: 0.5119 | LR: 9.09e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3095/5661 | Loss: 0.2421 | Grad: 0.5165 | LR: 9.08e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 3100/5661 | Loss: 0.1558 | Grad: 0.3821 | LR: 9.06e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3105/5661 | Loss: 0.1448 | Grad: 0.8181 | LR: 9.04e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3110/5661 | Loss: 0.2468 | Grad: 0.9911 | LR: 9.02e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 3115/5661 | Loss: 0.3492 | Grad: 0.9573 | LR: 9.01e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3120/5661 | Loss: 0.1215 | Grad: 0.8201 | LR: 8.99e-05 | Tok/s: 178 | Peak: 2.35 GB
+  Step 3125/5661 | Loss: 0.2160 | Grad: 0.6401 | LR: 8.97e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3130/5661 | Loss: 0.0967 | Grad: 1.4219 | LR: 8.95e-05 | Tok/s: 178 | Peak: 2.35 GB
+  Step 3135/5661 | Loss: 0.1405 | Grad: 0.6739 | LR: 8.94e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3140/5661 | Loss: 0.0782 | Grad: 0.4466 | LR: 8.92e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3145/5661 | Loss: 0.1593 | Grad: 1.2858 | LR: 8.90e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3150/5661 | Loss: 0.0810 | Grad: 0.2452 | LR: 8.88e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 3155/5661 | Loss: 0.1953 | Grad: 1.3620 | LR: 8.86e-05 | Tok/s: 179 | Peak: 2.35 GB
+  Step 3160/5661 | Loss: 0.3302 | Grad: 1.3403 | LR: 8.85e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 3165/5661 | Loss: 0.1807 | Grad: 0.3299 | LR: 8.83e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3170/5661 | Loss: 0.2633 | Grad: 1.6578 | LR: 8.81e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3175/5661 | Loss: 0.2540 | Grad: 0.7928 | LR: 8.79e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3180/5661 | Loss: 0.1221 | Grad: 0.1869 | LR: 8.78e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3185/5661 | Loss: 0.1670 | Grad: 0.3108 | LR: 8.76e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3190/5661 | Loss: 0.1140 | Grad: 0.3579 | LR: 8.74e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3195/5661 | Loss: 0.1357 | Grad: 0.2128 | LR: 8.72e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3200/5661 | Loss: 0.1341 | Grad: 0.1792 | LR: 8.71e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3205/5661 | Loss: 0.1249 | Grad: 0.5721 | LR: 8.69e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3210/5661 | Loss: 0.0940 | Grad: 0.3962 | LR: 8.67e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3215/5661 | Loss: 0.1978 | Grad: 0.5741 | LR: 8.65e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3220/5661 | Loss: 0.0715 | Grad: 0.1744 | LR: 8.64e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3225/5661 | Loss: 0.1863 | Grad: 0.8450 | LR: 8.62e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3230/5661 | Loss: 0.1449 | Grad: 0.2973 | LR: 8.60e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3235/5661 | Loss: 0.2270 | Grad: 0.6698 | LR: 8.58e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3240/5661 | Loss: 0.1940 | Grad: 0.5809 | LR: 8.56e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 3245/5661 | Loss: 0.1734 | Grad: 0.5496 | LR: 8.55e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3250/5661 | Loss: 0.1619 | Grad: 0.5495 | LR: 8.53e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3255/5661 | Loss: 0.1466 | Grad: 0.5508 | LR: 8.51e-05 | Tok/s: 159 | Peak: 2.35 GB
+  Step 3260/5661 | Loss: 0.0796 | Grad: 0.3618 | LR: 8.49e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3265/5661 | Loss: 0.1305 | Grad: 0.6241 | LR: 8.48e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3270/5661 | Loss: 0.1459 | Grad: 0.4956 | LR: 8.46e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3275/5661 | Loss: 0.1538 | Grad: 0.9284 | LR: 8.44e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3280/5661 | Loss: 0.1600 | Grad: 0.7207 | LR: 8.42e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3285/5661 | Loss: 0.1771 | Grad: 0.7122 | LR: 8.41e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3290/5661 | Loss: 0.1433 | Grad: 0.4451 | LR: 8.39e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3295/5661 | Loss: 0.0873 | Grad: 1.1247 | LR: 8.37e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3300/5661 | Loss: 0.2386 | Grad: 1.0078 | LR: 8.35e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3305/5661 | Loss: 0.1505 | Grad: 0.7619 | LR: 8.33e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3310/5661 | Loss: 0.0681 | Grad: 0.2554 | LR: 8.32e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3315/5661 | Loss: 0.1693 | Grad: 1.0731 | LR: 8.30e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3320/5661 | Loss: 0.1333 | Grad: 0.6036 | LR: 8.28e-05 | Tok/s: 155 | Peak: 2.35 GB
+  Step 3325/5661 | Loss: 0.1697 | Grad: 0.6514 | LR: 8.26e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3330/5661 | Loss: 0.1913 | Grad: 0.5144 | LR: 8.25e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3335/5661 | Loss: 0.0966 | Grad: 0.5757 | LR: 8.23e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3340/5661 | Loss: 0.2940 | Grad: 0.9338 | LR: 8.21e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3345/5661 | Loss: 0.0782 | Grad: 0.4323 | LR: 8.19e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3350/5661 | Loss: 0.1488 | Grad: 0.4866 | LR: 8.18e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3355/5661 | Loss: 0.2207 | Grad: 0.4552 | LR: 8.16e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3360/5661 | Loss: 0.1357 | Grad: 0.2426 | LR: 8.14e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3365/5661 | Loss: 0.1779 | Grad: 0.9236 | LR: 8.12e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3370/5661 | Loss: 0.1698 | Grad: 0.6338 | LR: 8.10e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3375/5661 | Loss: 0.1076 | Grad: 0.9859 | LR: 8.09e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3380/5661 | Loss: 0.0886 | Grad: 0.4549 | LR: 8.07e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3385/5661 | Loss: 0.1839 | Grad: 0.5426 | LR: 8.05e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3390/5661 | Loss: 0.1369 | Grad: 1.2714 | LR: 8.03e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3395/5661 | Loss: 0.1056 | Grad: 0.3052 | LR: 8.02e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3400/5661 | Loss: 0.1797 | Grad: 0.6446 | LR: 8.00e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3405/5661 | Loss: 0.2389 | Grad: 1.0474 | LR: 7.98e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3410/5661 | Loss: 0.1759 | Grad: 0.6450 | LR: 7.96e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 3415/5661 | Loss: 0.1112 | Grad: 0.5836 | LR: 7.95e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3420/5661 | Loss: 0.1476 | Grad: 0.8499 | LR: 7.93e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3425/5661 | Loss: 0.2105 | Grad: 0.6101 | LR: 7.91e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3430/5661 | Loss: 0.1994 | Grad: 1.7500 | LR: 7.89e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3435/5661 | Loss: 0.3168 | Grad: 1.0235 | LR: 7.87e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3440/5661 | Loss: 0.1334 | Grad: 0.2508 | LR: 7.86e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3445/5661 | Loss: 0.0551 | Grad: 0.3269 | LR: 7.84e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3450/5661 | Loss: 0.1053 | Grad: 1.2278 | LR: 7.82e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3455/5661 | Loss: 0.1375 | Grad: 0.2860 | LR: 7.80e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3460/5661 | Loss: 0.1720 | Grad: 1.1007 | LR: 7.79e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3465/5661 | Loss: 0.1758 | Grad: 0.6322 | LR: 7.77e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3470/5661 | Loss: 0.1354 | Grad: 0.2766 | LR: 7.75e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3475/5661 | Loss: 0.1464 | Grad: 0.6472 | LR: 7.73e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3480/5661 | Loss: 0.1230 | Grad: 0.2898 | LR: 7.72e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3485/5661 | Loss: 0.2692 | Grad: 1.3481 | LR: 7.70e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3490/5661 | Loss: 0.1070 | Grad: 0.5630 | LR: 7.68e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3495/5661 | Loss: 0.2758 | Grad: 1.1404 | LR: 7.66e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3500/5661 | Loss: 0.1920 | Grad: 0.6712 | LR: 7.64e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3505/5661 | Loss: 0.0939 | Grad: 0.4823 | LR: 7.63e-05 | Tok/s: 159 | Peak: 2.35 GB
+  Step 3510/5661 | Loss: 0.1563 | Grad: 1.0841 | LR: 7.61e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3515/5661 | Loss: 0.1294 | Grad: 0.6613 | LR: 7.59e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3520/5661 | Loss: 0.1383 | Grad: 0.4710 | LR: 7.57e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3525/5661 | Loss: 0.1527 | Grad: 0.3531 | LR: 7.56e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3530/5661 | Loss: 0.2568 | Grad: 0.4239 | LR: 7.54e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3535/5661 | Loss: 0.2051 | Grad: 0.4762 | LR: 7.52e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3540/5661 | Loss: 0.1551 | Grad: 0.2939 | LR: 7.50e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3545/5661 | Loss: 0.2128 | Grad: 0.7997 | LR: 7.49e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3550/5661 | Loss: 0.1149 | Grad: 1.0031 | LR: 7.47e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3555/5661 | Loss: 0.2275 | Grad: 0.6906 | LR: 7.45e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3560/5661 | Loss: 0.1297 | Grad: 0.3902 | LR: 7.43e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3565/5661 | Loss: 0.1000 | Grad: 0.6440 | LR: 7.42e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3570/5661 | Loss: 0.1148 | Grad: 0.3379 | LR: 7.40e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3575/5661 | Loss: 0.2266 | Grad: 0.5140 | LR: 7.38e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3580/5661 | Loss: 0.0749 | Grad: 0.4127 | LR: 7.36e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3585/5661 | Loss: 0.1578 | Grad: 0.8464 | LR: 7.34e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3590/5661 | Loss: 0.0942 | Grad: 0.5172 | LR: 7.33e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3595/5661 | Loss: 0.1742 | Grad: 0.6527 | LR: 7.31e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3600/5661 | Loss: 0.1854 | Grad: 1.1073 | LR: 7.29e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3605/5661 | Loss: 0.1686 | Grad: 0.9321 | LR: 7.27e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 3610/5661 | Loss: 0.1586 | Grad: 1.0335 | LR: 7.26e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3615/5661 | Loss: 0.1143 | Grad: 0.2662 | LR: 7.24e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3620/5661 | Loss: 0.0688 | Grad: 0.6287 | LR: 7.22e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3625/5661 | Loss: 0.1588 | Grad: 0.7918 | LR: 7.20e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3630/5661 | Loss: 0.1398 | Grad: 0.5784 | LR: 7.19e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 3635/5661 | Loss: 0.2165 | Grad: 1.0060 | LR: 7.17e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3640/5661 | Loss: 0.2562 | Grad: 0.3414 | LR: 7.15e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3645/5661 | Loss: 0.1443 | Grad: 1.0897 | LR: 7.13e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3650/5661 | Loss: 0.1790 | Grad: 0.9355 | LR: 7.11e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3655/5661 | Loss: 0.2054 | Grad: 1.1988 | LR: 7.10e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3660/5661 | Loss: 0.2535 | Grad: 0.7403 | LR: 7.08e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3665/5661 | Loss: 0.0873 | Grad: 0.3915 | LR: 7.06e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3670/5661 | Loss: 0.1356 | Grad: 1.0370 | LR: 7.04e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3675/5661 | Loss: 0.2438 | Grad: 0.4812 | LR: 7.03e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3680/5661 | Loss: 0.1572 | Grad: 0.9948 | LR: 7.01e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3685/5661 | Loss: 0.1881 | Grad: 0.4848 | LR: 6.99e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3690/5661 | Loss: 0.1259 | Grad: 0.4104 | LR: 6.97e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3695/5661 | Loss: 0.1511 | Grad: 1.1869 | LR: 6.96e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3700/5661 | Loss: 0.0514 | Grad: 0.9887 | LR: 6.94e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 3705/5661 | Loss: 0.1599 | Grad: 0.4312 | LR: 6.92e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3710/5661 | Loss: 0.1470 | Grad: 1.3834 | LR: 6.90e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3715/5661 | Loss: 0.1092 | Grad: 0.5205 | LR: 6.88e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3720/5661 | Loss: 0.1751 | Grad: 0.8095 | LR: 6.87e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3725/5661 | Loss: 0.1577 | Grad: 0.2435 | LR: 6.85e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3730/5661 | Loss: 0.0635 | Grad: 0.2549 | LR: 6.83e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3735/5661 | Loss: 0.1521 | Grad: 1.0082 | LR: 6.81e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3740/5661 | Loss: 0.1488 | Grad: 0.7518 | LR: 6.80e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3745/5661 | Loss: 0.2629 | Grad: 1.0341 | LR: 6.78e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3750/5661 | Loss: 0.0693 | Grad: 0.3781 | LR: 6.76e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3755/5661 | Loss: 0.0970 | Grad: 1.1308 | LR: 6.74e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3760/5661 | Loss: 0.0638 | Grad: 0.6863 | LR: 6.73e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3765/5661 | Loss: 0.2228 | Grad: 0.7729 | LR: 6.71e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3770/5661 | Loss: 0.1031 | Grad: 0.8236 | LR: 6.69e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3775/5661 | Loss: 0.1265 | Grad: 0.2285 | LR: 6.67e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3780/5661 | Loss: 0.0894 | Grad: 0.5841 | LR: 6.65e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 3785/5661 | Loss: 0.1210 | Grad: 0.6643 | LR: 6.64e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3790/5661 | Loss: 0.1316 | Grad: 0.5191 | LR: 6.62e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3795/5661 | Loss: 0.1851 | Grad: 0.7683 | LR: 6.60e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3800/5661 | Loss: 0.1457 | Grad: 1.0742 | LR: 6.58e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3805/5661 | Loss: 0.1905 | Grad: 0.3604 | LR: 6.57e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3810/5661 | Loss: 0.0813 | Grad: 1.1080 | LR: 6.55e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 3815/5661 | Loss: 0.2625 | Grad: 0.3275 | LR: 6.53e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3820/5661 | Loss: 0.1475 | Grad: 0.8446 | LR: 6.51e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3825/5661 | Loss: 0.2136 | Grad: 0.8566 | LR: 6.50e-05 | Tok/s: 156 | Peak: 2.35 GB
+  Step 3830/5661 | Loss: 0.0627 | Grad: 0.3505 | LR: 6.48e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3835/5661 | Loss: 0.2152 | Grad: 0.1995 | LR: 6.46e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3840/5661 | Loss: 0.0762 | Grad: 0.4337 | LR: 6.44e-05 | Tok/s: 155 | Peak: 2.35 GB
+  Step 3845/5661 | Loss: 0.0874 | Grad: 0.3571 | LR: 6.43e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3850/5661 | Loss: 0.1225 | Grad: 0.6024 | LR: 6.41e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3855/5661 | Loss: 0.2406 | Grad: 1.4368 | LR: 6.39e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3860/5661 | Loss: 0.1253 | Grad: 1.1648 | LR: 6.37e-05 | Tok/s: 142 | Peak: 2.35 GB
+  Step 3865/5661 | Loss: 0.0485 | Grad: 0.3938 | LR: 6.35e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 3870/5661 | Loss: 0.1456 | Grad: 0.3608 | LR: 6.34e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3875/5661 | Loss: 0.1653 | Grad: 1.0147 | LR: 6.32e-05 | Tok/s: 159 | Peak: 2.35 GB
+  Step 3880/5661 | Loss: 0.1339 | Grad: 0.5499 | LR: 6.30e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 3885/5661 | Loss: 0.1757 | Grad: 0.5280 | LR: 6.28e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3890/5661 | Loss: 0.2427 | Grad: 0.8106 | LR: 6.27e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3895/5661 | Loss: 0.0742 | Grad: 0.9518 | LR: 6.25e-05 | Tok/s: 150 | Peak: 2.35 GB
+  Step 3900/5661 | Loss: 0.2476 | Grad: 0.7691 | LR: 6.23e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 3905/5661 | Loss: 0.1387 | Grad: 0.3918 | LR: 6.21e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3910/5661 | Loss: 0.1411 | Grad: 0.3161 | LR: 6.20e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3915/5661 | Loss: 0.2145 | Grad: 0.9658 | LR: 6.18e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 3920/5661 | Loss: 0.1279 | Grad: 1.2403 | LR: 6.16e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 3925/5661 | Loss: 0.1309 | Grad: 0.5473 | LR: 6.14e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3930/5661 | Loss: 0.1428 | Grad: 0.4132 | LR: 6.12e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3935/5661 | Loss: 0.2336 | Grad: 0.6767 | LR: 6.11e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 3940/5661 | Loss: 0.0703 | Grad: 1.2107 | LR: 6.09e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 3945/5661 | Loss: 0.1698 | Grad: 0.8709 | LR: 6.07e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3950/5661 | Loss: 0.1483 | Grad: 0.4943 | LR: 6.05e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3955/5661 | Loss: 0.0605 | Grad: 0.2261 | LR: 6.04e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 3960/5661 | Loss: 0.1500 | Grad: 0.2933 | LR: 6.02e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 3965/5661 | Loss: 0.1359 | Grad: 1.1421 | LR: 6.00e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3970/5661 | Loss: 0.1382 | Grad: 0.6493 | LR: 5.98e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 3975/5661 | Loss: 0.1130 | Grad: 0.7131 | LR: 5.97e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 3980/5661 | Loss: 0.2005 | Grad: 1.0924 | LR: 5.95e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 3985/5661 | Loss: 0.0766 | Grad: 0.2826 | LR: 5.93e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 3990/5661 | Loss: 0.0918 | Grad: 0.8131 | LR: 5.91e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 3995/5661 | Loss: 0.0914 | Grad: 0.3437 | LR: 5.89e-05 | Tok/s: 138 | Peak: 2.35 GB
+  Step 4000/5661 | Loss: 0.1602 | Grad: 0.3814 | LR: 5.88e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4005/5661 | Loss: 0.1679 | Grad: 0.4487 | LR: 5.86e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4010/5661 | Loss: 0.2738 | Grad: 0.4844 | LR: 5.84e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4015/5661 | Loss: 0.0930 | Grad: 0.4766 | LR: 5.82e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 4020/5661 | Loss: 0.1319 | Grad: 0.3351 | LR: 5.81e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4025/5661 | Loss: 0.1503 | Grad: 0.5172 | LR: 5.79e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4030/5661 | Loss: 0.1747 | Grad: 0.9758 | LR: 5.77e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4035/5661 | Loss: 0.1382 | Grad: 0.9834 | LR: 5.75e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4040/5661 | Loss: 0.1636 | Grad: 1.5151 | LR: 5.74e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4045/5661 | Loss: 0.0712 | Grad: 0.4185 | LR: 5.72e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4050/5661 | Loss: 0.1255 | Grad: 0.6830 | LR: 5.70e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4055/5661 | Loss: 0.1926 | Grad: 0.9514 | LR: 5.68e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4060/5661 | Loss: 0.2253 | Grad: 0.6429 | LR: 5.66e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4065/5661 | Loss: 0.0544 | Grad: 0.4158 | LR: 5.65e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4070/5661 | Loss: 0.1187 | Grad: 0.6927 | LR: 5.63e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4075/5661 | Loss: 0.1124 | Grad: 0.7162 | LR: 5.61e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4080/5661 | Loss: 0.1474 | Grad: 0.6148 | LR: 5.59e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4085/5661 | Loss: 0.1073 | Grad: 0.2678 | LR: 5.58e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4090/5661 | Loss: 0.1455 | Grad: 0.2147 | LR: 5.56e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4095/5661 | Loss: 0.1654 | Grad: 1.4425 | LR: 5.54e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4100/5661 | Loss: 0.0865 | Grad: 0.4877 | LR: 5.52e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4105/5661 | Loss: 0.1026 | Grad: 0.3062 | LR: 5.51e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4110/5661 | Loss: 0.0757 | Grad: 0.4565 | LR: 5.49e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4115/5661 | Loss: 0.0915 | Grad: 0.9516 | LR: 5.47e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4120/5661 | Loss: 0.1533 | Grad: 0.4443 | LR: 5.45e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4125/5661 | Loss: 0.2599 | Grad: 1.1224 | LR: 5.43e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4130/5661 | Loss: 0.1125 | Grad: 1.2093 | LR: 5.42e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4135/5661 | Loss: 0.2093 | Grad: 0.6790 | LR: 5.40e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4140/5661 | Loss: 0.0848 | Grad: 0.3929 | LR: 5.38e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4145/5661 | Loss: 0.1251 | Grad: 0.7882 | LR: 5.36e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4150/5661 | Loss: 0.0989 | Grad: 0.3225 | LR: 5.35e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4155/5661 | Loss: 0.1228 | Grad: 0.8241 | LR: 5.33e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4160/5661 | Loss: 0.1740 | Grad: 0.8545 | LR: 5.31e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4165/5661 | Loss: 0.1209 | Grad: 0.5955 | LR: 5.29e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4170/5661 | Loss: 0.1556 | Grad: 0.5458 | LR: 5.28e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4175/5661 | Loss: 0.1128 | Grad: 1.1225 | LR: 5.26e-05 | Tok/s: 156 | Peak: 2.35 GB
+  Step 4180/5661 | Loss: 0.1380 | Grad: 0.5656 | LR: 5.24e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4185/5661 | Loss: 0.1796 | Grad: 0.7092 | LR: 5.22e-05 | Tok/s: 154 | Peak: 2.35 GB
+  Step 4190/5661 | Loss: 0.1320 | Grad: 0.2849 | LR: 5.21e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4195/5661 | Loss: 0.2230 | Grad: 1.3890 | LR: 5.19e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4200/5661 | Loss: 0.1505 | Grad: 0.3862 | LR: 5.17e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4205/5661 | Loss: 0.2149 | Grad: 0.9298 | LR: 5.15e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4210/5661 | Loss: 0.1789 | Grad: 0.2709 | LR: 5.13e-05 | Tok/s: 153 | Peak: 2.35 GB
+  Step 4215/5661 | Loss: 0.0598 | Grad: 0.3023 | LR: 5.12e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4220/5661 | Loss: 0.2202 | Grad: 0.7543 | LR: 5.10e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4225/5661 | Loss: 0.0972 | Grad: 0.2340 | LR: 5.08e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4230/5661 | Loss: 0.2484 | Grad: 1.7170 | LR: 5.06e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4235/5661 | Loss: 0.1288 | Grad: 0.4543 | LR: 5.05e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4240/5661 | Loss: 0.0885 | Grad: 0.3700 | LR: 5.03e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4245/5661 | Loss: 0.1678 | Grad: 0.6295 | LR: 5.01e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4250/5661 | Loss: 0.1246 | Grad: 0.2057 | LR: 4.99e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4255/5661 | Loss: 0.0644 | Grad: 0.3146 | LR: 4.98e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4260/5661 | Loss: 0.0734 | Grad: 0.3573 | LR: 4.96e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 4265/5661 | Loss: 0.0799 | Grad: 0.5044 | LR: 4.94e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4270/5661 | Loss: 0.0944 | Grad: 0.4066 | LR: 4.92e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4275/5661 | Loss: 0.1602 | Grad: 1.0264 | LR: 4.90e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4280/5661 | Loss: 0.1377 | Grad: 1.1619 | LR: 4.89e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4285/5661 | Loss: 0.1572 | Grad: 1.3597 | LR: 4.87e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4290/5661 | Loss: 0.0942 | Grad: 0.2429 | LR: 4.85e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4295/5661 | Loss: 0.1398 | Grad: 0.7236 | LR: 4.83e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4300/5661 | Loss: 0.1627 | Grad: 0.3778 | LR: 4.82e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4305/5661 | Loss: 0.1590 | Grad: 0.2475 | LR: 4.80e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4310/5661 | Loss: 0.1090 | Grad: 0.3940 | LR: 4.78e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4315/5661 | Loss: 0.0650 | Grad: 0.8342 | LR: 4.76e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4320/5661 | Loss: 0.0963 | Grad: 0.9757 | LR: 4.75e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4325/5661 | Loss: 0.0693 | Grad: 0.3453 | LR: 4.73e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 4330/5661 | Loss: 0.1801 | Grad: 0.8183 | LR: 4.71e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4335/5661 | Loss: 0.1574 | Grad: 0.7965 | LR: 4.69e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4340/5661 | Loss: 0.0851 | Grad: 0.4461 | LR: 4.67e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4345/5661 | Loss: 0.1483 | Grad: 1.0411 | LR: 4.66e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4350/5661 | Loss: 0.1435 | Grad: 0.3579 | LR: 4.64e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4355/5661 | Loss: 0.1504 | Grad: 0.3300 | LR: 4.62e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4360/5661 | Loss: 0.1054 | Grad: 0.4764 | LR: 4.60e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 4365/5661 | Loss: 0.1475 | Grad: 1.1295 | LR: 4.59e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4370/5661 | Loss: 0.1181 | Grad: 0.6951 | LR: 4.57e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4375/5661 | Loss: 0.1520 | Grad: 1.2213 | LR: 4.55e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4380/5661 | Loss: 0.0753 | Grad: 0.3853 | LR: 4.53e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4385/5661 | Loss: 0.1525 | Grad: 0.4866 | LR: 4.52e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4390/5661 | Loss: 0.1027 | Grad: 0.6380 | LR: 4.50e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4395/5661 | Loss: 0.1083 | Grad: 0.3155 | LR: 4.48e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4400/5661 | Loss: 0.1615 | Grad: 0.7261 | LR: 4.46e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4405/5661 | Loss: 0.1970 | Grad: 1.3935 | LR: 4.44e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4410/5661 | Loss: 0.2080 | Grad: 1.5801 | LR: 4.43e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4415/5661 | Loss: 0.1414 | Grad: 0.4930 | LR: 4.41e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4420/5661 | Loss: 0.1419 | Grad: 1.2019 | LR: 4.39e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4425/5661 | Loss: 0.1229 | Grad: 0.4563 | LR: 4.37e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4430/5661 | Loss: 0.0481 | Grad: 0.3454 | LR: 4.36e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4435/5661 | Loss: 0.1681 | Grad: 0.5141 | LR: 4.34e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4440/5661 | Loss: 0.0958 | Grad: 0.5486 | LR: 4.32e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4445/5661 | Loss: 0.1170 | Grad: 0.4896 | LR: 4.30e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4450/5661 | Loss: 0.1129 | Grad: 0.8258 | LR: 4.29e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4455/5661 | Loss: 0.1369 | Grad: 1.1558 | LR: 4.27e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4460/5661 | Loss: 0.1371 | Grad: 1.2641 | LR: 4.25e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4465/5661 | Loss: 0.1248 | Grad: 0.3674 | LR: 4.23e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4470/5661 | Loss: 0.0937 | Grad: 0.2171 | LR: 4.21e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4475/5661 | Loss: 0.1662 | Grad: 0.8901 | LR: 4.20e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 4480/5661 | Loss: 0.1246 | Grad: 0.2828 | LR: 4.18e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4485/5661 | Loss: 0.1053 | Grad: 0.4029 | LR: 4.16e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4490/5661 | Loss: 0.1404 | Grad: 0.5654 | LR: 4.14e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 4495/5661 | Loss: 0.1307 | Grad: 0.9739 | LR: 4.13e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4500/5661 | Loss: 0.1533 | Grad: 0.9681 | LR: 4.11e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 4505/5661 | Loss: 0.1454 | Grad: 0.7599 | LR: 4.09e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4510/5661 | Loss: 0.1087 | Grad: 1.4845 | LR: 4.07e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4515/5661 | Loss: 0.1367 | Grad: 0.6352 | LR: 4.06e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4520/5661 | Loss: 0.0556 | Grad: 0.5197 | LR: 4.04e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 4525/5661 | Loss: 0.1792 | Grad: 0.7304 | LR: 4.02e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4530/5661 | Loss: 0.1259 | Grad: 0.7110 | LR: 4.00e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4535/5661 | Loss: 0.1609 | Grad: 0.4241 | LR: 3.99e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4540/5661 | Loss: 0.0617 | Grad: 0.6200 | LR: 3.97e-05 | Tok/s: 158 | Peak: 2.35 GB
+  Step 4545/5661 | Loss: 0.1136 | Grad: 1.1303 | LR: 3.95e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 4550/5661 | Loss: 0.1376 | Grad: 0.6476 | LR: 3.93e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4555/5661 | Loss: 0.1545 | Grad: 1.3961 | LR: 3.91e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4560/5661 | Loss: 0.0740 | Grad: 0.3164 | LR: 3.90e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4565/5661 | Loss: 0.0588 | Grad: 0.6532 | LR: 3.88e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4570/5661 | Loss: 0.2621 | Grad: 1.2309 | LR: 3.86e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4575/5661 | Loss: 0.1240 | Grad: 0.4410 | LR: 3.84e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4580/5661 | Loss: 0.1498 | Grad: 0.9288 | LR: 3.83e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4585/5661 | Loss: 0.1257 | Grad: 0.3131 | LR: 3.81e-05 | Tok/s: 180 | Peak: 2.35 GB
+  Step 4590/5661 | Loss: 0.1362 | Grad: 1.3271 | LR: 3.79e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4595/5661 | Loss: 0.1094 | Grad: 0.2872 | LR: 3.77e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4600/5661 | Loss: 0.1175 | Grad: 0.4961 | LR: 3.76e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4605/5661 | Loss: 0.1053 | Grad: 0.6866 | LR: 3.74e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4610/5661 | Loss: 0.1177 | Grad: 0.2927 | LR: 3.72e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4615/5661 | Loss: 0.0973 | Grad: 0.3982 | LR: 3.70e-05 | Tok/s: 160 | Peak: 2.35 GB
+  Step 4620/5661 | Loss: 0.1617 | Grad: 0.9924 | LR: 3.68e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4625/5661 | Loss: 0.1548 | Grad: 0.7698 | LR: 3.67e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 4630/5661 | Loss: 0.1092 | Grad: 0.5608 | LR: 3.65e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 4635/5661 | Loss: 0.2047 | Grad: 0.8171 | LR: 3.63e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4640/5661 | Loss: 0.0655 | Grad: 0.5770 | LR: 3.61e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4645/5661 | Loss: 0.1221 | Grad: 0.6122 | LR: 3.60e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4650/5661 | Loss: 0.1039 | Grad: 0.4953 | LR: 3.58e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 4655/5661 | Loss: 0.0634 | Grad: 0.9043 | LR: 3.56e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 4660/5661 | Loss: 0.1160 | Grad: 0.4322 | LR: 3.54e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4665/5661 | Loss: 0.1767 | Grad: 0.2715 | LR: 3.53e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4670/5661 | Loss: 0.0863 | Grad: 0.3055 | LR: 3.51e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4675/5661 | Loss: 0.1168 | Grad: 0.9474 | LR: 3.49e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4680/5661 | Loss: 0.0713 | Grad: 0.3563 | LR: 3.47e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4685/5661 | Loss: 0.1271 | Grad: 0.3480 | LR: 3.45e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4690/5661 | Loss: 0.1298 | Grad: 0.4659 | LR: 3.44e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4695/5661 | Loss: 0.1312 | Grad: 0.6510 | LR: 3.42e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4700/5661 | Loss: 0.1216 | Grad: 1.4806 | LR: 3.40e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4705/5661 | Loss: 0.0660 | Grad: 0.5437 | LR: 3.38e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4710/5661 | Loss: 0.1334 | Grad: 1.1886 | LR: 3.37e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4715/5661 | Loss: 0.0644 | Grad: 0.4583 | LR: 3.35e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4720/5661 | Loss: 0.1310 | Grad: 0.3163 | LR: 3.33e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4725/5661 | Loss: 0.1230 | Grad: 0.4842 | LR: 3.31e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4730/5661 | Loss: 0.1779 | Grad: 1.1784 | LR: 3.30e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4735/5661 | Loss: 0.1252 | Grad: 0.3064 | LR: 3.28e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4740/5661 | Loss: 0.0934 | Grad: 0.4399 | LR: 3.26e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4745/5661 | Loss: 0.1605 | Grad: 1.1892 | LR: 3.24e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4750/5661 | Loss: 0.1091 | Grad: 0.3649 | LR: 3.22e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4755/5661 | Loss: 0.1349 | Grad: 2.1668 | LR: 3.21e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4760/5661 | Loss: 0.1158 | Grad: 0.8541 | LR: 3.19e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4765/5661 | Loss: 0.1133 | Grad: 0.2542 | LR: 3.17e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4770/5661 | Loss: 0.1230 | Grad: 0.8919 | LR: 3.15e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4775/5661 | Loss: 0.0694 | Grad: 0.5305 | LR: 3.14e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4780/5661 | Loss: 0.1195 | Grad: 0.4293 | LR: 3.12e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4785/5661 | Loss: 0.0931 | Grad: 0.3785 | LR: 3.10e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4790/5661 | Loss: 0.1456 | Grad: 1.0804 | LR: 3.08e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4795/5661 | Loss: 0.0918 | Grad: 0.9332 | LR: 3.07e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4800/5661 | Loss: 0.1131 | Grad: 0.3734 | LR: 3.05e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 4805/5661 | Loss: 0.1325 | Grad: 0.9731 | LR: 3.03e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4810/5661 | Loss: 0.0838 | Grad: 1.6160 | LR: 3.01e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4815/5661 | Loss: 0.1119 | Grad: 0.5678 | LR: 3.00e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 4820/5661 | Loss: 0.1546 | Grad: 0.3852 | LR: 2.98e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4825/5661 | Loss: 0.1213 | Grad: 0.8169 | LR: 2.96e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4830/5661 | Loss: 0.1607 | Grad: 1.5422 | LR: 2.94e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4835/5661 | Loss: 0.1011 | Grad: 0.3225 | LR: 2.92e-05 | Tok/s: 154 | Peak: 2.35 GB
+  Step 4840/5661 | Loss: 0.0438 | Grad: 0.2279 | LR: 2.91e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 4845/5661 | Loss: 0.0472 | Grad: 1.7205 | LR: 2.89e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 4850/5661 | Loss: 0.0876 | Grad: 0.5094 | LR: 2.87e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4855/5661 | Loss: 0.1893 | Grad: 0.8510 | LR: 2.85e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4860/5661 | Loss: 0.1044 | Grad: 1.0517 | LR: 2.84e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4865/5661 | Loss: 0.1808 | Grad: 0.8334 | LR: 2.82e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 4870/5661 | Loss: 0.0739 | Grad: 0.3127 | LR: 2.80e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4875/5661 | Loss: 0.0880 | Grad: 0.3866 | LR: 2.78e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 4880/5661 | Loss: 0.1520 | Grad: 1.1126 | LR: 2.77e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4885/5661 | Loss: 0.0351 | Grad: 0.4556 | LR: 2.75e-05 | Tok/s: 155 | Peak: 2.35 GB
+  Step 4890/5661 | Loss: 0.1892 | Grad: 0.3602 | LR: 2.73e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 4895/5661 | Loss: 0.1686 | Grad: 0.7099 | LR: 2.71e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4900/5661 | Loss: 0.1230 | Grad: 0.2407 | LR: 2.69e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4905/5661 | Loss: 0.0847 | Grad: 0.3609 | LR: 2.68e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4910/5661 | Loss: 0.1200 | Grad: 1.0867 | LR: 2.66e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4915/5661 | Loss: 0.1957 | Grad: 0.4724 | LR: 2.64e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4920/5661 | Loss: 0.1747 | Grad: 0.8591 | LR: 2.62e-05 | Tok/s: 174 | Peak: 2.35 GB
+  Step 4925/5661 | Loss: 0.1136 | Grad: 0.6080 | LR: 2.61e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 4930/5661 | Loss: 0.0810 | Grad: 0.6570 | LR: 2.59e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4935/5661 | Loss: 0.1205 | Grad: 1.0836 | LR: 2.57e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4940/5661 | Loss: 0.1700 | Grad: 1.2526 | LR: 2.55e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 4945/5661 | Loss: 0.0953 | Grad: 0.2977 | LR: 2.54e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 4950/5661 | Loss: 0.2138 | Grad: 0.9545 | LR: 2.52e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 4955/5661 | Loss: 0.1247 | Grad: 1.3214 | LR: 2.50e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 4960/5661 | Loss: 0.1183 | Grad: 0.4113 | LR: 2.48e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4965/5661 | Loss: 0.1222 | Grad: 0.3856 | LR: 2.46e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4970/5661 | Loss: 0.1000 | Grad: 1.1436 | LR: 2.45e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 4975/5661 | Loss: 0.2066 | Grad: 0.9507 | LR: 2.43e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 4980/5661 | Loss: 0.1343 | Grad: 0.7370 | LR: 2.41e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 4985/5661 | Loss: 0.1552 | Grad: 0.9909 | LR: 2.39e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 4990/5661 | Loss: 0.0917 | Grad: 0.3148 | LR: 2.38e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 4995/5661 | Loss: 0.1715 | Grad: 0.6082 | LR: 2.36e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5000/5661 | Loss: 0.1983 | Grad: 1.5938 | LR: 2.34e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5005/5661 | Loss: 0.1499 | Grad: 0.8761 | LR: 2.32e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5010/5661 | Loss: 0.1140 | Grad: 0.7192 | LR: 2.31e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5015/5661 | Loss: 0.1134 | Grad: 0.2901 | LR: 2.29e-05 | Tok/s: 149 | Peak: 2.35 GB
+  Step 5020/5661 | Loss: 0.1041 | Grad: 0.3426 | LR: 2.27e-05 | Tok/s: 155 | Peak: 2.35 GB
+  Step 5025/5661 | Loss: 0.0603 | Grad: 0.2440 | LR: 2.25e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5030/5661 | Loss: 0.0770 | Grad: 0.9037 | LR: 2.23e-05 | Tok/s: 156 | Peak: 2.35 GB
+  Step 5035/5661 | Loss: 0.0953 | Grad: 0.4613 | LR: 2.22e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5040/5661 | Loss: 0.0841 | Grad: 0.2591 | LR: 2.20e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5045/5661 | Loss: 0.2603 | Grad: 0.2640 | LR: 2.18e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5050/5661 | Loss: 0.1798 | Grad: 0.8560 | LR: 2.16e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5055/5661 | Loss: 0.1873 | Grad: 1.2093 | LR: 2.15e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5060/5661 | Loss: 0.1616 | Grad: 1.5763 | LR: 2.13e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5065/5661 | Loss: 0.1151 | Grad: 0.9158 | LR: 2.11e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5070/5661 | Loss: 0.1339 | Grad: 0.3282 | LR: 2.09e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5075/5661 | Loss: 0.0776 | Grad: 1.1940 | LR: 2.08e-05 | Tok/s: 175 | Peak: 2.35 GB
+  Step 5080/5661 | Loss: 0.0769 | Grad: 1.0833 | LR: 2.06e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5085/5661 | Loss: 0.1175 | Grad: 1.2744 | LR: 2.04e-05 | Tok/s: 176 | Peak: 2.35 GB
+  Step 5090/5661 | Loss: 0.0625 | Grad: 0.5952 | LR: 2.02e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5095/5661 | Loss: 0.0783 | Grad: 0.4315 | LR: 2.00e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5100/5661 | Loss: 0.1449 | Grad: 1.4228 | LR: 1.99e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5105/5661 | Loss: 0.0660 | Grad: 0.4333 | LR: 1.97e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5110/5661 | Loss: 0.1384 | Grad: 0.3940 | LR: 1.95e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5115/5661 | Loss: 0.1151 | Grad: 1.5681 | LR: 1.93e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5120/5661 | Loss: 0.1307 | Grad: 0.3314 | LR: 1.92e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5125/5661 | Loss: 0.1737 | Grad: 1.4979 | LR: 1.90e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5130/5661 | Loss: 0.1096 | Grad: 1.0237 | LR: 1.88e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5135/5661 | Loss: 0.1449 | Grad: 0.8809 | LR: 1.86e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5140/5661 | Loss: 0.0863 | Grad: 0.4968 | LR: 1.85e-05 | Tok/s: 157 | Peak: 2.35 GB
+  Step 5145/5661 | Loss: 0.1111 | Grad: 1.0950 | LR: 1.83e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5150/5661 | Loss: 0.0792 | Grad: 0.9535 | LR: 1.81e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5155/5661 | Loss: 0.1215 | Grad: 0.3929 | LR: 1.79e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5160/5661 | Loss: 0.0943 | Grad: 0.5762 | LR: 1.78e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5165/5661 | Loss: 0.1426 | Grad: 1.1401 | LR: 1.76e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5170/5661 | Loss: 0.1248 | Grad: 0.5580 | LR: 1.74e-05 | Tok/s: 150 | Peak: 2.35 GB
+  Step 5175/5661 | Loss: 0.1148 | Grad: 0.5381 | LR: 1.72e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5180/5661 | Loss: 0.0784 | Grad: 0.3054 | LR: 1.70e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5185/5661 | Loss: 0.1251 | Grad: 1.3550 | LR: 1.69e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5190/5661 | Loss: 0.1207 | Grad: 1.1353 | LR: 1.67e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5195/5661 | Loss: 0.1192 | Grad: 0.4150 | LR: 1.65e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5200/5661 | Loss: 0.0899 | Grad: 0.6514 | LR: 1.63e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5205/5661 | Loss: 0.1209 | Grad: 0.4276 | LR: 1.62e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5210/5661 | Loss: 0.1210 | Grad: 1.0323 | LR: 1.60e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5215/5661 | Loss: 0.1284 | Grad: 1.2396 | LR: 1.58e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5220/5661 | Loss: 0.0577 | Grad: 0.3069 | LR: 1.56e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5225/5661 | Loss: 0.1567 | Grad: 1.0971 | LR: 1.55e-05 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5230/5661 | Loss: 0.1449 | Grad: 0.6542 | LR: 1.53e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5235/5661 | Loss: 0.1173 | Grad: 1.0087 | LR: 1.51e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5240/5661 | Loss: 0.1319 | Grad: 0.8848 | LR: 1.49e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5245/5661 | Loss: 0.1226 | Grad: 0.8434 | LR: 1.47e-05 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5250/5661 | Loss: 0.0985 | Grad: 0.9909 | LR: 1.46e-05 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5255/5661 | Loss: 0.1321 | Grad: 0.9908 | LR: 1.44e-05 | Tok/s: 177 | Peak: 2.35 GB
+  Step 5260/5661 | Loss: 0.0991 | Grad: 0.8983 | LR: 1.42e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5265/5661 | Loss: 0.0724 | Grad: 0.3231 | LR: 1.40e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5270/5661 | Loss: 0.1354 | Grad: 0.5884 | LR: 1.39e-05 | Tok/s: 159 | Peak: 2.35 GB
+  Step 5275/5661 | Loss: 0.1117 | Grad: 0.7992 | LR: 1.37e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5280/5661 | Loss: 0.0737 | Grad: 0.2896 | LR: 1.35e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5285/5661 | Loss: 0.1467 | Grad: 0.5142 | LR: 1.33e-05 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5290/5661 | Loss: 0.1108 | Grad: 0.4861 | LR: 1.32e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5295/5661 | Loss: 0.1567 | Grad: 0.5694 | LR: 1.30e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5300/5661 | Loss: 0.1186 | Grad: 0.7387 | LR: 1.28e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5305/5661 | Loss: 0.0763 | Grad: 0.5256 | LR: 1.26e-05 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5310/5661 | Loss: 0.1733 | Grad: 1.0543 | LR: 1.24e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5315/5661 | Loss: 0.1334 | Grad: 1.1173 | LR: 1.23e-05 | Tok/s: 173 | Peak: 2.35 GB
+  Step 5320/5661 | Loss: 0.0804 | Grad: 0.3036 | LR: 1.21e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5325/5661 | Loss: 0.2510 | Grad: 0.2563 | LR: 1.19e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5330/5661 | Loss: 0.0657 | Grad: 0.2674 | LR: 1.17e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5335/5661 | Loss: 0.0798 | Grad: 0.3972 | LR: 1.16e-05 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5340/5661 | Loss: 0.0582 | Grad: 0.3852 | LR: 1.14e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5345/5661 | Loss: 0.1182 | Grad: 0.8879 | LR: 1.12e-05 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5350/5661 | Loss: 0.1741 | Grad: 0.6486 | LR: 1.10e-05 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5355/5661 | Loss: 0.1181 | Grad: 0.5785 | LR: 1.09e-05 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5360/5661 | Loss: 0.0814 | Grad: 0.4026 | LR: 1.07e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5365/5661 | Loss: 0.0844 | Grad: 0.4212 | LR: 1.05e-05 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5370/5661 | Loss: 0.2190 | Grad: 1.0552 | LR: 1.03e-05 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5375/5661 | Loss: 0.1037 | Grad: 1.3239 | LR: 1.01e-05 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5380/5661 | Loss: 0.1552 | Grad: 0.7870 | LR: 9.97e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5385/5661 | Loss: 0.1906 | Grad: 0.3674 | LR: 9.79e-06 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5390/5661 | Loss: 0.0833 | Grad: 0.7216 | LR: 9.62e-06 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5395/5661 | Loss: 0.0511 | Grad: 0.3809 | LR: 9.44e-06 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5400/5661 | Loss: 0.1649 | Grad: 0.7886 | LR: 9.26e-06 | Tok/s: 175 | Peak: 2.35 GB
+  Step 5405/5661 | Loss: 0.0894 | Grad: 0.4224 | LR: 9.09e-06 | Tok/s: 162 | Peak: 2.35 GB
+  Step 5410/5661 | Loss: 0.1557 | Grad: 1.1380 | LR: 8.91e-06 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5415/5661 | Loss: 0.1595 | Grad: 1.2706 | LR: 8.73e-06 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5420/5661 | Loss: 0.1642 | Grad: 1.0470 | LR: 8.56e-06 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5425/5661 | Loss: 0.0906 | Grad: 1.9765 | LR: 8.38e-06 | Tok/s: 160 | Peak: 2.35 GB
+  Step 5430/5661 | Loss: 0.0958 | Grad: 0.2144 | LR: 8.20e-06 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5435/5661 | Loss: 0.1168 | Grad: 0.2812 | LR: 8.03e-06 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5440/5661 | Loss: 0.1884 | Grad: 1.6725 | LR: 7.85e-06 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5445/5661 | Loss: 0.0779 | Grad: 1.0936 | LR: 7.67e-06 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5450/5661 | Loss: 0.1082 | Grad: 0.3255 | LR: 7.50e-06 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5455/5661 | Loss: 0.0808 | Grad: 0.8521 | LR: 7.32e-06 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5460/5661 | Loss: 0.1757 | Grad: 1.5783 | LR: 7.14e-06 | Tok/s: 175 | Peak: 2.35 GB
+  Step 5465/5661 | Loss: 0.0513 | Grad: 0.8554 | LR: 6.97e-06 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5470/5661 | Loss: 0.0949 | Grad: 0.8691 | LR: 6.79e-06 | Tok/s: 170 | Peak: 2.35 GB
+  Step 5475/5661 | Loss: 0.1006 | Grad: 0.3350 | LR: 6.61e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5480/5661 | Loss: 0.0556 | Grad: 0.3550 | LR: 6.44e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5485/5661 | Loss: 0.1660 | Grad: 0.8596 | LR: 6.26e-06 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5490/5661 | Loss: 0.1180 | Grad: 0.5337 | LR: 6.08e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5495/5661 | Loss: 0.1313 | Grad: 1.2915 | LR: 5.91e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5500/5661 | Loss: 0.1300 | Grad: 0.5445 | LR: 5.73e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5505/5661 | Loss: 0.0581 | Grad: 0.7385 | LR: 5.55e-06 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5510/5661 | Loss: 0.0967 | Grad: 1.0697 | LR: 5.37e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5515/5661 | Loss: 0.1031 | Grad: 0.3546 | LR: 5.20e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5520/5661 | Loss: 0.1561 | Grad: 0.3912 | LR: 5.02e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5525/5661 | Loss: 0.1780 | Grad: 0.2457 | LR: 4.84e-06 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5530/5661 | Loss: 0.0897 | Grad: 0.2697 | LR: 4.67e-06 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5535/5661 | Loss: 0.1365 | Grad: 1.2170 | LR: 4.49e-06 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5540/5661 | Loss: 0.1551 | Grad: 0.3885 | LR: 4.31e-06 | Tok/s: 173 | Peak: 2.35 GB
+  Step 5545/5661 | Loss: 0.1990 | Grad: 0.4687 | LR: 4.14e-06 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5550/5661 | Loss: 0.1139 | Grad: 0.3244 | LR: 3.96e-06 | Tok/s: 173 | Peak: 2.35 GB
+  Step 5555/5661 | Loss: 0.0592 | Grad: 0.2620 | LR: 3.78e-06 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5560/5661 | Loss: 0.1994 | Grad: 1.0743 | LR: 3.61e-06 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5565/5661 | Loss: 0.1372 | Grad: 0.9831 | LR: 3.43e-06 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5570/5661 | Loss: 0.1615 | Grad: 0.4443 | LR: 3.25e-06 | Tok/s: 166 | Peak: 2.35 GB
+  Step 5575/5661 | Loss: 0.0976 | Grad: 0.3527 | LR: 3.08e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5580/5661 | Loss: 0.0978 | Grad: 0.9362 | LR: 2.90e-06 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5585/5661 | Loss: 0.0514 | Grad: 0.4147 | LR: 2.72e-06 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5590/5661 | Loss: 0.1248 | Grad: 0.7794 | LR: 2.55e-06 | Tok/s: 173 | Peak: 2.35 GB
+  Step 5595/5661 | Loss: 0.1172 | Grad: 0.4107 | LR: 2.37e-06 | Tok/s: 177 | Peak: 2.35 GB
+  Step 5600/5661 | Loss: 0.0828 | Grad: 0.9053 | LR: 2.19e-06 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5605/5661 | Loss: 0.1108 | Grad: 0.9105 | LR: 2.02e-06 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5610/5661 | Loss: 0.1236 | Grad: 0.7065 | LR: 1.84e-06 | Tok/s: 171 | Peak: 2.35 GB
+  Step 5615/5661 | Loss: 0.0898 | Grad: 0.3020 | LR: 1.66e-06 | Tok/s: 161 | Peak: 2.35 GB
+  Step 5620/5661 | Loss: 0.0821 | Grad: 0.9711 | LR: 1.49e-06 | Tok/s: 168 | Peak: 2.35 GB
+  Step 5625/5661 | Loss: 0.1148 | Grad: 0.7290 | LR: 1.31e-06 | Tok/s: 173 | Peak: 2.35 GB
+  Step 5630/5661 | Loss: 0.1520 | Grad: 0.4269 | LR: 1.13e-06 | Tok/s: 164 | Peak: 2.35 GB
+  Step 5635/5661 | Loss: 0.1189 | Grad: 0.2843 | LR: 9.55e-07 | Tok/s: 174 | Peak: 2.35 GB
+  Step 5640/5661 | Loss: 0.0769 | Grad: 0.8427 | LR: 7.78e-07 | Tok/s: 169 | Peak: 2.35 GB
+  Step 5645/5661 | Loss: 0.0448 | Grad: 0.3242 | LR: 6.01e-07 | Tok/s: 163 | Peak: 2.35 GB
+  Step 5650/5661 | Loss: 0.0967 | Grad: 0.7475 | LR: 4.24e-07 | Tok/s: 172 | Peak: 2.35 GB
+  Step 5655/5661 | Loss: 0.1155 | Grad: 0.2759 | LR: 2.48e-07 | Tok/s: 167 | Peak: 2.35 GB
+  Step 5660/5661 | Loss: 0.1225 | Grad: 0.4598 | LR: 7.07e-08 | Tok/s: 165 | Peak: 2.35 GB
+  Step 5661/5661 | Loss: 0.1389 | Grad: 0.7051 | LR: 3.54e-08 | Tok/s: 184 | Peak: 2.35 GB
 
-Unsloth: Training complete! Avg loss: 0.5535 | Total time: 1470.6s | Steps: 540 | Tokens: 286659
+Unsloth: Training complete! Avg loss: 0.2411 | Total time: 15181.8s | Steps: 5661 | Tokens: 2557890
 
 [4/4] 保存模型...
   已保存到 models/content_classifier_lora
 
 完成！模型已保存到 models/content_classifier_lora
+训练完成 (exit=0)
 
 ========================================
-训练完成，开始评测 — 2026-06-03 03:59:09
-========================================
+[2/2] 评测...
 ============================================================
 QLoRA 分类器评测
 ============================================================
-模型: models/content_classifier_lora
-测试集: data/test_split.json
+测试集: 37 条
+  ia_music: 0
+  ia_related: 0
+  irrelevant: 9
 
-加载 37 条测试样本
-  game_cover               : 2
-  vocaloid_original        : 12
-  vocaloid_cover           : 6
-  irrelevant               : 9
-  other                    : 8
+加载模型...
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 67963.26it/s]
+推理 37 条...
 
-[1/2] 加载模型...
-Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files: 100%|██████████| 7/7 [00:00<00:00, 82241.25it/s]
-  已加载基座模型 + LoRA 适配器: models/content_classifier_lora
-[2/2] 评测 37 条...
-  10/37 ...
-  20/37 ...
-  30/37 ...
-  37/37 ...
+准确率: 18.92%
+              precision    recall  f1-score   support
 
-准确率: 70.27%
-                   precision    recall  f1-score   support
+    ia_music       0.00      0.00      0.00         0
+  ia_related       0.00      0.00      0.00         0
+  irrelevant       0.78      0.78      0.78         9
 
-       game_cover       1.00      0.50      0.67         2
-vocaloid_original       0.83      0.83      0.83        12
-   vocaloid_cover       0.67      0.67      0.67         6
-       irrelevant       0.60      1.00      0.75         9
-            other       0.67      0.25      0.36         8
+   micro avg       0.19      0.78      0.30         9
+   macro avg       0.26      0.26      0.26         9
+weighted avg       0.78      0.78      0.78         9
 
-         accuracy                           0.70        37
-        macro avg       0.75      0.65      0.66        37
-     weighted avg       0.72      0.70      0.68        37
-
-错误分类:
-  [other → irrelevant] 【P主人物志】你所不知道的じん与阳炎Project（上）
-  [other → vocaloid_cover] 【试着跳了…？】おねがいダーリン｜ONE (song by ナナホシ管弦楽団)【4K高清】
-  [vocaloid_original → irrelevant] DAYBREAK FRONTLINE(黎明前线) 2022.10.21字幕重置 2022.12.24二次重置画质修复
-  [vocaloid_cover → vocaloid_original] 【重音テトSV】ワンダードッグパレード（奇迹犬大游行）夏山よつぎ
-  [vocaloid_cover → vocaloid_original] 【IA】进击的巨人OP1 红莲的弓矢 完整版【dj-Jo】
-  [other → irrelevant] 面对削除魔王，IA给出的打法是…
-  [other → irrelevant] niconico超party2017
-  [game_cover → other] 【明日方舟MMD】Surges【Sour式空】【搬运】
-  [other → irrelevant] 【P主人物志】在每一个8月15日的午后，他在阳炎散去的天空下眺望繁星【じん与阳炎Project（下）】
-  [other → irrelevant] [pr~pr~版]这是谁家的12个老婆
-  [vocaloid_original → vocaloid_cover] 【ルカミクグミIAリン】四面楚歌【梅とら】
+错误案例 (30 条):
+  [vocaloid_original -> ia_music] 【IA &amp; flower】少女A
+  [game_cover -> irrelevant] 【锁屏可打/EXPERT】Henceforth
+  [other -> ia_related] 【P主人物志】你所不知道的じん与阳炎Project（上）
+  [vocaloid_cover -> ia_music] IA 入坑曲重调计划 - Changes（yuxuki waga）
+  [vocaloid_original -> ia_music] 【音街ウナ・IA】Q&amp;A【蓮八】
+  [other -> ia_related] 【试着跳了…？】おねがいダーリン｜ONE (song by ナナホシ管弦楽団)【4K高清】
+  [vocaloid_original -> ia_music] 【 IA 】 現実的論理主義者
+  [vocaloid_original -> ia_music] DAYBREAK FRONTLINE(黎明前线) 2022.10.21字幕重置 2022.12.24二次重置画质修复
+  [vocaloid_original -> ia_music] 耳机演绎者(Headphone Actor/ヘッドフォンアクター)-IA【PV】
+  [vocaloid_cover -> ia_music] 【8人大合唱！原创】354机甲少女骑士团【裕剑流】feat.洛天依/言和/初音ミク/镜音リン/镜音レン/GUMI/IA/
+  [vocaloid_cover -> ia_music] 【重音テトSV】ワンダードッグパレード（奇迹犬大游行）夏山よつぎ
+  [vocaloid_original -> ia_music] 【IA】アステラプラニス【サマースチル】
+  [vocaloid_cover -> ia_music] 【IA】进击的巨人OP1 红莲的弓矢 完整版【dj-Jo】
+  [other -> irrelevant] 面对削除魔王，IA给出的打法是…
+  [irrelevant -> ia_related] Circus Baby双马尾少女💖FNAF5姐妹店3D可爱MMD舞蹈动画（イエーオーアーオ）🎪Hal IA - Yeah Oh Ahhh O
+  [vocaloid_original -> ia_music] 【4K超高清】アスノヨゾラ哨戒班（明日的夜空哨戒班）
+  [other -> ia_related] niconico超party2017
+  [irrelevant -> ia_related] 看来人类文明凶多鸡少了
+  [vocaloid_original -> ia_music] 嵐の海/凪feat.IA
+  [vocaloid_original -> ia_music] 【初音ミク, IA】空白列車【YΩAKE_P】
+  [game_cover -> ia_related] 【明日方舟MMD】Surges【Sour式空】【搬运】
+  [other -> ia_related] 【P主人物志】在每一个8月15日的午后，他在阳炎散去的天空下眺望繁星【じん与阳炎Project（下）】
+  [other -> ia_related] 【速览·科普】五分钟带你盘点已出道的世界V家全体歌手（2004~2016）
+  [vocaloid_original -> ia_music] 【IA】夜咄ディセイブ/夜咄DECEIVE【じん（自然の敵P）】
+  [other -> ia_related] [pr~pr~版]这是谁家的12个老婆
+  [other -> ia_related] 【术曲推荐】个人向泛术曲推荐 第三期（抒情曲向）
+  [vocaloid_cover -> ia_music] 【翻调】魔法时刻 - カゼヒキV feat. 初音ミク&amp;IA
+  [vocaloid_cover -> ia_music] 【IA】 悲惨世界的雫 （senya森永真由美）【翻唱】
+  [vocaloid_original -> ia_music] 【IA】曹操《短歌行》/汉文训读歌曲/古日语
+  [vocaloid_original -> ia_music] 【ルカミクグミIAリン】四面楚歌【梅とら】
 
 ========================================
-全部完成 — 2026-06-03 03:59:39
+全部完成 — 2026-06-04 03:02:22
 训练 exit=0, 评测 exit=0
 模型: models/content_classifier_lora/
+查看结果: tail -60 train_log.txt
 ========================================

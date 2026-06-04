@@ -12,16 +12,14 @@ from collections import Counter
 # ==========================================================================
 
 def normalize_fullwidth(text: str) -> str:
-    """全角数字/英文字母 → 半角。"""
+    """全角数字/英文字母/符号 → 半角。"""
     result = []
     for ch in text:
         code = ord(ch)
-        if 0xFF10 <= code <= 0xFF19:  # 全角数字
+        if 0xFF01 <= code <= 0xFF5E:  # 全角标点+数字+字母
             result.append(chr(code - 0xFEE0))
-        elif 0xFF21 <= code <= 0xFF3A:  # 全角大写
-            result.append(chr(code - 0xFEE0))
-        elif 0xFF41 <= code <= 0xFF5A:  # 全角小写
-            result.append(chr(code - 0xFEE0))
+        elif code == 0x3000:  # 全角空格
+            result.append(' ')
         else:
             result.append(ch)
     return "".join(result)
@@ -31,10 +29,10 @@ def normalize_fullwidth(text: str) -> str:
 # 阶段0：已知 P主 列表
 # ==========================================================================
 
-KNOWN_CREATORS = {
+_raw_creators = {
     "Orangestar", "orangestar", "OrangeStar",
     "kemu", "KEMU",
-    "じん", "Jin", "自然の敵P", "自然之敌P", "じん（自然の敵P）",
+    "じん", "Jin", "自然の敵P", "自然之敌P", "じん（自然の敵P）", "じん(自然の敵P)",
     "梅とら", "まふまふ",
     "r-906", "Guiano", "guiano",
     "傘村トータ", "*Luna", "ねじ式", "ATOLS", "うたたP",
@@ -46,6 +44,8 @@ KNOWN_CREATORS = {
     "yksb", "ぐちり", "はなぽわんわんP", "Adeliae",
     "ねこぼーろ", "沙汰",
 }
+# 归一化后的已知P主集合
+KNOWN_CREATORS = {normalize_fullwidth(c) for c in _raw_creators}
 
 NOT_CREATOR_PATTERNS = [
     r'feat\.?\s*(IA|初音|MIKU)', r'【[^】]*】', r'^[\)\)D\]】]',
@@ -233,11 +233,24 @@ def parse_title(title: str, tags: str = "") -> dict:
 # ==========================================================================
 
 def main():
-    df = pd.read_csv("data/ia_music_data.csv")
-    df = df.drop_duplicates(subset=["bvid", "page"])
+    # 使用标注好的 ia_music 数据集
+    import csv
+    samples = []
+    with open("data/labeled_samples/music.csv", encoding="utf-8") as fh:
+        reader = csv.reader(fh)
+        header = next(reader)
+        ti, gi = header.index("title"), header.index("tags")
+        for row in reader:
+            if len(row) > max(ti, gi):
+                samples.append({
+                    "title": row[ti],
+                    "tags": row[gi],
+                    "bvid": row[0] if len(row) > 0 else "",
+                    "page": row[1] if len(row) > 1 else 1,
+                })
 
-    test = pd.concat([df.head(100), df.tail(100)]).drop_duplicates()
-    print(f"测试 {len(test)} 行\n")
+    test = pd.DataFrame(samples)
+    print(f"测试 {len(test)} 行 (来自 music.csv 标注集)\n")
 
     results = []
     for _, row in test.iterrows():

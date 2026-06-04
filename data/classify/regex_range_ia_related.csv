@@ -1,0 +1,4 @@
+﻿bvid,page,title,author,tags,category,play_count,regex_content_type,regex_is_game,regex_is_cover,regex_rule,suspicious,suspicious_reason
+BV1Fs411q7au,1,【现场版】  IA  界外科学  【Vmoe字幕组】,青羽yuyuyu,"VOCALOID,IA,原创曲",VOCALOID·UTAU,11828,ia_related,False,False,nonsong_mixed:现场,True,标题含'现场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV17s411q7Aj,1,【现场版】  V家总动员  圣枪爆裂男孩 【Vmoe字幕组】,青羽yuyuyu,"KAITO,镜音RIN,镜音LEN,原创曲,初音MIKU,VOCALOID,巡音LUKA,IA",VOCALOID·UTAU,9944,ia_related,False,False,nonsong_mixed:现场,True,标题含'现场'(非歌曲信号)但tags有音乐标签，需LLM确认
+BV1xx411F7NG,1,【Galaco＋IA】Cosmic Cruise,上甘玲Official,"ギャラ子オリジナル曲,ギャラ子,IA_-ARIA_ON_THE_PLANETES-,IAオリジナル曲,VOCALOID",VOCALOID·UTAU,294,ia_related,False,False,nonsong_mixed:COS,True,标题含'COS'(非歌曲信号)但tags有音乐标签，需LLM确认

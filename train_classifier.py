@@ -21,42 +21,40 @@ from typing import Optional
 # ==========================================================================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
-DATA_DIR = "data"
-DATA_PATH = os.path.join(DATA_DIR, "labeled_samples.json")
+DATA_DIR = "data/labeled_samples"
 OUTPUT_DIR = "models/content_classifier_lora"
-TEST_SIZE = 0.15                  # 测试集比例
+TEST_SIZE = 0.15
 SEED = 42
 
-# LoRA 参数
 LORA_R = 8
 LORA_ALPHA = 16
 MAX_SEQ_LENGTH = 512
 
-# 训练参数
 BATCH_SIZE = 2
 EPOCHS = 3
 LEARNING_RATE = 2e-4
 
-# 五分类标签及其定义
-LABELS = [
-    "game_cover",
-    "vocaloid_original",
-    "vocaloid_cover",
-    "irrelevant",
-    "other",
-]
+# v2 三分类（与 content_classifier.py 保持一致）
+LABELS = ["ia_music", "ia_related", "irrelevant"]
 
+# 标签定义（与 content_classifier.CLASSIFICATION_CONFIG 一致）
 LABEL_DEFINITIONS = {
-    "game_cover":           "音游曲翻唱/相关，如 PJSK/BangDream/Phigros/Arcaea/CHUNITHM/maimai/osu!/D4DJ 等",
-    "vocaloid_original":    "VOCALOID/CeVIO 引擎合成的 IA 原创歌曲",
-    "vocaloid_cover":       "IA（作为 VOCALOID 歌姬）翻唱原唱不是IA的歌曲",
-    "irrelevant":           "与虚拟歌姬 IA 完全无关的内容（游戏、军事、AI生成等）",
-    "other":                "与虚拟歌姬 IA 相关但非歌曲投稿（语调教、演唱会、科普教学、猜歌比赛、MMD舞蹈、榜单盘点、P主介绍等）",
+    "ia_music": (
+        "IA（作为 VOCALOID/CeVIO 歌姬）演唱的音乐作品。"
+        "包括原创、翻唱、音游曲、钢琴改编、合唱等"
+    ),
+    "ia_related": (
+        "与虚拟歌姬 IA 相关但非歌曲投稿。"
+        "语调教、演唱会、科普/P主人物志、猜歌比赛、MMD舞蹈、榜单盘点、声库评测等"
+    ),
+    "irrelevant": (
+        "与虚拟歌姬 IA 完全无关。"
+        "游戏实况、军事/飞机型号(IA58)、AI生成内容、漫剧、音响器材等"
+    ),
 }
 
-
 SYSTEM_PROMPT = (
-    "你是一个B站视频分类助手。根据视频标题、标签、分区和版权信息，将视频分为5类：\n\n"
+    "你是一个B站视频分类助手。根据视频标题、标签、分区和版权信息，将视频分为3类：\n\n"
     + "\n".join(f"- {k}: {v}" for k, v in LABEL_DEFINITIONS.items())
     + "\n\n只输出标签名，不要解释。"
 )
@@ -66,10 +64,39 @@ SYSTEM_PROMPT = (
 # 数据加载与划分
 # ==========================================================================
 
-def load_data(path: str) -> list[dict]:
-    """加载标注样本 JSON。"""
-    with open(path, encoding="utf-8") as f:
-        samples = json.load(f)
+def load_data() -> list[dict]:
+    """从 labeled_samples/ 的 3 个 CSV 加载标注数据。"""
+    import csv
+    FILE_LABELS = {
+        "music.csv":       "ia_music",
+        "irrelevent.csv":  "irrelevant",
+        "related.csv":     "ia_related",
+    }
+    samples = []
+    for fname, default_label in FILE_LABELS.items():
+        path = os.path.join(DATA_DIR, fname)
+        if not os.path.exists(path):
+            print(f"  跳过: {path} (不存在)")
+            continue
+        with open(path, encoding="utf-8") as fh:
+            reader = csv.reader(fh)
+            header = next(reader)
+            ti = header.index("title")
+            gi = header.index("tags")
+            ci = header.index("category") if "category" in header else -1
+            li = header.index("content_type") if "content_type" in header else -1
+            for row in reader:
+                if len(row) <= max(ti, gi):
+                    continue
+                label = row[li].strip() if li >= 0 and li < len(row) else default_label
+                if label not in LABELS:
+                    label = default_label
+                samples.append({
+                    "title":    row[ti] if ti < len(row) else "",
+                    "tags":     row[gi] if gi < len(row) else "",
+                    "category": row[ci] if ci >= 0 and ci < len(row) else "",
+                    "content_type": label,
+                })
     print(f"加载 {len(samples)} 条标注样本")
     return samples
 
@@ -117,29 +144,10 @@ def stratified_split(samples: list[dict], test_ratio: float, seed: int
 # ==========================================================================
 
 def format_sample(s: dict) -> str:
-    """
-    将一条标注样本格式化为 Alpaca 训练文本。
-
-    输入格式:
-        {"title": "...", "tags": "...", "category": "...",
-         "copyright": "...", "content_type": "..."}
-
-    输出格式:
-        ### Instruction:
-        <SYSTEM_PROMPT>
-        ### Input:
-        标题：xxx
-        标签：xxx
-        分区：xxx
-        版权：xxx
-        ### Response:
-        game_cover
-    """
     input_text = (
         f"标题：{s['title']}\n"
-        f"标签：{s['tags']}\n"
-        f"分区：{s.get('category', '')}\n"
-        f"版权：{s.get('copyright', '')}"
+        f"标签：{s.get('tags', '')}\n"
+        f"分区：{s.get('category', '')}"
     )
     return (
         f"### Instruction:\n{SYSTEM_PROMPT}\n\n"
@@ -257,14 +265,14 @@ def main():
     print("QLoRA 内容分类器训练")
     print("=" * 60)
     print(f"模型: {MODEL_NAME}")
-    print(f"数据: {DATA_PATH}")
+    print(f"数据: {DATA_DIR}/*.csv")
     print(f"输出: {OUTPUT_DIR}")
     print()
 
     # 1. 加载数据
-    samples = load_data(DATA_PATH)
+    samples = load_data()
     if not samples:
-        print("无标注数据，请先运行 crawler/build_labeled_samples.py")
+        print("无标注数据，请检查 data/labeled_samples/")
         return
 
     # 检查必要字段

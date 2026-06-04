@@ -18,24 +18,25 @@ CSV_PATH = "data/ia_music_data.csv"
 OUTPUT = "data/full_classification.csv"
 SAMPLE_SIZE = 100  # 随机抽查行数（全量 4128 条全部推理）
 
-LABELS = [
-    "game_cover",
-    "vocaloid_original",
-    "vocaloid_cover",
-    "irrelevant",
-    "other",
-]
+LABELS = ["ia_music", "ia_related", "irrelevant"]
 
 LABEL_DEFINITIONS = {
-    "game_cover":           "音游曲翻唱/相关，如 PJSK/BangDream/Phigros/Arcaea/CHUNITHM/maimai/osu!/D4DJ 等",
-    "vocaloid_original":    "VOCALOID/CeVIO 引擎合成的 IA 原创歌曲",
-    "vocaloid_cover":       "IA（作为 VOCALOID 歌姬）翻唱别人的歌曲",
-    "irrelevant":           "与虚拟歌姬 IA 完全无关的内容（游戏、军事、AI生成等）",
-    "other":                "与虚拟歌姬 IA 相关但非歌曲投稿（语调教、演唱会、科普教学、猜歌比赛、MMD舞蹈、榜单盘点、P主介绍等）",
+    "ia_music": (
+        "IA（作为 VOCALOID/CeVIO 歌姬）演唱的音乐作品。"
+        "包括原创、翻唱、音游曲、钢琴改编、合唱等"
+    ),
+    "ia_related": (
+        "与虚拟歌姬 IA 相关但非歌曲投稿。"
+        "语调教、演唱会、科普/P主人物志、猜歌比赛、MMD舞蹈、榜单盘点、声库评测等"
+    ),
+    "irrelevant": (
+        "与虚拟歌姬 IA 完全无关。"
+        "游戏实况、军事/飞机型号(IA58)、AI生成内容、漫剧、音响器材等"
+    ),
 }
 
 SYSTEM_PROMPT = (
-    "你是一个B站视频分类助手。根据视频标题、标签、分区和版权信息，将视频分为5类：\n\n"
+    "你是一个B站视频分类助手。根据视频标题、标签、分区信息，将视频分为3类：\n\n"
     + "\n".join(f"- {k}: {v}" for k, v in LABEL_DEFINITIONS.items())
     + "\n\n只输出标签名，不要解释。"
 )
