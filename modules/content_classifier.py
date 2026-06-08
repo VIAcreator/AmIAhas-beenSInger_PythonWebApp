@@ -181,7 +181,10 @@ def classify(title: str, tags: str, category: str) -> dict:
         if tu == "IA" or tu.startswith("IA ") or "IA_" in tu or tu.endswith(" IA"):
             has_ia_exact = True
             break
-    has_ia_loose = has_ia_exact or any("IA" in t.upper() for t in tags_list)
+    # 前后不接英文字母：匹配 IA:[R]、IA小天使、IA_-ARIA，排除 ASIA/MEDIA/DIAMOND
+    has_ia_loose = has_ia_exact or any(
+        re.search(r'(?<![a-zA-Z])IA(?![a-zA-Z])', t.upper()) for t in tags_list
+    )
 
     music_signal = has_vocaloid_tag or has_singer_tag or has_ia_exact
     any_ia = has_ia_loose or has_vocaloid_tag or has_singer_tag
@@ -192,18 +195,19 @@ def classify(title: str, tags: str, category: str) -> dict:
     )
 
     strong_title_music = bool(
-        re.search(r'feat\.?\s*IA', title, re.I) or
-        re.search(r'【IA[^】]*】', title) or
-        re.search(r'[/／][^/／]+feat', title, re.I)
+        re.search(r'feat\.?\s*IA', t_upper) or
+        re.search(r'【IA[^】]*】', t_upper) or
+        re.search(r'[/／][^/／]+feat', t_upper)
     )
     no_ia_format = not strong_title_music
 
-    clean_title = re.sub(r'【[^】]*】', '', title).strip()
+    title_safe = title or ""
+    clean_title = re.sub(r'【[^】]*】', '', title_safe).strip()
     clean_title = re.sub(r'\[[^\]]*\]', '', clean_title).strip()
     weird_title = (
         len(clean_title) < 8 or
-        "?" in title or "？" in title or
-        "..." in title or "!!!" in title
+        "?" in title_safe or "？" in title_safe or
+        "..." in title_safe or "!!!" in title_safe
     )
 
     # ---- 分类判定 ----

@@ -7,6 +7,7 @@ LLM 验证器：对正则分类标记为 suspicious 的行进行二次确认。
 
 import json
 import os
+import re
 import pandas as pd
 
 # ==========================================================================
@@ -60,10 +61,10 @@ def _parse_result(raw_text: str, fallback: dict) -> dict:
     """从 LLM 原始文本中提取 JSON，失败时返回 fallback。"""
     text = raw_text.strip()
     if text.startswith("```"):
-        lines = text.split("\n")
-        text = "\n".join(lines[1:])
-        if text.endswith("```"):
-            text = text.rsplit("\n", 1)[0]
+        # 移除 markdown fence，兼容单行和多行
+        text = re.sub(r'^```\w*\s*', '', text)   # 开头 ``` 或 ```json
+        text = re.sub(r'\s*```$', '', text)       # 结尾 ```
+
     try:
         result = json.loads(text)
         return {
@@ -237,6 +238,7 @@ def verify_suspicious(df: pd.DataFrame, backend: str = "deepseek",
         key = api_key or DEEPSEEK_API_KEY or os.getenv("DEEPSEEK_API_KEY")
         if not key:
             print("  [LLM] DeepSeek API Key 未配置，跳过 LLM 验证")
+            df["llm_verified"] = False
             return df
         verifier = DeepSeekVerifier(key)
         label = "DeepSeek"
@@ -244,6 +246,7 @@ def verify_suspicious(df: pd.DataFrame, backend: str = "deepseek",
         path = adapter_path or "models/content_classifier_lora"
         if not os.path.exists(path):
             print(f"  [LLM] QLoRA 适配器不存在 ({path})，跳过 LLM 验证")
+            df["llm_verified"] = False
             return df
         verifier = QwenVerifier(path)
         label = "Qwen"
@@ -266,5 +269,6 @@ def verify_suspicious(df: pd.DataFrame, backend: str = "deepseek",
         except Exception as e:
             print(f"    LLM 验证失败 ({row.get('bvid', '?')}): {e}")
 
+    df["llm_verified"] = True
     print(f"  [LLM/{label}] 完成：修改 {modified}/{suspicious_count} 条")
     return df
