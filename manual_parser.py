@@ -311,6 +311,78 @@ def modify_song(current_idx):
     print(f"  ✓ 已更新 {count} 条映射: {final_name}  by {final_creator}")
 
 
+def alias_song(current_idx):
+    """查看并管理歌曲的别名（关键词）。"""
+    global _log_dirty
+    songs = list_existing_songs(mapping)
+    if songs.empty:
+        print("  暂无已有歌曲")
+        return
+
+    try:
+        choice = int(input("\n选择编号: ")) - 1
+        if choice < 0 or choice >= len(songs):
+            print("  ✗ 无效编号")
+            return
+    except ValueError:
+        print("  ✗ 请输入数字")
+        return
+
+    target = songs.iloc[choice]
+    name = target["song_name"]
+    creator = target["original_creator"]
+
+    while True:
+        # 获取该歌曲的所有关键词
+        mask = (mapping["song_name"] == name) & (mapping["original_creator"] == creator)
+        kws = mapping.loc[mask, "keyword"].tolist()
+        print(f"\n  📌 {name}  by {creator}")
+        print(f"  别名 ({len(kws)} 个): {', '.join(kws)}")
+        print("  [a]添加别名  [d]删除别名  [b]返回")
+        sub = input("> ").strip().lower()
+
+        if sub == "b":
+            break
+
+        elif sub == "a":
+            new_kw = input("  新别名: ").strip()
+            if len(new_kw) < 1:
+                print("  ✗ 别名不能为空")
+                continue
+            if new_kw.lower() in set(mapping["keyword"].str.lower()):
+                print(f"  ✗ '{new_kw}' 已存在")
+                continue
+            mapping.loc[len(mapping)] = [new_kw, name, creator]
+            _log_dirty = True
+            _auto_save(current_idx)
+            print(f"  ✓ 已添加: {new_kw}")
+
+        elif sub == "d":
+            if len(kws) <= 1:
+                print("  ✗ 至少保留一个别名，如需删除整首歌曲请用其他方式")
+                continue
+            for j, kw in enumerate(kws):
+                print(f"  {j + 1}. {kw}")
+            try:
+                del_choice = int(input("  删除编号: ")) - 1
+                if del_choice < 0 or del_choice >= len(kws):
+                    print("  ✗ 无效编号")
+                    continue
+            except ValueError:
+                print("  ✗ 请输入数字")
+                continue
+            kw_to_del = kws[del_choice]
+            # 只删除该歌曲下的该关键词
+            del_mask = mask & (mapping["keyword"] == kw_to_del)
+            mapping.drop(mapping[del_mask].index, inplace=True)
+            _log_dirty = True
+            _auto_save(current_idx)
+            print(f"  ✓ 已删除: {kw_to_del}")
+
+        else:
+            print(f"  ✗ 未知命令: '{sub}'")
+
+
 def show_stats():
     """显示当前进度统计。"""
     labeled = len(mapping)
@@ -322,7 +394,7 @@ def show_stats():
 # ── 主循环 ──────────────────────────────────────────────
 print(f"\n  📁 已加载 {TOTAL} 行音乐数据, {len(mapping)} 条已有映射")
 print(f"  📍 从第 {start_row + 1} 行继续\n")
-print("  [s]跳过  [n]新建歌曲  [a]加到已有歌曲  [m]修改歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
+print("  [s]跳过  [n]新建歌曲  [a]加到已有歌曲  [k]别名管理  [m]修改歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
 
 i = start_row
 _atexit_save_idx[0] = i
@@ -359,6 +431,9 @@ try:
         elif cmd == "m":
             modify_song(i)
 
+        elif cmd == "k":
+            alias_song(i)
+
         elif cmd == "e":
             print(f"\n当前标题: {row['title']}")
             new_title = input("输入修正后的标题 (直接回车保持原样): ").strip()
@@ -394,10 +469,56 @@ try:
 
         else:
             print(f"  ✗ 未知命令: '{cmd}'")
-            print("  [s]跳过 [n]新建 [a]加到已有 [m]修改 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
+            print("  [s]跳过 [n]新建 [a]加到已有 [k]别名 [m]修改 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
 
 finally:
     # finally 是最后一道防线：无论如何退出都尝试保存
     _atexit_save_idx[0] = i
     if _log_dirty:
         _emergency_save(i)
+
+
+# ── 标注完成后的管理模式 ──────────────────────────────────
+if i >= TOTAL:
+    print(f"\n  🎉 全部 {TOTAL} 行已浏览完毕!")
+    print("  进入管理模式，支持: [n]新建歌曲 [k]别名管理 [m]修改歌曲 [stat]统计 [exp]导出 [q]退出\n")
+    while True:
+        cmd = input("> ").strip().lower()
+
+        if cmd == "q":
+            ans = input("确定退出? [Y/n]: ").strip().lower()
+            if ans in ("", "y"):
+                save_progress(i)
+                _log_dirty = False
+                print("  再见!")
+                break
+
+        elif cmd == "n":
+            title = input("标题（用于关键词匹配测试，可留空）: ").strip()
+            new_song(title, i)
+
+        elif cmd == "k":
+            alias_song(i)
+
+        elif cmd == "m":
+            modify_song(i)
+
+        elif cmd == "stat":
+            show_stats()
+
+        elif cmd == "exp":
+            export_progress(i)
+
+        elif cmd == "undo":
+            if len(mapping) > 0:
+                removed = mapping.iloc[-1]
+                mapping.drop(mapping.index[-1], inplace=True)
+                _log_dirty = True
+                _auto_save(i)
+                print(f"  ✓ 已撤销: {removed['keyword']} → {removed['song_name']}")
+            else:
+                print("  ✗ 没有可撤销的操作")
+
+        else:
+            print(f"  ✗ 未知命令: '{cmd}'")
+            print("  [n]新建 [k]别名 [m]修改 [stat]统计 [exp]导出 [q]退出")
