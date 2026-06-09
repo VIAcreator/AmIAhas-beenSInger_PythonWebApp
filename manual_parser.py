@@ -85,7 +85,19 @@ class Tee:
 sys.stdout = Tee(LOG_FILE)
 
 # ── 数据加载 ──────────────────────────────────────────────
-df = pd.read_csv(MUSIC_CSV, on_bad_lines="skip", engine="python")
+df = pd.read_csv(MUSIC_CSV, on_bad_lines="skip")
+
+# 探测实际最大列数（表头只有 11 列，但 950 行有 13 列，被 on_bad_lines 跳过了）
+import csv
+max_cols = 0
+with open(MUSIC_CSV, encoding="utf-8") as f:
+    for row in csv.reader(f):
+        max_cols = max(max_cols, len(row))
+# 构造足够宽的列名，重新读取全量
+col_names = pd.read_csv(MUSIC_CSV, nrows=0).columns.tolist()
+while len(col_names) < max_cols:
+    col_names.append(f"_extra_{len(col_names)}")
+df = pd.read_csv(MUSIC_CSV, names=col_names, skiprows=1, on_bad_lines="skip")
 df = df.sort_values("play_count", ascending=False).reset_index(drop=True)
 
 if os.path.exists(KEYWORD_CSV):
