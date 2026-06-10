@@ -112,6 +112,24 @@ _atexit_save_idx[0] = start_row
 
 TOTAL = len(df)
 
+# ── 匹配缓存：stat 不需每次扫描全量 ────────────────────────
+_row_matched = set()    # 已浏览且命中匹配的行索引
+_row_unmatched = set()  # 已浏览且未命中的行索引
+
+def _invalidate_cache():
+    """mapping 被修改后缓存失效。"""
+    _row_matched.clear()
+    _row_unmatched.clear()
+
+def _record_match(idx, matched):
+    """记录某行的匹配状态。"""
+    if matched:
+        _row_matched.add(idx)
+        _row_unmatched.discard(idx)
+    else:
+        _row_unmatched.add(idx)
+        _row_matched.discard(idx)
+
 # ── 辅助函数 ──────────────────────────────────────────────
 def find_matches(title, mapping_df):
     """检查标题是否含已有的 keyword（大小写不敏感，跳过 <=2 字符的关键词）。"""
@@ -161,8 +179,8 @@ def display_row(row, index):
         print(f"高亮: {highlighted}")
 
     matches = find_matches(title, mapping)
+    _record_match(index, bool(matches))
     if matches:
-        # 构建歌曲编号索引
         song_idx = _song_index()
         print(f"\n  ⚡ 已有匹配:")
         for m in matches:
@@ -214,6 +232,7 @@ def new_song(title, current_idx):
 
     _log_dirty = True
     _auto_save(current_idx)
+    _invalidate_cache()
     print(f"  ✓ 已添加 {len(keywords)} 个关键词 → {song_name}  by {creator}")
 
 
@@ -235,6 +254,7 @@ def add_to_existing(title, current_idx):
         return
 
     target = songs.iloc[choice]
+    print(f"  已选择: {target['song_name']}  by {target['original_creator']}")
     keyword = input("输入新关键词: ").strip()
     if len(keyword) < 1:
         print("  ✗ 关键词至少需要1个字符")
@@ -248,6 +268,7 @@ def add_to_existing(title, current_idx):
     mapping.loc[len(mapping)] = [keyword, target["song_name"], target["original_creator"]]
     _log_dirty = True
     _auto_save(current_idx)
+    _invalidate_cache()
     print(f"  ✓ 已添加: {keyword} → {target['song_name']}  by {target['original_creator']}")
 
 
@@ -330,7 +351,53 @@ def modify_song(current_idx):
     mapping.loc[mask, "original_creator"] = final_creator
     _log_dirty = True
     _auto_save(current_idx)
+    _invalidate_cache()
     print(f"  ✓ 已更新 {count} 条映射: {final_name}  by {final_creator}")
+
+
+def merge_songs(current_idx):
+    """合并两首歌曲 —— 将 B 的所有关键词合并到 A，删除 B。"""
+    global _log_dirty
+    songs = list_existing_songs(mapping)
+    if songs.empty or len(songs) < 2:
+        print("  至少需要两首歌曲才能合并")
+        return
+
+    try:
+        a_choice = int(input("\n选择保留的歌曲编号 (A): ")) - 1
+        if a_choice < 0 or a_choice >= len(songs):
+            print("  ✗ 无效编号")
+            return
+        b_choice = int(input("选择要合并进来的歌曲编号 (B): ")) - 1
+        if b_choice < 0 or b_choice >= len(songs):
+            print("  ✗ 无效编号")
+            return
+    except ValueError:
+        print("  ✗ 请输入数字")
+        return
+
+    if a_choice == b_choice:
+        print("  ✗ 不能合并同一首歌曲")
+        return
+
+    song_a = songs.iloc[a_choice]
+    song_b = songs.iloc[b_choice]
+
+    mask_b = (mapping["song_name"] == song_b["song_name"]) & (mapping["original_creator"] == song_b["original_creator"])
+    count = mask_b.sum()
+
+    ans = input(f"\n  将 [{song_b['song_name']} by {song_b['original_creator']}] 的 {count} 个关键词合并到 [{song_a['song_name']} by {song_a['original_creator']}]?\n  此操作不可撤销 [y/N]: ").strip().lower()
+    if ans != "y":
+        print("  ✗ 已取消")
+        return
+
+    # 更新 B 的所有行指向 A
+    mapping.loc[mask_b, "song_name"] = song_a["song_name"]
+    mapping.loc[mask_b, "original_creator"] = song_a["original_creator"]
+    _log_dirty = True
+    _auto_save(current_idx)
+    _invalidate_cache()
+    print(f"  ✓ 已合并: {count} 个关键词 → {song_a['song_name']}  by {song_a['original_creator']}")
 
 
 def alias_song(current_idx):
@@ -367,7 +434,7 @@ def alias_song(current_idx):
             break
 
         elif sub == "a":
-            new_kw = input("  新别名: ").strip()
+            new_kw = input(f"  为 [{name}] 添加新别名: ").strip()
             if len(new_kw) < 1:
                 print("  ✗ 别名不能为空")
                 continue
@@ -377,6 +444,7 @@ def alias_song(current_idx):
             mapping.loc[len(mapping)] = [new_kw, name, creator]
             _log_dirty = True
             _auto_save(current_idx)
+            _invalidate_cache()
             print(f"  ✓ 已添加: {new_kw}")
 
         elif sub == "d":
@@ -399,6 +467,7 @@ def alias_song(current_idx):
             mapping.drop(mapping[del_mask].index, inplace=True)
             _log_dirty = True
             _auto_save(current_idx)
+            _invalidate_cache()
             print(f"  ✓ 已删除: {kw_to_del}")
 
         elif sub == "del":
@@ -407,6 +476,7 @@ def alias_song(current_idx):
                 mapping.drop(mapping[mask].index, inplace=True)
                 _log_dirty = True
                 _auto_save(current_idx)
+                _invalidate_cache()
                 print(f"  ✓ 已删除: {name}")
                 break
 
@@ -415,17 +485,26 @@ def alias_song(current_idx):
 
 
 def show_stats(current_idx):
-    """显示当前进度统计。"""
+    """显示当前进度统计（使用缓存的匹配状态，O(1)）。"""
     labeled = len(mapping)
     unique_songs = mapping["song_name"].nunique()
-
-    # 统计已浏览行的匹配情况
-    matched_rows = 0
-    for idx in range(current_idx):
-        if find_matches(str(df.iloc[idx]["title"]), mapping):
-            matched_rows += 1
-    unmatched_rows = current_idx - matched_rows
     remaining = TOTAL - current_idx
+
+    # 从缓存统计（mapping 被修改后缓存自动失效重建）
+    matched_rows = len(_row_matched)
+    unmatched_rows = len(_row_unmatched)
+    uncached = current_idx - matched_rows - unmatched_rows
+
+    # 未缓存的行：可能是 mapping 修改后重新展示的行，补算一次
+    if uncached > 0:
+        for idx in range(current_idx):
+            if idx not in _row_matched and idx not in _row_unmatched:
+                if find_matches(str(df.iloc[idx]["title"]), mapping):
+                    _row_matched.add(idx)
+                    matched_rows += 1
+                else:
+                    _row_unmatched.add(idx)
+                    unmatched_rows += 1
 
     print(f"\n  ═══ 统计 ═══")
     print(f"  映射库: {labeled} 个关键词 → {unique_songs} 首歌曲")
@@ -443,7 +522,7 @@ def show_stats(current_idx):
 print(f"\n  📁 已加载 {TOTAL} 行音乐数据, {len(mapping)} 条已有映射")
 print(f"  📍 从第 {start_row + 1} 行继续\n")
 print("  [s]前进  [b]回退  [ss]下一未匹配  [bb]上一未匹配  [数字]跳转行\n")
-print("  [n]新建歌曲  [a]加到已有歌曲  [k]别名管理  [m]修改歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
+print("  [n]新建歌曲  [a]加到已有歌曲  [k]别名管理  [m]修改歌曲  [mg]合并歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
 
 i = start_row
 _atexit_save_idx[0] = i
@@ -525,6 +604,9 @@ try:
         elif cmd == "m":
             modify_song(i)
 
+        elif cmd == "mg":
+            merge_songs(i)
+
         elif cmd == "k":
             alias_song(i)
 
@@ -533,8 +615,10 @@ try:
             new_title = input("输入修正后的标题 (直接回车保持原样): ").strip()
             if new_title:
                 df.at[df.index[i], "title"] = new_title
+                tmp_path = MUSIC_CSV + ".tmp"
                 try:
-                    df.to_csv(MUSIC_CSV, index=False, encoding="utf-8-sig")
+                    df.to_csv(tmp_path, index=False, encoding="utf-8-sig")
+                    os.replace(tmp_path, MUSIC_CSV)  # 原子替换
                 except Exception as ex:
                     print(f"  ⚠ 写回 CSV 失败: {ex}")
                 _log_dirty = True
@@ -561,13 +645,14 @@ try:
                 mapping.drop(mapping.index[-1], inplace=True)
                 _log_dirty = True
                 _auto_save(i)
+                _invalidate_cache()
                 print(f"  ✓ 已撤销最近添加的映射: keyword=\"{removed['keyword']}\" → {removed['song_name']}  by {removed['original_creator']}")
             else:
                 print("  ✗ 没有可撤销的操作")
 
         else:
             print(f"  ✗ 未知命令: '{cmd}'")
-            print("  [s]前进 [b]回退 [ss]下一未匹配 [bb]上一未匹配 [数字]跳转 [n]新建 [a]加到已有 [k]别名 [m]修改 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
+            print("  [s]前进 [b]回退 [ss]下一未匹配 [bb]上一未匹配 [数字]跳转 [n]新建 [a]加到已有 [k]别名 [m]修改 [mg]合并 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
 
 finally:
     # finally 是最后一道防线：无论如何退出都尝试保存
@@ -579,7 +664,7 @@ finally:
 # ── 标注完成后的管理模式 ──────────────────────────────────
 if i >= TOTAL:
     print(f"\n  🎉 全部 {TOTAL} 行已浏览完毕!")
-    print("  进入管理模式，支持: [n]新建歌曲 [a]加到已有 [k]别名管理 [m]修改歌曲 [stat]统计 [exp]导出 [q]退出\n")
+    print("  进入管理模式，支持: [n]新建歌曲 [a]加到已有 [k]别名管理 [m]修改歌曲 [mg]合并歌曲 [stat]统计 [exp]导出 [q]退出\n")
     while True:
         cmd = input("> ").strip().lower()
 
@@ -604,6 +689,9 @@ if i >= TOTAL:
         elif cmd == "m":
             modify_song(i)
 
+        elif cmd == "mg":
+            merge_songs(i)
+
         elif cmd == "stat":
             show_stats(i)
 
@@ -616,10 +704,11 @@ if i >= TOTAL:
                 mapping.drop(mapping.index[-1], inplace=True)
                 _log_dirty = True
                 _auto_save(i)
+                _invalidate_cache()
                 print(f"  ✓ 已撤销最近添加的映射: keyword=\"{removed['keyword']}\" → {removed['song_name']}  by {removed['original_creator']}")
             else:
                 print("  ✗ 没有可撤销的操作")
 
         else:
             print(f"  ✗ 未知命令: '{cmd}'")
-            print("  [n]新建 [a]加到已有 [k]别名 [m]修改 [stat]统计 [exp]导出 [q]退出")
+            print("  [n]新建 [a]加到已有 [k]别名 [m]修改 [mg]合并 [stat]统计 [exp]导出 [q]退出")
