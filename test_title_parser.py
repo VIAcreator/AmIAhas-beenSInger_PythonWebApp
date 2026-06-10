@@ -67,7 +67,7 @@ NOT_CREATOR_TOKENS = {
     "オリジナル", "オリジナル曲", "カバー", "Cover", "cover",
     "4K", "MV", "PV", "MMD", "手书", "本家投稿", "中文字幕", "授权转载",
     "VOCALOID殿堂入り", "VOCAROCK", "無色透名祭",
-    "ゲキヤク", "STARDUST",  # IA ROCKS tracks
+    "ゲキヤク", "STARDUST", "音街ウナ"  # IA ROCKS tracks
 }
 
 def extract_bracket_tokens(title: str) -> dict:
@@ -80,10 +80,10 @@ def extract_bracket_tokens(title: str) -> dict:
     VOCAL_SINGERS = {"IA", "IA ROCKS", "IA :[R]", "IA:[R]", "初音ミク", "GUMI",
                      "鏡音リン", "鏡音レン", "巡音ルカ", "結月ゆかり", "ONE", "OИE",
                      "Fukase", "MAYU", "Lily", "VY1", "VY2", "可不", "重音テト",
-                     "IA小天使", "IA GLOWB", "歌愛ユキ"}
+                     "IA小天使", "IA GLOWB", "歌愛ユキ", "音街ウナ"}
     ACTIONS = {"オリジナル曲", "オリジナル", "原创曲", "搬运", "转载", "授权转载",
                "翻唱", "カバー", "cover", "Cover", "本家投稿", "中文字幕",
-               "4K", "MV", "PV", "MMD", "手书", "IA翻唱", "IAオリジナル曲"}
+               "4K", "MV", "PV", "MMD", "手书", "IA翻唱", "IAオリジナル曲", "PV付", "日语翻唱"}
 
     for i, token in enumerate(tokens):
         t = normalize_fullwidth(token.strip())
@@ -165,6 +165,7 @@ def extract_slash_creator(title: str) -> str | None:
 def extract_song_name(title: str, creators: list, vocal_singers: list) -> str:
     """去除标签、P主名、-IA后缀和噪声，提取歌名。"""
     s = normalize_fullwidth(title)
+    s = s[:2000]  # 实际标题最长约 200 字符
 
     # 0. 解码 HTML 实体 (&amp; → &, &#x27; → ', etc.)
     import html
@@ -189,9 +190,7 @@ def extract_song_name(title: str, creators: list, vocal_singers: list) -> str:
     for creator in creators:
         s = re.sub(r'\s*/\s*' + re.escape(creator) + r'\s*$', '', s).strip()
     # 通用 [/／]末尾剥离: 最后一段全是歌手名时去掉
-    _singers = (r'IA|初音ミク|初音|MIKU|GUMI|MEIKO|KAITO|MAYU|'
-                r'鏡音リン|鏡音レン|镜音铃|镜音|镜音RIN|镜音LEN|巡音ルカ|巡音|LUKA|'
-                r'結月ゆかり|结月缘|ONE|OИE|Fukase|Flower|可不|重音テト|Lily|miki')
+    _singers = '|'.join(re.escape(k) for k in sorted(SINGER_KEYWORDS.keys(), key=len, reverse=True))
     s = re.sub(r'\s*[/／]\s*(?:' + _singers +
                r')(?:\s*[,&＆・／/x×\s]\s*(?:' + _singers + r'))*\s*$',
                '', s, flags=re.I).strip()
@@ -204,7 +203,16 @@ def extract_song_name(title: str, creators: list, vocal_singers: list) -> str:
     s = re.sub(r'\s*\([^)]{10,}\)\s*$', '', s).strip()
     s = re.sub(r'\s*（[^）]{10,}）\s*$', '', s).strip()
 
-    # 8. 去除常见噪声后缀
+    # 8. 去除平台/标签噪声短语（无论位置）
+    noise_phrases = [
+        r'VOCALOID\s*オリジナル曲', r'VOCALOID\s*,\s*オリジナル曲',
+        r'IA\s*オリジナル曲', r'IAオリジナル曲', r'オリジナル曲',
+        r'ニコニコ動画', r'ニコニコ', r'niconico', 
+    ]
+    for pat in noise_phrases:
+        s = re.sub(pat, '', s, flags=re.I).strip()
+
+    # 9. 去除常见噪声后缀
     noise_suffixes = [
         r'\s*「[^」]*」\s*$',
         r'\s*[-–\s]\s*(Music Video|Official Video|MV|PV|Short Ver\.?|Full Ver\.?|Official MV)\s*$',
@@ -212,7 +220,7 @@ def extract_song_name(title: str, creators: list, vocal_singers: list) -> str:
     for pat in noise_suffixes:
         s = re.sub(pat, '', s, flags=re.I).strip()
 
-    # 9. 去除 x/× 连接的歌手名块
+    # 10. 去除 x/× 连接的歌手名块
     s = re.sub(r'(?:' + _singers + r')\s*[x×]\s*(?:' + _singers + r'\s*[x×]\s*)*(?:' + _singers + r')\s*',
                '', s, flags=re.I).strip()
     # 清理残留的 x/× 分隔符
@@ -252,6 +260,7 @@ SINGER_KEYWORDS = {
     "洛天依": "洛天依", "言和": "言和", "乐正绫": "乐正绫",
     "miki": "miki", "SF-A2 開発コード miki": "miki",
     "Prima": "Prima", "東北ずん子": "東北ずん子",
+    "音街ウナ": "音街ウナ", "音街鳗": "音街ウナ",
 }
 
 
