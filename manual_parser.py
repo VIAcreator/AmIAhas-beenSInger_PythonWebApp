@@ -117,8 +117,9 @@ def find_matches(title, mapping_df):
     """检查标题是否含已有的 keyword（大小写不敏感，跳过 <=2 字符的关键词）。"""
     matches = []
     for _, row in mapping_df.iterrows():
-        kw = row["keyword"]
-        if len(str(kw)) <= 2:
+        kw = str(row["keyword"])
+        # 只跳过短纯英文关键词（如 "IA"），中文/日文短词不跳过
+        if len(kw) <= 2 and kw.isascii():
             continue
         if kw.upper() in title.upper():
             matches.append(row.to_dict())
@@ -417,14 +418,32 @@ def show_stats(current_idx):
     """显示当前进度统计。"""
     labeled = len(mapping)
     unique_songs = mapping["song_name"].nunique()
-    print(f"\n  📊 已标注: {labeled} 个关键词, {unique_songs} 首歌曲")
-    print(f"  进度: {current_idx}/{TOTAL} ({current_idx / TOTAL * 100:.1f}%)")
+
+    # 统计已浏览行的匹配情况
+    matched_rows = 0
+    for idx in range(current_idx):
+        if find_matches(str(df.iloc[idx]["title"]), mapping):
+            matched_rows += 1
+    unmatched_rows = current_idx - matched_rows
+    remaining = TOTAL - current_idx
+
+    print(f"\n  ═══ 统计 ═══")
+    print(f"  映射库: {labeled} 个关键词 → {unique_songs} 首歌曲")
+    print(f"  浏览进度: {current_idx}/{TOTAL} ({current_idx / TOTAL * 100:.1f}%)")
+    if current_idx > 0:
+        print(f"  ├─ 已匹配: {matched_rows} 行 ({matched_rows / current_idx * 100:.1f}%)")
+        print(f"  └─ 未匹配: {unmatched_rows} 行 ({unmatched_rows / current_idx * 100:.1f}%)")
+    if remaining > 0:
+        print(f"  剩余: {remaining} 行待浏览")
+    else:
+        print(f"  全部浏览完毕")
 
 
 # ── 主循环 ──────────────────────────────────────────────
 print(f"\n  📁 已加载 {TOTAL} 行音乐数据, {len(mapping)} 条已有映射")
 print(f"  📍 从第 {start_row + 1} 行继续\n")
-print("  [s]前进  [b]回退  [n]新建歌曲  [a]加到已有歌曲  [k]别名管理  [m]修改歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
+print("  [s]前进  [b]回退  [ss]下一未匹配  [bb]上一未匹配  [数字]跳转行\n")
+print("  [n]新建歌曲  [a]加到已有歌曲  [k]别名管理  [m]修改歌曲  [e]编辑当前行  [q]保存并退出  [stat]统计  [exp]导出\n")
 
 i = start_row
 _atexit_save_idx[0] = i
@@ -446,7 +465,46 @@ try:
 
         cmd = input("\n> ").strip().lower()
 
-        if cmd == "s":
+        # ── 数字跳转：输入行号直接跳转到指定行 ──
+        if cmd.isdigit():
+            target = int(cmd) - 1  # 用户输入 1-based
+            if 0 <= target < TOTAL:
+                i = target
+                print(f"  ⤷ 已跳转到第 {i + 1} 行")
+                continue  # 重新展示该行
+            else:
+                print(f"  ✗ 行号超出范围 (1~{TOTAL})")
+
+        # ── 快进到下一个未匹配行 ──
+        elif cmd == "ss":
+            start = i + 1
+            while start < TOTAL:
+                if not find_matches(str(df.iloc[start]["title"]), mapping):
+                    break
+                start += 1
+            if start < TOTAL:
+                i = start
+                print(f"  ⤷ 跳到第 {i + 1} 行（未匹配）")
+                continue  # 展示跳转目标行
+            else:
+                print(f"  ✓ 之后所有行均已匹配")
+                i = TOTAL - 1
+
+        # ── 回退到上一个未匹配行 ──
+        elif cmd == "bb":
+            start = i - 1
+            while start >= 0:
+                if not find_matches(str(df.iloc[start]["title"]), mapping):
+                    break
+                start -= 1
+            if start >= 0:
+                i = start
+                print(f"  ⤷ 跳到第 {i + 1} 行（未匹配）")
+                continue  # 展示跳转目标行
+            else:
+                print(f"  ✓ 之前所有行均已匹配")
+
+        elif cmd == "s":
             i += 1
             if i % 10 == 0:
                 _auto_save(i)
@@ -509,7 +567,7 @@ try:
 
         else:
             print(f"  ✗ 未知命令: '{cmd}'")
-            print("  [s]前进 [b]回退 [n]新建 [a]加到已有 [k]别名 [m]修改 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
+            print("  [s]前进 [b]回退 [ss]下一未匹配 [bb]上一未匹配 [数字]跳转 [n]新建 [a]加到已有 [k]别名 [m]修改 [e]编辑 [q]退出 [stat]统计 [exp]导出 [undo]撤销")
 
 finally:
     # finally 是最后一道防线：无论如何退出都尝试保存
