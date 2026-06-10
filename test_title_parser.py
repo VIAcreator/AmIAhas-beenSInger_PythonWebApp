@@ -327,6 +327,52 @@ def assign_creator(title: str, tags: str, bracket_info: dict,
 
 
 # ==========================================================================
+# 关键词映射库（手动维护，最长匹配优先）
+# ==========================================================================
+
+_keyword_map = None  # 延迟加载
+
+def _load_keyword_map(path: str = "data/song_keywords.csv") -> pd.DataFrame:
+    """加载关键词映射表，按关键词长度降序排序。"""
+    global _keyword_map
+    if _keyword_map is None:
+        import os
+        if os.path.exists(path):
+            df = pd.read_csv(path)
+            df["_kw_len"] = df["keyword"].str.len()
+            _keyword_map = df.sort_values("_kw_len", ascending=False)
+    return _keyword_map
+
+
+def match_keyword(title: str) -> dict | None:
+    """
+    查询映射库。多个 keyword 命中时取最长者。
+
+    输入: title
+    输出: {"song_name": str, "original_creator": str} 或 None
+    """
+    mapping = _load_keyword_map()
+    if mapping is None or len(mapping) == 0:
+        return None
+
+    t_upper = normalize_fullwidth(title).upper()
+    best = None
+
+    for _, row in mapping.iterrows():
+        kw = str(row["keyword"])
+        # 已找到更长的匹配 → 跳过更短的
+        if best and len(kw) <= len(best["keyword"]):
+            continue
+        if kw.upper() in t_upper:
+            best = {"song_name": row["song_name"], "original_creator": row["original_creator"],
+                    "keyword": kw}
+
+    if best:
+        return {"song_name": best["song_name"], "original_creator": best["original_creator"]}
+    return None
+
+
+# ==========================================================================
 # 主解析函数
 # ==========================================================================
 
@@ -350,6 +396,15 @@ def parse_title(title: str, tags: str = "") -> dict:
     original_creator = assign_creator(title, tags, bracket_info, feat_creator, slash_creator, prefix_creator)
 
     vocal_singer = detect_singers(title, tags)
+
+    # 关键词映射库覆写（最长匹配优先）
+    kw_match = match_keyword(title)
+    if kw_match:
+        song_name = kw_match["song_name"]
+        # 映射库中有明确P主（非空、非?）时覆盖正则结果
+        kw_creator = str(kw_match["original_creator"]).strip()
+        if kw_creator and kw_creator != "?":
+            original_creator = kw_creator
 
     is_reupload = any(
         kw in " ".join(bracket_info["actions"] + bracket_info["others"])
