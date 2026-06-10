@@ -50,8 +50,8 @@ def parse_titles(df: pd.DataFrame) -> pd.DataFrame:
     从标题中解析: song_name, original_creator, vocal_singer, is_reupload。
     新增 4 列，返回新 DataFrame。
     """
-    # TODO: 后续实现
-    return df
+    from modules.title_parser import parse_titles as _parse
+    return _parse(df)
 
 
 # ==========================================================================
@@ -115,7 +115,11 @@ def handle_clean(raw_df, set_data_fn):
     report["is_cover_count"] = int(df["is_cover"].sum())
 
     # 步骤3：标题解析
-    df = parse_titles(df)
+    try:
+        df = parse_titles(df)
+    except Exception as e:
+        report["title_parse_error"] = str(e)
+        print(f"  [警告] 标题解析失败: {e}，跳过解析步骤")
 
     # 步骤4：通用清洗
     df = general_clean(df)
